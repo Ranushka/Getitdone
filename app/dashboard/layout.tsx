@@ -1,0 +1,31 @@
+import { auth, signOut } from "@/lib/auth";
+import { redirect } from "next/navigation";
+
+export default async function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const session = await auth();
+  if (!session?.user) redirect("/login");
+
+  return (
+    <div className="min-h-screen">
+      <header className="flex items-center justify-between border-b px-4 py-3">
+        <span className="font-semibold">GetItDone</span>
+        <div className="flex items-center gap-3 text-sm">
+          <span className="text-gray-500">{session.user.email}</span>
+          <form
+            action={async () => {
+              "use server";
+              await signOut({ redirectTo: "/login" });
+            }}
+          >
+            <button className="text-gray-500 underline">Sign out</button>
+          </form>
+        </div>
+      </header>
+      <main className="mx-auto max-w-2xl p-4">{children}</main>
+    </div>
+  );
+}

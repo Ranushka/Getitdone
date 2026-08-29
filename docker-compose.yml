@@ -1,0 +1,31 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: getitdone
+      POSTGRES_PASSWORD: getitdone
+      POSTGRES_DB: getitdone
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      - db
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgresql://getitdone:getitdone@db:5432/getitdone?schema=public
+      NEXTAUTH_URL: https://getitdone.ranu.win
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      UPLOAD_DIR: /app/uploads
+    volumes:
+      - uploads-data:/app/uploads
+
+volumes:
+  db-data:
+  uploads-data:
