@@ -8,7 +8,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   // rejects the forwarded Host header as untrusted.
   trustHost: true,
   adapter: PrismaAdapter(prisma),
-  providers: [Google],
+  providers: [
+    Google({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
+  ],
   session: { strategy: "database" },
   pages: {
     signIn: "/login",
