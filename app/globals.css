@@ -24,3 +24,13 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* iOS Safari auto-zooms the page when a focused input's font-size is under
+   16px. Every form input in the app uses text-sm (14px) for visual
+   consistency, so force 16px specifically on focus to prevent the zoom
+   without changing how inputs look at rest. */
+input:focus,
+textarea:focus,
+select:focus {
+  font-size: 16px;
+}

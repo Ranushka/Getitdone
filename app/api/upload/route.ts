@@ -12,12 +12,17 @@ export async function POST(req: NextRequest) {
   const file = formData.get("file") as File | null;
   if (!file) return NextResponse.json({ error: "No file" }, { status: 400 });
 
-  if (!file.type.startsWith("image/")) {
-    return NextResponse.json({ error: "Only images are allowed" }, { status: 400 });
+  const isImage = file.type.startsWith("image/");
+  const isVideo = file.type.startsWith("video/");
+  if (!isImage && !isVideo) {
+    return NextResponse.json({ error: "Only images or videos are allowed" }, { status: 400 });
   }
-  const MAX_BYTES = 10 * 1024 * 1024; // 10MB
+  const MAX_BYTES = (isVideo ? 100 : 10) * 1024 * 1024; // 100MB video, 10MB image
   if (file.size > MAX_BYTES) {
-    return NextResponse.json({ error: "File too large (10MB max)" }, { status: 400 });
+    return NextResponse.json(
+      { error: `File too large (${isVideo ? "100MB" : "10MB"} max)` },
+      { status: 400 }
+    );
   }
 
   const ext = path.extname(file.name) || ".jpg";

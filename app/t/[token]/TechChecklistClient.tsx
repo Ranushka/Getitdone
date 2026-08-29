@@ -185,12 +185,17 @@ function ItemModal({
   const [comment, setComment] = useState(item.comment || "");
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(item.photoUrl);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const [isVideo, setIsVideo] = useState(isVideoUrl(item.photoUrl));
+  const photoInputRef = useRef<HTMLInputElement>(null);
+  const videoInputRef = useRef<HTMLInputElement>(null);
 
   function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
     const f = e.target.files?.[0] || null;
     setFile(f);
-    if (f) setPreview(URL.createObjectURL(f));
+    if (f) {
+      setPreview(URL.createObjectURL(f));
+      setIsVideo(f.type.startsWith("video/"));
+    }
   }
 
   return (
@@ -204,17 +209,45 @@ function ItemModal({
         </div>
 
         {preview ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={preview} alt="" className="w-full h-40 object-cover rounded-lg" />
+          isVideo ? (
+            <video src={preview} controls className="w-full h-40 object-cover rounded-lg" />
+          ) : (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={preview} alt="" className="w-full h-40 object-cover rounded-lg" />
+          )
         ) : null}
 
+        <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={() => photoInputRef.current?.click()}
+            className="flex-1 rounded-lg border px-3 py-2 text-sm"
+          >
+            📷 Photo
+          </button>
+          <button
+            type="button"
+            onClick={() => videoInputRef.current?.click()}
+            className="flex-1 rounded-lg border px-3 py-2 text-sm"
+          >
+            🎥 Video
+          </button>
+        </div>
         <input
-          ref={inputRef}
+          ref={photoInputRef}
           type="file"
           accept="image/*"
           capture="environment"
           onChange={handleFile}
-          className="text-sm"
+          className="hidden"
+        />
+        <input
+          ref={videoInputRef}
+          type="file"
+          accept="video/*"
+          capture="environment"
+          onChange={handleFile}
+          className="hidden"
         />
 
         <textarea
@@ -234,4 +267,9 @@ function ItemModal({
       </div>
     </div>
   );
+}
+
+function isVideoUrl(url: string | null): boolean {
+  if (!url) return false;
+  return /\.(mp4|mov|webm|m4v)$/i.test(url);
 }

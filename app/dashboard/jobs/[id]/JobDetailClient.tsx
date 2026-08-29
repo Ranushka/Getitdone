@@ -126,12 +126,20 @@ export default function JobDetailClient({ job }: { job: Job }) {
                 <p className="text-sm text-gray-600 mt-1">{item.comment}</p>
               )}
               {item.photoUrl && (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={item.photoUrl}
-                  alt={item.title}
-                  className="mt-2 h-24 w-24 object-cover rounded-lg"
-                />
+                /\.(mp4|mov|webm|m4v)$/i.test(item.photoUrl) ? (
+                  <video
+                    src={item.photoUrl}
+                    controls
+                    className="mt-2 h-24 w-24 object-cover rounded-lg"
+                  />
+                ) : (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={item.photoUrl}
+                    alt={item.title}
+                    className="mt-2 h-24 w-24 object-cover rounded-lg"
+                  />
+                )
               )}
             </li>
           ))}

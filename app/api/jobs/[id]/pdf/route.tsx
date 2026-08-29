@@ -26,12 +26,16 @@ const styles = StyleSheet.create({
   status: { fontSize: 9, color: "#0a0" },
   statusPending: { fontSize: 9, color: "#999" },
   signOffRow: { marginTop: 16, fontSize: 10 },
+  videoNote: { fontSize: 9, color: "#666", fontStyle: "italic" },
 });
 
+const VIDEO_EXT = /\.(mp4|mov|webm|m4v)$/i;
+
 // Embeds photos as small base64 thumbnails read straight off disk — keeps the
-// PDF a "fast breakdown", not a full-resolution photo dump.
+// PDF a "fast breakdown", not a full-resolution photo dump. Videos can't be
+// embedded in a PDF, so those are left out and noted as text instead.
 async function toDataUri(photoUrl: string | null): Promise<string | null> {
-  if (!photoUrl) return null;
+  if (!photoUrl || VIDEO_EXT.test(photoUrl)) return null;
   const filename = photoUrl.split("/").pop();
   if (!filename) return null;
   try {
@@ -87,6 +91,9 @@ export async function GET(
             <View style={styles.itemBody}>
               <Text style={styles.itemTitle}>{item.title}</Text>
               {item.comment ? <Text style={styles.comment}>{item.comment}</Text> : null}
+              {item.photoUrl && VIDEO_EXT.test(item.photoUrl) ? (
+                <Text style={styles.videoNote}>🎥 Video attached (view online)</Text>
+              ) : null}
               <Text style={item.status === "DONE" ? styles.status : styles.statusPending}>
                 {item.status === "DONE" ? "Done" : "Pending"}
               </Text>
