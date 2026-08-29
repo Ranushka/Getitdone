@@ -12,7 +12,7 @@ export async function GET(
   const { id } = await params;
   const job = await prisma.job.findFirst({
     where: { id, managerId: session.user.id },
-    include: { items: { orderBy: { order: "asc" } }, signOffs: true },
+    include: { items: { orderBy: { order: "asc" }, include: { attachments: { orderBy: { createdAt: "asc" } } } }, signOffs: true },
   });
   if (!job) return NextResponse.json({ error: "Not found" }, { status: 404 });
   return NextResponse.json(job);

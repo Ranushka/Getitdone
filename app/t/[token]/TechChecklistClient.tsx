@@ -3,11 +3,13 @@
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
+type Attachment = { id: string; url: string };
+
 type Item = {
   id: string;
   title: string;
   comment: string | null;
-  photoUrl: string | null;
+  attachments: Attachment[];
   status: "PENDING" | "DONE";
 };
 
@@ -29,8 +31,7 @@ export default function TechChecklistClient({
   token: string;
 }) {
   const router = useRouter();
-  const [openItemId, setOpenItemId] = useState<string | null>(null);
-  const [busyId, setBusyId] = useState<string | null>(null);
+  const [uploadingId, setUploadingId] = useState<string | null>(null);
   const [name, setName] = useState("");
   const [signOffBusy, setSignOffBusy] = useState(false);
   const [signOffError, setSignOffError] = useState("");
@@ -39,34 +40,32 @@ export default function TechChecklistClient({
   const doneCount = job.items.filter((i) => i.status === "DONE").length;
   const allDone = job.items.length > 0 && doneCount === job.items.length;
 
-  const openItem = job.items.find((i) => i.id === openItemId) || null;
-
-  async function submitItem(itemId: string, file: File | null, comment: string) {
-    setBusyId(itemId);
-    let photoUrl: string | undefined;
-
-    if (file) {
-      const form = new FormData();
-      form.append("file", file);
-      const res = await fetch("/api/upload", { method: "POST", body: form });
-      if (res.ok) {
-        const body = await res.json();
-        photoUrl = body.url;
-      }
+  async function addAttachment(itemId: string, file: File) {
+    setUploadingId(itemId);
+    const form = new FormData();
+    form.append("file", file);
+    const uploadRes = await fetch("/api/upload", { method: "POST", body: form });
+    if (uploadRes.ok) {
+      const { url } = await uploadRes.json();
+      await fetch(`/api/t/${token}/items/${itemId}/attachments`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url }),
+      });
     }
+    setUploadingId(null);
+    router.refresh();
+  }
 
+  async function updateItem(
+    itemId: string,
+    data: { comment?: string; status?: "PENDING" | "DONE" }
+  ) {
     await fetch(`/api/t/${token}/items/${itemId}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        comment,
-        ...(photoUrl ? { photoUrl } : {}),
-        status: "DONE",
-      }),
+      body: JSON.stringify(data),
     });
-
-    setBusyId(null);
-    setOpenItemId(null);
     router.refresh();
   }
 
@@ -107,26 +106,19 @@ export default function TechChecklistClient({
         {doneCount}/{job.items.length} done
       </p>
 
-      <ul className="flex flex-col gap-2">
+      <ul className="flex flex-col gap-3">
         {job.items.map((item) => (
-          <li key={item.id}>
-            <button
-              onClick={() => setOpenItemId(item.id)}
-              disabled={!!techSignOff}
-              className="w-full text-left rounded-lg border p-3 flex items-center justify-between disabled:opacity-60"
-            >
-              <span className="text-sm font-medium">{item.title}</span>
-              <span
-                className={`text-xs rounded-full px-2 py-0.5 ${
-                  item.status === "DONE"
-                    ? "bg-green-100 text-green-700"
-                    : "bg-gray-100 text-gray-500"
-                }`}
-              >
-                {item.status === "DONE" ? "Done" : "Tap to complete"}
-              </span>
-            </button>
-          </li>
+          <ChecklistItemCard
+            key={item.id}
+            item={item}
+            disabled={!!techSignOff}
+            uploading={uploadingId === item.id}
+            onAddAttachment={(file) => addAttachment(item.id, file)}
+            onCommentBlur={(comment) => updateItem(item.id, { comment })}
+            onToggleDone={() =>
+              updateItem(item.id, { status: item.status === "DONE" ? "PENDING" : "DONE" })
+            }
+          />
         ))}
       </ul>
 
@@ -158,118 +150,111 @@ export default function TechChecklistClient({
           Signed off by {techSignOff.name}. Thanks — the manager has been notified.
         </div>
       )}
-
-      {openItem && (
-        <ItemModal
-          item={openItem}
-          busy={busyId === openItem.id}
-          onClose={() => setOpenItemId(null)}
-          onSubmit={(file, comment) => submitItem(openItem.id, file, comment)}
-        />
-      )}
     </main>
   );
 }
 
-function ItemModal({
+function ChecklistItemCard({
   item,
-  busy,
-  onClose,
-  onSubmit,
+  disabled,
+  uploading,
+  onAddAttachment,
+  onCommentBlur,
+  onToggleDone,
 }: {
   item: Item;
-  busy: boolean;
-  onClose: () => void;
-  onSubmit: (file: File | null, comment: string) => void;
+  disabled: boolean;
+  uploading: boolean;
+  onAddAttachment: (file: File) => void;
+  onCommentBlur: (comment: string) => void;
+  onToggleDone: () => void;
 }) {
   const [comment, setComment] = useState(item.comment || "");
-  const [file, setFile] = useState<File | null>(null);
-  const [preview, setPreview] = useState<string | null>(item.photoUrl);
-  const [isVideo, setIsVideo] = useState(isVideoUrl(item.photoUrl));
-  const photoInputRef = useRef<HTMLInputElement>(null);
-  const videoInputRef = useRef<HTMLInputElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
-    const f = e.target.files?.[0] || null;
-    setFile(f);
-    if (f) {
-      setPreview(URL.createObjectURL(f));
-      setIsVideo(f.type.startsWith("video/"));
-    }
+    const f = e.target.files?.[0];
+    if (f) onAddAttachment(f);
+    e.target.value = "";
   }
 
   return (
-    <div className="fixed inset-0 bg-black/40 flex items-end sm:items-center justify-center z-50">
-      <div className="bg-white rounded-t-2xl sm:rounded-2xl w-full sm:max-w-sm p-4 flex flex-col gap-3">
-        <div className="flex items-center justify-between">
-          <h2 className="font-medium">{item.title}</h2>
-          <button onClick={onClose} className="text-gray-400">
-            ✕
-          </button>
-        </div>
-
-        {preview ? (
-          isVideo ? (
-            <video src={preview} controls className="w-full h-40 object-cover rounded-lg" />
-          ) : (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={preview} alt="" className="w-full h-40 object-cover rounded-lg" />
-          )
-        ) : null}
-
-        <div className="flex gap-2">
-          <button
-            type="button"
-            onClick={() => photoInputRef.current?.click()}
-            className="flex-1 rounded-lg border px-3 py-2 text-sm"
-          >
-            📷 Photo
-          </button>
-          <button
-            type="button"
-            onClick={() => videoInputRef.current?.click()}
-            className="flex-1 rounded-lg border px-3 py-2 text-sm"
-          >
-            🎥 Video
-          </button>
-        </div>
-        <input
-          ref={photoInputRef}
-          type="file"
-          accept="image/*"
-          capture="environment"
-          onChange={handleFile}
-          className="hidden"
-        />
-        <input
-          ref={videoInputRef}
-          type="file"
-          accept="video/*"
-          capture="environment"
-          onChange={handleFile}
-          className="hidden"
-        />
-
-        <textarea
-          className="border rounded-lg px-3 py-2 text-sm"
-          placeholder="Add a comment"
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
-        />
-
-        <button
-          onClick={() => onSubmit(file, comment)}
-          disabled={busy}
-          className="rounded-lg bg-black text-white px-3 py-2 text-sm disabled:opacity-50"
+    <li className="rounded-lg border p-3 flex flex-col gap-2">
+      <div className="flex items-center justify-between">
+        <span className="text-sm font-medium">{item.title}</span>
+        <span
+          className={`text-xs rounded-full px-2 py-0.5 ${
+            item.status === "DONE"
+              ? "bg-green-100 text-green-700"
+              : "bg-gray-100 text-gray-500"
+          }`}
         >
-          {busy ? "Saving…" : "Mark done"}
-        </button>
+          {item.status === "DONE" ? "Done" : "Pending"}
+        </span>
       </div>
-    </div>
-  );
-}
 
-function isVideoUrl(url: string | null): boolean {
-  if (!url) return false;
-  return /\.(mp4|mov|webm|m4v)$/i.test(url);
+      {item.attachments.length > 0 && (
+        <div className="flex gap-2 overflow-x-auto">
+          {item.attachments.map((a) =>
+            /\.(mp4|mov|webm|m4v)$/i.test(a.url) ? (
+              <video
+                key={a.id}
+                src={a.url}
+                controls
+                className="h-20 w-20 shrink-0 object-cover rounded-lg"
+              />
+            ) : (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                key={a.id}
+                src={a.url}
+                alt={item.title}
+                className="h-20 w-20 shrink-0 object-cover rounded-lg"
+              />
+            )
+          )}
+        </div>
+      )}
+
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*,video/*"
+        capture="environment"
+        onChange={handleFile}
+        className="hidden"
+      />
+      <button
+        type="button"
+        onClick={() => fileInputRef.current?.click()}
+        disabled={disabled || uploading}
+        className="rounded-lg border px-3 py-2 text-sm disabled:opacity-50"
+      >
+        {uploading ? "Uploading…" : "📷 Add photo or video"}
+      </button>
+
+      <textarea
+        className="border rounded-lg px-3 py-2 text-sm"
+        placeholder="Add a comment"
+        value={comment}
+        disabled={disabled}
+        onChange={(e) => setComment(e.target.value)}
+        onBlur={() => {
+          if (comment !== (item.comment || "")) onCommentBlur(comment);
+        }}
+      />
+
+      <button
+        onClick={onToggleDone}
+        disabled={disabled}
+        className={`rounded-lg px-3 py-2 text-sm disabled:opacity-50 ${
+          item.status === "DONE"
+            ? "border text-gray-600"
+            : "bg-black text-white"
+        }`}
+      >
+        {item.status === "DONE" ? "Mark as not done" : "Mark done"}
+      </button>
+    </li>
+  );
 }

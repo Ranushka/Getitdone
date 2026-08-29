@@ -19,7 +19,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 10,
   },
-  thumb: { width: 48, height: 48, borderRadius: 4, objectFit: "cover" },
+  thumbRow: { flexDirection: "row", gap: 4 },
+  thumb: { width: 40, height: 40, borderRadius: 4, objectFit: "cover" },
   itemBody: { flex: 1 },
   itemTitle: { fontSize: 12, marginBottom: 2 },
   comment: { fontSize: 10, color: "#444" },
@@ -34,9 +35,9 @@ const VIDEO_EXT = /\.(mp4|mov|webm|m4v)$/i;
 // Embeds photos as small base64 thumbnails read straight off disk — keeps the
 // PDF a "fast breakdown", not a full-resolution photo dump. Videos can't be
 // embedded in a PDF, so those are left out and noted as text instead.
-async function toDataUri(photoUrl: string | null): Promise<string | null> {
-  if (!photoUrl || VIDEO_EXT.test(photoUrl)) return null;
-  const filename = photoUrl.split("/").pop();
+async function toDataUri(url: string): Promise<string | null> {
+  if (VIDEO_EXT.test(url)) return null;
+  const filename = url.split("/").pop();
   if (!filename) return null;
   try {
     const buf = await readFile(
@@ -59,14 +60,16 @@ export async function GET(
   const { id } = await params;
   const job = await prisma.job.findFirst({
     where: { id, managerId: session.user.id },
-    include: { items: { orderBy: { order: "asc" } }, signOffs: true },
+    include: { items: { orderBy: { order: "asc" }, include: { attachments: { orderBy: { createdAt: "asc" } } } }, signOffs: true },
   });
   if (!job) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
   const itemsWithImages = await Promise.all(
     job.items.map(async (item) => ({
       ...item,
-      dataUri: await toDataUri(item.photoUrl),
+      thumbs: await Promise.all(
+        item.attachments.map(async (a) => ({ url: a.url, dataUri: await toDataUri(a.url) }))
+      ),
     }))
   );
 
@@ -81,25 +84,37 @@ export async function GET(
           {job.notes || " "} · {new Date(job.createdAt).toLocaleDateString()}
         </Text>
 
-        {itemsWithImages.map((item) => (
-          <View key={item.id} style={styles.item}>
-            {item.dataUri ? (
-              <Image src={item.dataUri} style={styles.thumb} />
-            ) : (
-              <View style={styles.thumb} />
-            )}
-            <View style={styles.itemBody}>
-              <Text style={styles.itemTitle}>{item.title}</Text>
-              {item.comment ? <Text style={styles.comment}>{item.comment}</Text> : null}
-              {item.photoUrl && VIDEO_EXT.test(item.photoUrl) ? (
-                <Text style={styles.videoNote}>🎥 Video attached (view online)</Text>
-              ) : null}
-              <Text style={item.status === "DONE" ? styles.status : styles.statusPending}>
-                {item.status === "DONE" ? "Done" : "Pending"}
-              </Text>
+        {itemsWithImages.map((item) => {
+          const videoCount = item.thumbs.filter((t) => VIDEO_EXT.test(t.url)).length;
+          return (
+            <View key={item.id} style={styles.item}>
+              {item.thumbs.length > 0 ? (
+                <View style={styles.thumbRow}>
+                  {item.thumbs
+                    .filter((t) => t.dataUri)
+                    .slice(0, 3)
+                    .map((t, i) => (
+                      <Image key={i} src={t.dataUri!} style={styles.thumb} />
+                    ))}
+                </View>
+              ) : (
+                <View style={styles.thumb} />
+              )}
+              <View style={styles.itemBody}>
+                <Text style={styles.itemTitle}>{item.title}</Text>
+                {item.comment ? <Text style={styles.comment}>{item.comment}</Text> : null}
+                {videoCount > 0 ? (
+                  <Text style={styles.videoNote}>
+                    🎥 {videoCount} video{videoCount > 1 ? "s" : ""} attached (view online)
+                  </Text>
+                ) : null}
+                <Text style={item.status === "DONE" ? styles.status : styles.statusPending}>
+                  {item.status === "DONE" ? "Done" : "Pending"}
+                </Text>
+              </View>
             </View>
-          </View>
-        ))}
+          );
+        })}
 
         <View style={styles.signOffRow}>
           <Text>

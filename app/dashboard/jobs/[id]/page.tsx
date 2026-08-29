@@ -13,7 +13,7 @@ export default async function JobDetailPage({
 
   const job = await prisma.job.findFirst({
     where: { id, managerId: session!.user!.id },
-    include: { items: { orderBy: { order: "asc" } }, signOffs: true },
+    include: { items: { orderBy: { order: "asc" }, include: { attachments: { orderBy: { createdAt: "asc" } } } }, signOffs: true },
   });
   if (!job) notFound();
 

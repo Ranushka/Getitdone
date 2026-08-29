@@ -3,11 +3,13 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
+type Attachment = { id: string; url: string };
+
 type Item = {
   id: string;
   title: string;
   comment: string | null;
-  photoUrl: string | null;
+  attachments: Attachment[];
   status: "PENDING" | "DONE";
 };
 
@@ -125,21 +127,27 @@ export default function JobDetailClient({ job }: { job: Job }) {
               {item.comment && (
                 <p className="text-sm text-gray-600 mt-1">{item.comment}</p>
               )}
-              {item.photoUrl && (
-                /\.(mp4|mov|webm|m4v)$/i.test(item.photoUrl) ? (
-                  <video
-                    src={item.photoUrl}
-                    controls
-                    className="mt-2 h-24 w-24 object-cover rounded-lg"
-                  />
-                ) : (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={item.photoUrl}
-                    alt={item.title}
-                    className="mt-2 h-24 w-24 object-cover rounded-lg"
-                  />
-                )
+              {item.attachments.length > 0 && (
+                <div className="flex gap-2 mt-2 flex-wrap">
+                  {item.attachments.map((a) =>
+                    /\.(mp4|mov|webm|m4v)$/i.test(a.url) ? (
+                      <video
+                        key={a.id}
+                        src={a.url}
+                        controls
+                        className="h-24 w-24 object-cover rounded-lg"
+                      />
+                    ) : (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        key={a.id}
+                        src={a.url}
+                        alt={item.title}
+                        className="h-24 w-24 object-cover rounded-lg"
+                      />
+                    )
+                  )}
+                </div>
               )}
             </li>
           ))}

@@ -85,16 +85,26 @@ enum ItemStatus {
 }
 
 model ChecklistItem {
-  id          String     @id @default(cuid())
-  job         Job        @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  id          String       @id @default(cuid())
+  job         Job          @relation(fields: [jobId], references: [id], onDelete: Cascade)
   jobId       String
   title       String
   comment     String?
-  photoUrl    String?
-  status      ItemStatus @default(PENDING)
-  order       Int        @default(0)
+  status      ItemStatus   @default(PENDING)
+  order       Int          @default(0)
   completedAt DateTime?
-  createdAt   DateTime   @default(now())
+  createdAt   DateTime     @default(now())
+  attachments Attachment[]
+}
+
+// A checklist item can carry multiple photos/videos — technician can keep
+// tapping the camera button to add more before marking the item done.
+model Attachment {
+  id        String        @id @default(cuid())
+  item      ChecklistItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  itemId    String
+  url       String
+  createdAt DateTime      @default(now())
 }
 
 enum SignOffRole {

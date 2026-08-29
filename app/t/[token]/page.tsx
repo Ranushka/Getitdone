@@ -10,7 +10,7 @@ export default async function TechJobPage({
   const { token } = await params;
   const job = await prisma.job.findUnique({
     where: { shareToken: token },
-    include: { items: { orderBy: { order: "asc" } }, signOffs: true },
+    include: { items: { orderBy: { order: "asc" }, include: { attachments: { orderBy: { createdAt: "asc" } } } }, signOffs: true },
   });
   if (!job) notFound();
 

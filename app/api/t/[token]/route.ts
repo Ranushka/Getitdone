@@ -9,7 +9,7 @@ export async function GET(
   const { token } = await params;
   const job = await prisma.job.findUnique({
     where: { shareToken: token },
-    include: { items: { orderBy: { order: "asc" } }, signOffs: true },
+    include: { items: { orderBy: { order: "asc" }, include: { attachments: { orderBy: { createdAt: "asc" } } } }, signOffs: true },
   });
   if (!job) return NextResponse.json({ error: "Not found" }, { status: 404 });
   return NextResponse.json(job);
