@@ -170,7 +170,8 @@ function ChecklistItemCard({
   onToggleDone: () => void;
 }) {
   const [comment, setComment] = useState(item.comment || "");
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const photoInputRef = useRef<HTMLInputElement>(null);
+  const videoInputRef = useRef<HTMLInputElement>(null);
 
   function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
     const f = e.target.files?.[0];
@@ -217,21 +218,39 @@ function ChecklistItemCard({
       )}
 
       <input
-        ref={fileInputRef}
+        ref={photoInputRef}
         type="file"
-        accept="image/*,video/*"
+        accept="image/*"
         capture="environment"
         onChange={handleFile}
         className="hidden"
       />
-      <button
-        type="button"
-        onClick={() => fileInputRef.current?.click()}
-        disabled={disabled || uploading}
-        className="rounded-lg border px-3 py-2 text-sm disabled:opacity-50"
-      >
-        {uploading ? "Uploading…" : "📷 Add photo or video"}
-      </button>
+      <input
+        ref={videoInputRef}
+        type="file"
+        accept="video/*"
+        capture="environment"
+        onChange={handleFile}
+        className="hidden"
+      />
+      <div className="flex gap-2">
+        <button
+          type="button"
+          onClick={() => photoInputRef.current?.click()}
+          disabled={disabled || uploading}
+          className="flex-1 rounded-lg border px-3 py-2 text-sm disabled:opacity-50"
+        >
+          {uploading ? "Uploading…" : "📷 Photo"}
+        </button>
+        <button
+          type="button"
+          onClick={() => videoInputRef.current?.click()}
+          disabled={disabled || uploading}
+          className="flex-1 rounded-lg border px-3 py-2 text-sm disabled:opacity-50"
+        >
+          {uploading ? "Uploading…" : "🎥 Video"}
+        </button>
+      </div>
 
       <textarea
         className="border rounded-lg px-3 py-2 text-sm"
