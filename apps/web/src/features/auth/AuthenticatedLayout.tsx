@@ -35,7 +35,7 @@ export function AuthenticatedLayout({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-dvh bg-background">
       <header className="flex items-center justify-between border-b border-border bg-card px-4 py-3">
-        <Link to="/" className="font-bold">
+        <Link to="/dashboard" className="font-bold">
           GetItDone
         </Link>
         <div className="flex items-center gap-3">
