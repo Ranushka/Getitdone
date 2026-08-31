@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import { Copy, Check } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { Button } from '@/components/ui/button'
 
 export function ShareLinkBox({ shareToken }: { shareToken: string }) {
+  const { t } = useTranslation()
   const [copied, setCopied] = useState(false)
   const url = `${window.location.origin}/t/${shareToken}`
 
@@ -12,7 +14,7 @@ export function ShareLinkBox({ shareToken }: { shareToken: string }) {
     setTimeout(() => setCopied(false), 2000)
   }
 
-  const whatsappHref = `https://wa.me/?text=${encodeURIComponent(`Job checklist: ${url}`)}`
+  const whatsappHref = `https://wa.me/?text=${encodeURIComponent(`${t('share.whatsappMessagePrefix')}: ${url}`)}`
 
   return (
     <div className="flex flex-col gap-2 rounded-lg border border-border bg-secondary/50 p-3 sm:flex-row sm:items-center">
@@ -25,11 +27,11 @@ export function ShareLinkBox({ shareToken }: { shareToken: string }) {
       <div className="flex gap-2">
         <Button variant="outline" size="sm" onClick={copy}>
           {copied ? <Check /> : <Copy />}
-          {copied ? 'Copied' : 'Copy'}
+          {copied ? t('share.copied') : t('share.copy')}
         </Button>
         <Button variant="outline" size="sm" asChild>
           <a href={whatsappHref} target="_blank" rel="noreferrer">
-            WhatsApp
+            {t('share.whatsapp')}
           </a>
         </Button>
       </div>

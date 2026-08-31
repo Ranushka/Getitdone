@@ -1,0 +1,77 @@
+{
+  "app": { "name": "GetItDone" },
+  "common": {
+    "loading": "جارٍ التحميل…",
+    "jobNotFound": "لم يتم العثور على المهمة.",
+    "signOff": "توقيع الإنجاز",
+    "yourName": "اسمك",
+    "technician": "الفني",
+    "manager": "المدير",
+    "pending": "قيد الانتظار",
+    "attachPhotoVideo": "إرفاق صورة/فيديو",
+    "uploading": "جارٍ الرفع…",
+    "attachedCount": "{{count}} مرفق",
+    "checklist": "قائمة المهام",
+    "signOffSection": "التوقيع",
+    "progress": "{{done}}/{{total}} مكتمل"
+  },
+  "status": {
+    "in_progress": "قيد التنفيذ",
+    "tech_signed_off": "وقّع الفني",
+    "completed": "مكتمل"
+  },
+  "auth": {
+    "signInSubtitle": "سجّل الدخول إلى حسابك",
+    "registerSubtitle": "إنشاء حساب مدير",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "confirmPassword": "تأكيد كلمة المرور",
+    "signIn": "تسجيل الدخول",
+    "createAccount": "إنشاء حساب",
+    "continueWithGoogle": "المتابعة باستخدام Google",
+    "toRegister": "ليس لديك حساب؟ سجّل الآن",
+    "toSignIn": "لديك حساب بالفعل؟ سجّل الدخول",
+    "accountCreated": "تم إنشاء الحساب — سجّل الدخول أدناه",
+    "signOut": "تسجيل الخروج"
+  },
+  "jobs": {
+    "title": "المهام",
+    "newJob": "مهمة جديدة",
+    "searchPlaceholder": "ابحث عن المهام…",
+    "noJobsYet": "لا توجد مهام بعد.",
+    "newJobHeading": "مهمة جديدة",
+    "titleLabel": "العنوان",
+    "notesLabel": "ملاحظات",
+    "checklistItemsLabel": "عناصر القائمة",
+    "itemPlaceholder": "العنصر {{number}}",
+    "addItem": "إضافة عنصر",
+    "createJob": "إنشاء المهمة",
+    "addChecklistItemPlaceholder": "أضف عنصرًا إلى القائمة…",
+    "generatePdf": "إنشاء تقرير PDF",
+    "generatingPdf": "جارٍ الإنشاء…",
+    "jobCompleted": "تم إنجاز المهمة"
+  },
+  "technician": {
+    "markDone": "وضع علامة \"تم\"",
+    "done": "تم",
+    "commentPlaceholder": "تعليق…",
+    "signedOffThanks": "تم التوقيع — شكرًا لك!",
+    "markAllDoneNotice": "يجب إتمام جميع العناصر قبل التوقيع.",
+    "signedOffToast": "تم التوقيع",
+    "updateItemFailed": "فشل تحديث العنصر",
+    "uploadFailed": "فشل الرفع",
+    "signOffFailed": "فشل التوقيع"
+  },
+  "share": {
+    "copy": "نسخ",
+    "copied": "تم النسخ",
+    "whatsapp": "واتساب",
+    "whatsappMessagePrefix": "قائمة مهام الوظيفة"
+  },
+  "dialog": { "close": "إغلاق" },
+  "translate": {
+    "translate": "ترجمة",
+    "showOriginal": "عرض النص الأصلي",
+    "translating": "جارٍ الترجمة…"
+  }
+}

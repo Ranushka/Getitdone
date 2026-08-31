@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import { Plus, Trash2, Paperclip } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { trpc } from '@/lib/trpc'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -28,6 +29,7 @@ async function uploadFile(file: File): Promise<string> {
 }
 
 export function NewJobPage() {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const utils = trpc.useUtils()
   const [title, setTitle] = useState('')
@@ -74,25 +76,25 @@ export function NewJobPage() {
 
   return (
     <div className="mx-auto max-w-2xl p-4 pb-24">
-      <h1 className="mb-4 text-xl font-bold">New job</h1>
+      <h1 className="mb-4 text-xl font-bold">{t('jobs.newJobHeading')}</h1>
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <div className="flex flex-col gap-1.5">
-          <Label htmlFor="title">Title</Label>
+          <Label htmlFor="title">{t('jobs.titleLabel')}</Label>
           <Input id="title" required value={title} onChange={(e) => setTitle(e.target.value)} />
         </div>
         <div className="flex flex-col gap-1.5">
-          <Label htmlFor="notes">Notes</Label>
+          <Label htmlFor="notes">{t('jobs.notesLabel')}</Label>
           <Textarea id="notes" value={notes} onChange={(e) => setNotes(e.target.value)} />
         </div>
 
         <div className="flex flex-col gap-2">
-          <Label>Checklist items</Label>
+          <Label>{t('jobs.checklistItemsLabel')}</Label>
           {items.map((item, i) => (
             <Card key={i}>
               <CardContent className="flex flex-col gap-2 p-3">
                 <div className="flex items-center gap-2">
                   <Input
-                    placeholder={`Item ${i + 1}`}
+                    placeholder={t('jobs.itemPlaceholder', { number: i + 1 })}
                     value={item.title}
                     onChange={(e) => updateItem(i, { title: e.target.value })}
                   />
@@ -109,7 +111,7 @@ export function NewJobPage() {
                 <div className="flex flex-wrap items-center gap-2">
                   <label className="inline-flex cursor-pointer items-center gap-1 text-xs font-medium text-muted-foreground hover:text-foreground">
                     <Paperclip className="size-3.5" />
-                    Attach photo/video
+                    {t('common.attachPhotoVideo')}
                     <input
                       type="file"
                       accept="image/*,video/*"
@@ -118,10 +120,12 @@ export function NewJobPage() {
                       onChange={(e) => handleAttach(i, e.target.files)}
                     />
                   </label>
-                  {item.uploading ? <span className="text-xs text-muted-foreground">Uploading…</span> : null}
+                  {item.uploading ? (
+                    <span className="text-xs text-muted-foreground">{t('common.uploading')}</span>
+                  ) : null}
                   {item.attachmentUrls.length > 0 ? (
                     <span className="text-xs text-muted-foreground">
-                      {item.attachmentUrls.length} attached
+                      {t('common.attachedCount', { count: item.attachmentUrls.length })}
                     </span>
                   ) : null}
                 </div>
@@ -134,12 +138,12 @@ export function NewJobPage() {
             size="sm"
             onClick={() => setItems((prev) => [...prev, { title: '', attachmentUrls: [], uploading: false }])}
           >
-            <Plus /> Add item
+            <Plus /> {t('jobs.addItem')}
           </Button>
         </div>
 
         <Button type="submit" disabled={createJob.isPending || !title.trim()}>
-          Create job
+          {t('jobs.createJob')}
         </Button>
       </form>
     </div>

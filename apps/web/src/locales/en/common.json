@@ -1,0 +1,77 @@
+{
+  "app": { "name": "GetItDone" },
+  "common": {
+    "loading": "Loading…",
+    "jobNotFound": "Job not found.",
+    "signOff": "Sign off",
+    "yourName": "Your name",
+    "technician": "Technician",
+    "manager": "Manager",
+    "pending": "Pending",
+    "attachPhotoVideo": "Attach photo/video",
+    "uploading": "Uploading…",
+    "attachedCount": "{{count}} attached",
+    "checklist": "Checklist",
+    "signOffSection": "Sign-off",
+    "progress": "{{done}}/{{total}} done"
+  },
+  "status": {
+    "in_progress": "In progress",
+    "tech_signed_off": "Tech signed off",
+    "completed": "Completed"
+  },
+  "auth": {
+    "signInSubtitle": "Sign in to your account",
+    "registerSubtitle": "Create a manager account",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm password",
+    "signIn": "Sign in",
+    "createAccount": "Create account",
+    "continueWithGoogle": "Continue with Google",
+    "toRegister": "Don't have an account? Register",
+    "toSignIn": "Already have an account? Sign in",
+    "accountCreated": "Account created — sign in below",
+    "signOut": "Sign out"
+  },
+  "jobs": {
+    "title": "Jobs",
+    "newJob": "New job",
+    "searchPlaceholder": "Search jobs…",
+    "noJobsYet": "No jobs yet.",
+    "newJobHeading": "New job",
+    "titleLabel": "Title",
+    "notesLabel": "Notes",
+    "checklistItemsLabel": "Checklist items",
+    "itemPlaceholder": "Item {{number}}",
+    "addItem": "Add item",
+    "createJob": "Create job",
+    "addChecklistItemPlaceholder": "Add checklist item…",
+    "generatePdf": "Generate PDF report",
+    "generatingPdf": "Generating…",
+    "jobCompleted": "Job completed"
+  },
+  "technician": {
+    "markDone": "Mark done",
+    "done": "Done",
+    "commentPlaceholder": "Comment…",
+    "signedOffThanks": "Signed off — thanks!",
+    "markAllDoneNotice": "Mark every item done before signing off.",
+    "signedOffToast": "Signed off",
+    "updateItemFailed": "Failed to update item",
+    "uploadFailed": "Upload failed",
+    "signOffFailed": "Sign-off failed"
+  },
+  "share": {
+    "copy": "Copy",
+    "copied": "Copied",
+    "whatsapp": "WhatsApp",
+    "whatsappMessagePrefix": "Job checklist"
+  },
+  "dialog": { "close": "Close" },
+  "translate": {
+    "translate": "Translate",
+    "showOriginal": "Show original",
+    "translating": "Translating…"
+  }
+}

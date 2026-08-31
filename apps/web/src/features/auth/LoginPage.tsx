@@ -1,13 +1,16 @@
 import { useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
 import { toast } from 'sonner'
+import { useTranslation } from 'react-i18next'
 import { trpc } from '@/lib/trpc'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { LanguageSwitcher } from '@/components/shared/LanguageSwitcher'
 
 export function LoginPage() {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const utils = trpc.useUtils()
   const [mode, setMode] = useState<'login' | 'register'>('login')
@@ -25,7 +28,7 @@ export function LoginPage() {
 
   const register = trpc.auth.register.useMutation({
     onSuccess: () => {
-      toast.success('Account created — sign in below')
+      toast.success(t('auth.accountCreated'))
       setMode('login')
       setConfirmPassword('')
     },
@@ -46,16 +49,19 @@ export function LoginPage() {
   return (
     <div className="flex min-h-dvh items-center justify-center bg-background p-4">
       <Card className="w-full max-w-sm">
-        <CardHeader>
-          <h1 className="text-xl font-bold">GetItDone</h1>
-          <p className="text-sm text-muted-foreground">
-            {mode === 'login' ? 'Sign in to your account' : 'Create a manager account'}
-          </p>
+        <CardHeader className="flex-row items-start justify-between">
+          <div>
+            <h1 className="text-xl font-bold">GetItDone</h1>
+            <p className="text-sm text-muted-foreground">
+              {mode === 'login' ? t('auth.signInSubtitle') : t('auth.registerSubtitle')}
+            </p>
+          </div>
+          <LanguageSwitcher />
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
           <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
             <div className="flex flex-col gap-1.5">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">{t('auth.email')}</Label>
               <Input
                 id="email"
                 type="email"
@@ -65,7 +71,7 @@ export function LoginPage() {
               />
             </div>
             <div className="flex flex-col gap-1.5">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">{t('auth.password')}</Label>
               <Input
                 id="password"
                 type="password"
@@ -77,7 +83,7 @@ export function LoginPage() {
             </div>
             {mode === 'register' ? (
               <div className="flex flex-col gap-1.5">
-                <Label htmlFor="confirmPassword">Confirm password</Label>
+                <Label htmlFor="confirmPassword">{t('auth.confirmPassword')}</Label>
                 <Input
                   id="confirmPassword"
                   type="password"
@@ -89,12 +95,12 @@ export function LoginPage() {
               </div>
             ) : null}
             <Button type="submit" disabled={pending}>
-              {mode === 'login' ? 'Sign in' : 'Create account'}
+              {mode === 'login' ? t('auth.signIn') : t('auth.createAccount')}
             </Button>
           </form>
 
           <Button variant="outline" asChild>
-            <a href="/api/auth/google/start">Continue with Google</a>
+            <a href="/api/auth/google/start">{t('auth.continueWithGoogle')}</a>
           </Button>
 
           <button
@@ -102,7 +108,7 @@ export function LoginPage() {
             className="text-sm text-muted-foreground underline-offset-4 hover:underline"
             onClick={() => setMode(mode === 'login' ? 'register' : 'login')}
           >
-            {mode === 'login' ? "Don't have an account? Register" : 'Already have an account? Sign in'}
+            {mode === 'login' ? t('auth.toRegister') : t('auth.toSignIn')}
           </button>
         </CardContent>
       </Card>
