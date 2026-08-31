@@ -1,38 +1,56 @@
-# Deploying GetItDone via Dokploy
+# Deployment
 
-Same pattern as the other apps on the Mac Mini (see `gms`, `plane.ranu.win`).
+Self-hosted on the Mac Mini home server via [Dokploy](https://dokploy.com/), using
+`docker-compose.yml` at the repo root: `postgres`, `api`, and `web`
+services, auto-deploying on push to `main` — same pattern as the other apps
+on the Mac Mini (`gms`, `plane.ranu.win`).
 
-## 1. Database
-Create a Postgres resource in Dokploy (or reuse an existing Postgres instance)
-and create a `getitdone` database. Grab the internal connection string.
+## One-time setup
 
-## 2. Google OAuth
-In Google Cloud Console → APIs & Services → Credentials → OAuth client (Web):
-- Authorized redirect URI: `https://getitdone.ranu.win/api/auth/callback/google`
+1. In Google Cloud Console → APIs & Services → Credentials → OAuth client (Web),
+   set the authorized redirect URI to `https://getitdone.ranu.win/api/auth/google/callback`
+   (this replaced next-auth's fixed `/api/auth/callback/google` path).
+2. In Dokploy, create a **Compose** application pointing at this repo, root `docker-compose.yml`.
+3. Set the environment variables below in Dokploy's app settings (they map to
+   `${GETITDONE_*}` placeholders in `docker-compose.yml`).
+4. Point Dokploy's domain/proxy at the `web` service's port `3658`.
 
-## 3. Create the app in Dokploy
-- Source: this Git repo, branch `main`
-- Build type: **Dockerfile** (uses the `Dockerfile` in repo root)
-- Domain: `getitdone.ranu.win`, port `3000`, HTTPS via Dokploy's Traefik/Cloudflare route (same wildcard setup as other `*.ranu.win` apps)
+## Environment variables
 
-## 4. Environment variables
-```
-DATABASE_URL=postgresql://<user>:<pass>@<postgres-host>:5432/getitdone?schema=public
-NEXTAUTH_URL=https://getitdone.ranu.win
-NEXTAUTH_SECRET=<openssl rand -base64 32>
-GOOGLE_CLIENT_ID=<from Google Cloud Console>
-GOOGLE_CLIENT_SECRET=<from Google Cloud Console>
-UPLOAD_DIR=/app/uploads
-```
+| Variable | Value |
+|---|---|
+| `GETITDONE_PG_PASSWORD` | strong random string (used by both `postgres` and `api`) |
+| `GETITDONE_JWT_SECRET` | strong random string |
+| `GETITDONE_WEB_ORIGIN` | the public URL(s) of the `web` service, comma-separated |
+| `GOOGLE_CLIENT_ID` | from Google Cloud Console |
+| `GOOGLE_CLIENT_SECRET` | from Google Cloud Console |
+| `GOOGLE_REDIRECT_URI` | `https://getitdone.ranu.win/api/auth/google/callback` |
 
-## 5. Volume
-Mount a persistent volume at `/app/uploads` in Dokploy's volume settings —
-this is where technician photos live. Without it, photos are lost on every
+`web`'s `VITE_API_URL` is baked in at build time as `/trpc` (nginx on the
+container proxies `/trpc`, `/api`, `/uploads` to the `api` service on the same
+Docker network — see `apps/web/nginx.conf`).
+
+## Migrations
+
+The `api` container runs `pnpm --filter @getitdone/api db:migrate` (Drizzle,
+replacing the old `prisma migrate deploy`) before starting — see
+`apps/api/Dockerfile`. Commit new migrations under `apps/api/drizzle/` when
+the schema changes (`pnpm db:generate` from `apps/api` locally first).
+
+## Persistent data
+
+Two volumes: `getitdone-postgres-data` (database) and `getitdone-uploads`
+(technician photos/videos and generated PDF reports). Both must survive
+redeploys — without the uploads volume, technician photos are lost on every
 redeploy.
 
-## 6. Deploy
-Push to `main` (or trigger a manual deploy). The container runs
-`prisma migrate deploy` automatically on start before serving the app, so
-schema migrations apply on every deploy — just commit new migrations under
-`prisma/migrations/` when the schema changes (`npx prisma migrate dev` locally
-first to generate them).
+They're declared `external: true` with fixed names
+(`getitdone_getitdone-postgres-data`, `getitdone_getitdone-uploads`) rather
+than plain named volumes, so the compose project's internal name (which
+Dokploy generates per-app) can change across redeploys/recreations without
+orphaning the data.
+
+## Custom domains
+
+If you point a different domain at the `web` service, add it to
+`GETITDONE_WEB_ORIGIN` (comma-separated) and redeploy.
