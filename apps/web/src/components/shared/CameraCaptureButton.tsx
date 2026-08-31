@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import { Wand2, X, Camera as CameraIcon } from 'lucide-react'
+import { Paperclip, X, Camera as CameraIcon, type LucideIcon } from 'lucide-react'
 
 export interface CapturedPhoto {
   file: File
@@ -7,17 +7,32 @@ export interface CapturedPhoto {
 }
 
 /**
- * Magic-wand attach button. On desktop it opens the plain file picker (same
- * as the existing paperclip attach control). On touch devices it opens a
- * live camera overlay instead — matching GMS's photo-capture pattern
- * (getUserMedia + canvas snapshot), photo-only for now: no torch or video
- * recording yet, that's a deliberately deferred follow-up.
+ * Attach control: on desktop it opens the plain file picker, on touch
+ * devices it opens a live camera overlay instead — matching GMS's
+ * photo-capture pattern (getUserMedia + canvas snapshot), photo-only for
+ * now: no torch or video recording yet, that's a deliberately deferred
+ * follow-up.
+ *
+ * By default the icon reflects what tapping it actually does (paperclip
+ * = file picker on desktop, camera = live capture on mobile). Pass `icon`
+ * to override this — e.g. the "smart add" button uses a fixed wand icon
+ * regardless of device, since it's a distinct feature (AI-generated
+ * checklist item), not a plain attach control.
  */
-export function CameraCaptureButton({ onCapture }: { onCapture: (photo: CapturedPhoto) => void }) {
+export function CameraCaptureButton({
+  onCapture,
+  icon: IconOverride,
+  label = 'Capture photo',
+}: {
+  onCapture: (photo: CapturedPhoto) => void
+  icon?: LucideIcon
+  label?: string
+}) {
   const isTouchDevice =
     typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [cameraOpen, setCameraOpen] = useState(false)
+  const Icon = IconOverride ?? (isTouchDevice ? CameraIcon : Paperclip)
 
   function handleFilePicked(files: FileList | null) {
     const file = files?.[0]
@@ -31,11 +46,12 @@ export function CameraCaptureButton({ onCapture }: { onCapture: (photo: Captured
     <>
       <button
         type="button"
-        aria-label="Capture photo"
+        aria-label={label}
+        title={label}
         onClick={() => (isTouchDevice ? setCameraOpen(true) : fileInputRef.current?.click())}
         className="inline-flex size-10 shrink-0 items-center justify-center rounded-lg border border-input bg-card text-muted-foreground hover:bg-secondary hover:text-foreground"
       >
-        <Wand2 className="size-5" />
+        <Icon className="size-5" />
       </button>
       <input
         ref={fileInputRef}

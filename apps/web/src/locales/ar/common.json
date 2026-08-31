@@ -1,5 +1,7 @@
 {
-  "app": { "name": "GetItDone" },
+  "app": {
+    "name": "GetItDone"
+  },
   "common": {
     "loading": "جارٍ التحميل…",
     "jobNotFound": "لم يتم العثور على المهمة.",
@@ -49,7 +51,9 @@
     "addChecklistItemPlaceholder": "أضف عنصرًا إلى القائمة…",
     "generatePdf": "إنشاء تقرير PDF",
     "generatingPdf": "جارٍ الإنشاء…",
-    "jobCompleted": "تم إنجاز المهمة"
+    "jobCompleted": "تم إنجاز المهمة",
+    "smartAddItem": "إضافة عنصر من صورة",
+    "smartAdding": "جارٍ إنشاء العنصر…"
   },
   "technician": {
     "markDone": "وضع علامة \"تم\"",
@@ -68,7 +72,9 @@
     "whatsapp": "واتساب",
     "whatsappMessagePrefix": "قائمة مهام الوظيفة"
   },
-  "dialog": { "close": "إغلاق" },
+  "dialog": {
+    "close": "إغلاق"
+  },
   "translate": {
     "translate": "ترجمة",
     "showOriginal": "عرض النص الأصلي",

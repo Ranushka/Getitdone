@@ -1,5 +1,7 @@
 {
-  "app": { "name": "GetItDone" },
+  "app": {
+    "name": "GetItDone"
+  },
   "common": {
     "loading": "Loading…",
     "jobNotFound": "Job not found.",
@@ -49,7 +51,9 @@
     "addChecklistItemPlaceholder": "Add checklist item…",
     "generatePdf": "Generate PDF report",
     "generatingPdf": "Generating…",
-    "jobCompleted": "Job completed"
+    "jobCompleted": "Job completed",
+    "smartAddItem": "Add item from photo",
+    "smartAdding": "Generating item…"
   },
   "technician": {
     "markDone": "Mark done",
@@ -68,7 +72,9 @@
     "whatsapp": "WhatsApp",
     "whatsappMessagePrefix": "Job checklist"
   },
-  "dialog": { "close": "Close" },
+  "dialog": {
+    "close": "Close"
+  },
   "translate": {
     "translate": "Translate",
     "showOriginal": "Show original",

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
-import { Camera, Check } from 'lucide-react'
+import { Check } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { trpc } from '@/lib/trpc'
 import { Button } from '@/components/ui/button'
@@ -79,23 +79,6 @@ export function TechnicianJobPage({ token }: { token: string }) {
       return
     }
     await invalidate()
-  }
-
-  async function handleAttach(itemId: number, files: FileList | null) {
-    if (!files || files.length === 0) return
-    try {
-      for (const file of Array.from(files)) {
-        const url = await uploadFile(file)
-        await fetch(`/api/t/${token}/items/${itemId}/attachments`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ url }),
-        })
-      }
-      await invalidate()
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : t('technician.uploadFailed'))
-    }
   }
 
   async function handleCameraCapture(itemId: number, photo: CapturedPhoto) {
@@ -212,21 +195,10 @@ export function TechnicianJobPage({ token }: { token: string }) {
                 </div>
               ) : null}
               <div className="flex items-center gap-2">
-                <label
-                  title={t('common.attachPhotoVideo')}
-                  className="inline-flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-lg border border-input bg-card text-muted-foreground hover:bg-secondary hover:text-foreground"
-                >
-                  <Camera className="size-5" />
-                  <input
-                    type="file"
-                    accept="image/*,video/*"
-                    capture="environment"
-                    multiple
-                    className="hidden"
-                    onChange={(e) => handleAttach(item.id, e.target.files)}
-                  />
-                </label>
-                <CameraCaptureButton onCapture={(photo) => handleCameraCapture(item.id, photo)} />
+                <CameraCaptureButton
+                  label={t('common.attachPhotoVideo')}
+                  onCapture={(photo) => handleCameraCapture(item.id, photo)}
+                />
               </div>
             </CardContent>
           </Card>

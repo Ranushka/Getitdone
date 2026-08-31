@@ -1,5 +1,7 @@
 {
-  "app": { "name": "GetItDone" },
+  "app": {
+    "name": "GetItDone"
+  },
   "common": {
     "loading": "लोड हो रहा है…",
     "jobNotFound": "कार्य नहीं मिला।",
@@ -49,7 +51,9 @@
     "addChecklistItemPlaceholder": "चेकलिस्ट में आइटम जोड़ें…",
     "generatePdf": "PDF रिपोर्ट बनाएं",
     "generatingPdf": "बन रही है…",
-    "jobCompleted": "कार्य पूर्ण हुआ"
+    "jobCompleted": "कार्य पूर्ण हुआ",
+    "smartAddItem": "फ़ोटो से आइटम जोड़ें",
+    "smartAdding": "आइटम बन रहा है…"
   },
   "technician": {
     "markDone": "पूर्ण के रूप में चिह्नित करें",
@@ -68,7 +72,9 @@
     "whatsapp": "व्हाट्सएप",
     "whatsappMessagePrefix": "कार्य चेकलिस्ट"
   },
-  "dialog": { "close": "बंद करें" },
+  "dialog": {
+    "close": "बंद करें"
+  },
   "translate": {
     "translate": "अनुवाद करें",
     "showOriginal": "मूल पाठ दिखाएं",
