@@ -212,9 +212,11 @@ export function TechnicianJobPage({ token }: { token: string }) {
                 </div>
               ) : null}
               <div className="flex items-center gap-2">
-                <label className="inline-flex w-fit cursor-pointer items-center gap-1 text-xs font-medium text-muted-foreground hover:text-foreground">
-                  <Camera className="size-3.5" />
-                  {t('common.attachPhotoVideo')}
+                <label
+                  title={t('common.attachPhotoVideo')}
+                  className="inline-flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-lg border border-input bg-card text-muted-foreground hover:bg-secondary hover:text-foreground"
+                >
+                  <Camera className="size-5" />
                   <input
                     type="file"
                     accept="image/*,video/*"

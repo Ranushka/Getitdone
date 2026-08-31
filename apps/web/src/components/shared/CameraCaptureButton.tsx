@@ -31,10 +31,11 @@ export function CameraCaptureButton({ onCapture }: { onCapture: (photo: Captured
     <>
       <button
         type="button"
+        aria-label="Capture photo"
         onClick={() => (isTouchDevice ? setCameraOpen(true) : fileInputRef.current?.click())}
-        className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-foreground"
+        className="inline-flex size-10 shrink-0 items-center justify-center rounded-lg border border-input bg-card text-muted-foreground hover:bg-secondary hover:text-foreground"
       >
-        <Wand2 className="size-3.5" />
+        <Wand2 className="size-5" />
       </button>
       <input
         ref={fileInputRef}

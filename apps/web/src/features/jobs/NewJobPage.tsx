@@ -123,9 +123,11 @@ export function NewJobPage() {
                   </Button>
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
-                  <label className="inline-flex cursor-pointer items-center gap-1 text-xs font-medium text-muted-foreground hover:text-foreground">
-                    <Paperclip className="size-3.5" />
-                    {t('common.attachPhotoVideo')}
+                  <label
+                    title={t('common.attachPhotoVideo')}
+                    className="inline-flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-lg border border-input bg-card text-muted-foreground hover:bg-secondary hover:text-foreground"
+                  >
+                    <Paperclip className="size-5" />
                     <input
                       type="file"
                       accept="image/*,video/*"
