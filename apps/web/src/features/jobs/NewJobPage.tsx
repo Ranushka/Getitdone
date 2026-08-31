@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import { Plus, Trash2, Paperclip } from 'lucide-react'
@@ -36,6 +36,15 @@ export function NewJobPage() {
   const [title, setTitle] = useState('')
   const [notes, setNotes] = useState('')
   const [items, setItems] = useState<ItemDraft[]>([{ title: '', attachmentUrls: [], uploading: false }])
+  const itemInputRefs = useRef<(HTMLInputElement | null)[]>([])
+  const focusIndexRef = useRef<number | null>(null)
+
+  useEffect(() => {
+    if (focusIndexRef.current !== null) {
+      itemInputRefs.current[focusIndexRef.current]?.focus()
+      focusIndexRef.current = null
+    }
+  }, [items.length])
 
   const createJob = trpc.jobs.create.useMutation({
     onSuccess: async (job) => {
@@ -78,6 +87,17 @@ export function NewJobPage() {
     }
   }
 
+  function handleItemKeyDown(e: React.KeyboardEvent<HTMLInputElement>, index: number) {
+    if (e.key !== 'Enter') return
+    e.preventDefault()
+    if (index === items.length - 1) {
+      focusIndexRef.current = index + 1
+      setItems((prev) => [...prev, { title: '', attachmentUrls: [], uploading: false }])
+    } else {
+      itemInputRefs.current[index + 1]?.focus()
+    }
+  }
+
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     const cleanItems = items.filter((it) => it.title.trim().length > 0)
@@ -108,9 +128,13 @@ export function NewJobPage() {
               <CardContent className="flex flex-col gap-2 p-3">
                 <div className="flex items-center gap-2">
                   <Input
+                    ref={(el) => {
+                      itemInputRefs.current[i] = el
+                    }}
                     placeholder={t('jobs.itemPlaceholder', { number: i + 1 })}
                     value={item.title}
                     onChange={(e) => updateItem(i, { title: e.target.value })}
+                    onKeyDown={(e) => handleItemKeyDown(e, i)}
                   />
                   <Button
                     type="button"

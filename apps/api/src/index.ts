@@ -6,6 +6,7 @@ import fastifyJwt from '@fastify/jwt'
 import fastifyMultipart from '@fastify/multipart'
 import fastifyStatic from '@fastify/static'
 import fastifyCors from '@fastify/cors'
+import fastifyRateLimit from '@fastify/rate-limit'
 import { fastifyTRPCPlugin } from '@trpc/server/adapters/fastify'
 import path from 'path'
 import { appRouter } from './routers/index.js'
@@ -55,7 +56,14 @@ await app.register(fastifyTRPCPlugin, {
 
 app.get('/health', async () => ({ status: 'ok' }))
 
-registerTechnicianRoutes(app)
+// Scoped rate limit — the technician share-token is a short, guessable-ish
+// code (see packages/db/src/schema/jobs.ts), so this route group throttles
+// per-IP lookups to make brute-forcing valid tokens impractical without
+// getting in the way of a real technician's normal usage.
+await app.register(async (scope) => {
+  await scope.register(fastifyRateLimit, { max: 60, timeWindow: '1 minute' })
+  registerTechnicianRoutes(scope)
+})
 registerUploadRoutes(app)
 registerGoogleAuthRoutes(app)
 

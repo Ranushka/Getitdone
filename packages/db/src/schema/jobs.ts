@@ -1,19 +1,27 @@
 import { pgTable, pgEnum, serial, varchar, text, integer, timestamp } from 'drizzle-orm/pg-core'
-import { nanoid } from 'nanoid'
+import { customAlphabet } from 'nanoid'
 import { users } from './users'
 
 export const jobStatusEnum = pgEnum('job_status', ['in_progress', 'tech_signed_off', 'completed'])
+
+// Short, spoken/typed-friendly share code — excludes characters that are
+// easy to mix up when read aloud or handwritten (I, L, O, 0, 1). 6 chars
+// from this 31-symbol alphabet is ~30 bits of entropy, far weaker than a
+// full nanoid, so the technician lookup route rate-limits guessing
+// (see apps/api/src/routes/technician.ts) to keep brute-forcing impractical.
+const SHARE_TOKEN_ALPHABET = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789'
+const generateShareToken = customAlphabet(SHARE_TOKEN_ALPHABET, 6)
 
 export const jobs = pgTable('jobs', {
   id: serial('id').primaryKey(),
   title: varchar('title', { length: 255 }).notNull(),
   notes: text('notes'),
-  // Unguessable token embedded in the technician's share link (/t/:token) — the
-  // sole access control for that flow, so it must stay random, not sequential.
+  // Sole access control for the technician's share link (/t/:token) — see
+  // the alphabet comment above for the entropy/rate-limit tradeoff.
   shareToken: varchar('share_token', { length: 24 })
     .notNull()
     .unique()
-    .$defaultFn(() => nanoid()),
+    .$defaultFn(() => generateShareToken()),
   status: jobStatusEnum('status').notNull().default('in_progress'),
   managerId: integer('manager_id')
     .notNull()
