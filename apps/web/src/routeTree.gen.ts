@@ -9,13 +9,19 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as LoginRouteImport } from './routes/login'
-import { Route as AuthIndexRouteImport } from './routes/_auth/index'
+import { Route as AuthDashboardRouteImport } from './routes/_auth/dashboard'
 import { Route as TTokenRouteImport } from './routes/t.$token'
 import { Route as AuthJobsJobIdRouteImport } from './routes/_auth/jobs.$jobId'
 import { Route as AuthJobsNewRouteImport } from './routes/_auth/jobs.new'
 
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/_auth',
   getParentRoute: () => rootRouteImport,
@@ -25,9 +31,9 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthIndexRoute = AuthIndexRouteImport.update({
-  id: '/',
-  path: '/',
+const AuthDashboardRoute = AuthDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
   getParentRoute: () => AuthRoute,
 } as any)
 const TTokenRoute = TTokenRouteImport.update({
@@ -47,44 +53,50 @@ const AuthJobsNewRoute = AuthJobsNewRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof AuthIndexRoute
+  '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/dashboard': typeof AuthDashboardRoute
   '/t/$token': typeof TTokenRoute
   '/jobs/$jobId': typeof AuthJobsJobIdRoute
   '/jobs/new': typeof AuthJobsNewRoute
 }
 export interface FileRoutesByTo {
+  '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/dashboard': typeof AuthDashboardRoute
   '/t/$token': typeof TTokenRoute
-  '/': typeof AuthIndexRoute
   '/jobs/$jobId': typeof AuthJobsJobIdRoute
   '/jobs/new': typeof AuthJobsNewRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
   '/_auth': typeof AuthRouteWithChildren
   '/login': typeof LoginRoute
+  '/_auth/dashboard': typeof AuthDashboardRoute
   '/t/$token': typeof TTokenRoute
-  '/_auth/': typeof AuthIndexRoute
   '/_auth/jobs/$jobId': typeof AuthJobsJobIdRoute
   '/_auth/jobs/new': typeof AuthJobsNewRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/t/$token' | '/jobs/$jobId' | '/jobs/new'
+  fullPaths:
+    '/' | '/login' | '/dashboard' | '/t/$token' | '/jobs/$jobId' | '/jobs/new'
   fileRoutesByTo: FileRoutesByTo
-  to: '/login' | '/t/$token' | '/' | '/jobs/$jobId' | '/jobs/new'
+  to: '/' | '/login' | '/dashboard' | '/t/$token' | '/jobs/$jobId' | '/jobs/new'
   id:
     | '__root__'
+    | '/'
     | '/_auth'
     | '/login'
+    | '/_auth/dashboard'
     | '/t/$token'
-    | '/_auth/'
     | '/_auth/jobs/$jobId'
     | '/_auth/jobs/new'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRouteWithChildren
   LoginRoute: typeof LoginRoute
   TTokenRoute: typeof TTokenRoute
@@ -92,6 +104,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_auth': {
       id: '/_auth'
       path: ''
@@ -106,11 +125,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_auth/': {
-      id: '/_auth/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof AuthIndexRouteImport
+    '/_auth/dashboard': {
+      id: '/_auth/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthDashboardRouteImport
       parentRoute: typeof AuthRoute
     }
     '/t/$token': {
@@ -138,13 +157,13 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthRouteChildren {
-  AuthIndexRoute: typeof AuthIndexRoute
+  AuthDashboardRoute: typeof AuthDashboardRoute
   AuthJobsJobIdRoute: typeof AuthJobsJobIdRoute
   AuthJobsNewRoute: typeof AuthJobsNewRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
-  AuthIndexRoute: AuthIndexRoute,
+  AuthDashboardRoute: AuthDashboardRoute,
   AuthJobsJobIdRoute: AuthJobsJobIdRoute,
   AuthJobsNewRoute: AuthJobsNewRoute,
 }
@@ -152,6 +171,7 @@ const AuthRouteChildren: AuthRouteChildren = {
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
   AuthRoute: AuthRouteWithChildren,
   LoginRoute: LoginRoute,
   TTokenRoute: TTokenRoute,

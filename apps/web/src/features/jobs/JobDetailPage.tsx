@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { ShareLinkBox } from '@/components/shared/ShareLinkBox'
 import { TranslatableText } from '@/components/shared/TranslatableText'
+import { TranslatableItem } from '@/components/shared/TranslatableItem'
 import { formatDateTime } from '@/lib/utils'
 
 function isVideoUrl(url: string) {
@@ -79,17 +80,17 @@ export function JobDetailPage({ jobId }: { jobId: number }) {
         <CardContent className="flex flex-col gap-3">
           {job.items.map((item) => (
             <div key={item.id} className="rounded-lg border border-border p-3">
-              <div className="flex items-center justify-between gap-2">
-                <span className="font-medium">
-                  <TranslatableText text={item.title} />
-                </span>
-                <span className="text-xs text-muted-foreground">{item.status}</span>
+              <div className="flex items-start justify-between gap-2">
+                <div className="flex-1">
+                  <TranslatableItem
+                    title={item.title}
+                    comment={item.comment}
+                    titleClassName="font-medium"
+                    commentClassName="mt-1 text-sm text-muted-foreground"
+                  />
+                </div>
+                <span className="shrink-0 text-xs text-muted-foreground">{item.status}</span>
               </div>
-              {item.comment ? (
-                <p className="mt-1 text-sm text-muted-foreground">
-                  <TranslatableText text={item.comment} />
-                </p>
-              ) : null}
               {item.attachments.length > 0 ? (
                 <div className="mt-2 flex flex-wrap gap-2">
                   {item.attachments.map((a) =>

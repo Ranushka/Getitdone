@@ -43,7 +43,7 @@ export function registerGoogleAuthRoutes(app: FastifyInstance) {
         maxAge: 60 * 60 * 24 * 30,
       })
 
-      return reply.redirect(webOrigin)
+      return reply.redirect(`${webOrigin}/dashboard`)
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Unknown error'
       req.log.error({ err: message }, 'Google OAuth callback failed')

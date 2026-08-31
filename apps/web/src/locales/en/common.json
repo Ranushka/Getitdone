@@ -79,5 +79,22 @@
     "translate": "Translate",
     "showOriginal": "Show original",
     "translating": "Translating…"
+  },
+  "home": {
+    "tagline": "Job checklists your technicians can actually finish",
+    "subtitle": "Create a checklist, share one link with the technician — no account needed on their side — and get a signed-off PDF report when the work is done.",
+    "getStarted": "Get started",
+    "signIn": "Sign in",
+    "featuresTitle": "Everything you need to run a job end to end",
+    "feature1Title": "Photo & video evidence",
+    "feature1Desc": "Attach a photo or video to every checklist item, straight from the camera.",
+    "feature2Title": "No login for technicians",
+    "feature2Desc": "Share one link — the technician works through the checklist with no account required.",
+    "feature3Title": "Manager + technician sign-off",
+    "feature3Desc": "Both sides sign off before a job is marked complete, with a PDF report generated automatically.",
+    "feature4Title": "Built for every language",
+    "feature4Desc": "Full interface translation in English, Arabic, Sinhala, Urdu, and Hindi — with proper right-to-left layout.",
+    "feature5Title": "AI-powered checklist items",
+    "feature5Desc": "Photograph what needs fixing and let AI turn it into a checklist item automatically."
   }
 }

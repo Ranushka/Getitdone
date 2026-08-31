@@ -21,7 +21,7 @@ export function LoginPage() {
   const login = trpc.auth.login.useMutation({
     onSuccess: async () => {
       await utils.auth.me.invalidate()
-      navigate({ to: '/' })
+      navigate({ to: '/dashboard' })
     },
     onError: (err) => toast.error(err.message),
   })
