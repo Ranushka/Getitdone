@@ -88,16 +88,16 @@ export default function TechChecklistClient({
   }
 
   return (
-    // paper-green-bg goes on the full-width outer wrapper, not the max-w-md
+    // app-bg goes on the full-width outer wrapper, not the max-w-md
     // inner column — otherwise anywhere the viewport is wider than 448px
     // (desktop, tablet, a browser's "request desktop site" mode) the green
     // background gets centered along with the content and raw <body>
     // background (near-black in dark mode) shows through on both sides.
-    <div className="paper-green-bg min-h-screen">
+    <div className="app-bg min-h-screen">
       <main className="mx-auto max-w-md p-4 flex flex-col gap-4">
         <div>
-          <h1 className="text-lg font-semibold text-[#23301f]">{job.title}</h1>
-          {job.notes && <p className="text-sm text-[#5b6b53] mt-1">{job.notes}</p>}
+          <h1 className="text-lg font-semibold text-gray-900">{job.title}</h1>
+          {job.notes && <p className="text-sm text-gray-500 mt-1">{job.notes}</p>}
         </div>
 
         <div className="w-full bg-black/10 rounded-full h-2">
@@ -108,7 +108,7 @@ export default function TechChecklistClient({
             }}
           />
         </div>
-        <p className="text-xs text-[#5b6b53] -mt-2">
+        <p className="text-xs text-gray-500 -mt-2">
           {doneCount}/{job.items.length} done
         </p>
 
@@ -130,11 +130,11 @@ export default function TechChecklistClient({
 
         {!techSignOff && (
           <div className="rounded-2xl border border-black/5 bg-white/85 shadow-sm p-4 flex flex-col gap-2 mt-2">
-            <span className="text-sm font-medium text-[#23301f]">
+            <span className="text-sm font-medium text-gray-900">
               {allDone ? "All done — sign off" : "Finish all items to sign off"}
             </span>
             <input
-              className="border border-black/15 rounded-lg px-3 py-2 text-sm bg-white text-[#23301f] placeholder:text-[#8a9682]"
+              className="border border-black/15 rounded-lg px-3 py-2 text-sm bg-white text-gray-900 placeholder:text-gray-400"
               placeholder="Your name"
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -144,7 +144,7 @@ export default function TechChecklistClient({
             <button
               onClick={handleSignOff}
               disabled={!allDone || signOffBusy}
-              className="rounded-lg bg-green-800 text-white px-3 py-2 text-sm disabled:opacity-50"
+              className="rounded-lg bg-black text-white px-3 py-2 text-sm disabled:opacity-50"
             >
               {signOffBusy ? "Submitting…" : "Confirm & sign off"}
             </button>
@@ -193,18 +193,18 @@ function ChecklistItemCard({
           className={`shrink-0 h-8 w-8 rounded-full flex items-center justify-center text-sm ${
             item.status === "DONE"
               ? "bg-green-100 text-green-800"
-              : "bg-black/5 text-[#5b6b53]"
+              : "bg-black/5 text-gray-500"
           }`}
         >
           {item.status === "DONE" ? "✓" : "•"}
         </span>
         <span className="min-w-0 flex-1 flex items-center justify-between gap-2">
-          <span className="text-sm font-medium text-[#23301f] truncate">{item.title}</span>
+          <span className="text-sm font-medium text-gray-900 truncate">{item.title}</span>
           <span
             className={`shrink-0 text-xs rounded-full px-2 py-0.5 ${
               item.status === "DONE"
                 ? "bg-green-100 text-green-800"
-                : "bg-black/5 text-[#5b6b53]"
+                : "bg-black/5 text-gray-500"
             }`}
           >
             {item.status === "DONE" ? "Done" : "Pending"}
@@ -256,7 +256,7 @@ function ChecklistItemCard({
           type="button"
           onClick={() => photoInputRef.current?.click()}
           disabled={disabled || uploading}
-          className="rounded-lg border border-black/15 bg-white text-[#23301f] px-3 py-2 text-sm disabled:opacity-50"
+          className="rounded-lg border border-black/15 bg-white text-gray-900 px-3 py-2 text-sm disabled:opacity-50"
         >
           {uploading ? "Uploading…" : "📷 Photo"}
         </button>
@@ -264,14 +264,14 @@ function ChecklistItemCard({
           type="button"
           onClick={() => videoInputRef.current?.click()}
           disabled={disabled || uploading}
-          className="rounded-lg border border-black/15 bg-white text-[#23301f] px-3 py-2 text-sm disabled:opacity-50"
+          className="rounded-lg border border-black/15 bg-white text-gray-900 px-3 py-2 text-sm disabled:opacity-50"
         >
           {uploading ? "Uploading…" : "🎥 Video"}
         </button>
       </div>
 
       <textarea
-        className="border border-black/15 rounded-lg px-3 py-2 text-sm bg-white text-[#23301f] placeholder:text-[#8a9682]"
+        className="border border-black/15 rounded-lg px-3 py-2 text-sm bg-white text-gray-900 placeholder:text-gray-400"
         placeholder="Add a comment"
         value={comment}
         disabled={disabled}
@@ -286,8 +286,8 @@ function ChecklistItemCard({
         disabled={disabled}
         className={`rounded-lg px-3 py-2 text-sm disabled:opacity-50 ${
           item.status === "DONE"
-            ? "border border-black/15 bg-white text-[#5b6b53]"
-            : "bg-green-800 text-white"
+            ? "border border-black/15 bg-white text-gray-500"
+            : "bg-black text-white"
         }`}
       >
         {item.status === "DONE" ? "Mark as not done" : "Mark done"}

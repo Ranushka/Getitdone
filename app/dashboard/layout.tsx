@@ -11,18 +11,18 @@ export default async function DashboardLayout({
   if (!session?.user) redirect("/login");
 
   return (
-    <div className="paper-green-bg min-h-screen">
+    <div className="app-bg min-h-screen">
       <header className="flex items-center justify-between bg-white/80 backdrop-blur border-b border-black/5 px-4 py-3">
-        <Link href="/dashboard" className="font-semibold text-[#23301f]">GetItDone</Link>
+        <Link href="/dashboard" className="font-semibold text-gray-900">GetItDone</Link>
         <div className="flex items-center gap-3 text-sm">
-          <span className="text-[#5b6b53]">{session.user.email}</span>
+          <span className="text-gray-500">{session.user.email}</span>
           <form
             action={async () => {
               "use server";
               await signOut({ redirectTo: "/login" });
             }}
           >
-            <button className="text-[#5b6b53] underline">Sign out</button>
+            <button className="text-gray-500 underline">Sign out</button>
           </form>
         </div>
       </header>

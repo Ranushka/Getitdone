@@ -18,8 +18,8 @@
    dark mode here doesn't produce a real dark UI, it just flips <body> to
    near-black while every page's text/border colors stay tuned for a light
    background, which is illegible whenever <body> shows through (scroll
-   bounce, a wider-than-content viewport, etc. — see the paper-green-bg
-   fix on the technician page for a case this actually caused). */
+   bounce, a wider-than-content viewport, etc. — see the app-bg fix on the
+   technician page for a case this actually caused). */
 
 body {
   background: var(--background);
@@ -37,16 +37,16 @@ select:focus {
   font-size: 16px;
 }
 
-/* Paper-green background for the technician checklist page. Deliberately
-   pins an explicit light background + grain texture instead of following
+/* App background: neutral off-white with a subtle paper-grain texture.
+   Deliberately pins an explicit light background instead of following
    prefers-color-scheme, so it reads the same on a phone in system dark mode
    as it does everywhere else — the plain black/white page was unreadable
-   with system dark mode on. */
-.paper-green-bg {
-  background-color: #eef2e6;
+   with system dark mode on. Was tinted sage-green; dropped the tint (kept
+   the grain) to match a plain neutral card-list reference. */
+.app-bg {
+  background-color: #f4f4f3;
   background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0 0 0 0 0 0.2 0 0 0 0 0 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
-    radial-gradient(circle at 15% 10%, rgba(255, 255, 255, 0.5), transparent 45%),
-    radial-gradient(circle at 85% 90%, rgba(45, 90, 45, 0.08), transparent 55%);
-  color: #23301f;
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+    radial-gradient(circle at 15% 10%, rgba(255, 255, 255, 0.6), transparent 45%);
+  color: #18181b;
 }
