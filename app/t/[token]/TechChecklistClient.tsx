@@ -88,69 +88,76 @@ export default function TechChecklistClient({
   }
 
   return (
-    <main className="paper-green-bg mx-auto max-w-md p-4 flex flex-col gap-4 min-h-screen">
-      <div>
-        <h1 className="text-lg font-semibold text-[#23301f]">{job.title}</h1>
-        {job.notes && <p className="text-sm text-[#5b6b53] mt-1">{job.notes}</p>}
-      </div>
-
-      <div className="w-full bg-black/10 rounded-full h-2">
-        <div
-          className="bg-green-700 h-2 rounded-full transition-all"
-          style={{
-            width: `${job.items.length ? (doneCount / job.items.length) * 100 : 0}%`,
-          }}
-        />
-      </div>
-      <p className="text-xs text-[#5b6b53] -mt-2">
-        {doneCount}/{job.items.length} done
-      </p>
-
-      <ul className="flex flex-col gap-3">
-        {job.items.map((item) => (
-          <ChecklistItemCard
-            key={item.id}
-            item={item}
-            disabled={!!techSignOff}
-            uploading={uploadingId === item.id}
-            onAddAttachment={(file) => addAttachment(item.id, file)}
-            onCommentBlur={(comment) => updateItem(item.id, { comment })}
-            onToggleDone={() =>
-              updateItem(item.id, { status: item.status === "DONE" ? "PENDING" : "DONE" })
-            }
-          />
-        ))}
-      </ul>
-
-      {!techSignOff && (
-        <div className="rounded-2xl border border-black/5 bg-white/85 shadow-sm p-4 flex flex-col gap-2 mt-2">
-          <span className="text-sm font-medium text-[#23301f]">
-            {allDone ? "All done — sign off" : "Finish all items to sign off"}
-          </span>
-          <input
-            className="border border-black/15 rounded-lg px-3 py-2 text-sm bg-white text-[#23301f] placeholder:text-[#8a9682]"
-            placeholder="Your name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            disabled={!allDone}
-          />
-          {signOffError && <p className="text-xs text-red-600">{signOffError}</p>}
-          <button
-            onClick={handleSignOff}
-            disabled={!allDone || signOffBusy}
-            className="rounded-lg bg-green-800 text-white px-3 py-2 text-sm disabled:opacity-50"
-          >
-            {signOffBusy ? "Submitting…" : "Confirm & sign off"}
-          </button>
+    // paper-green-bg goes on the full-width outer wrapper, not the max-w-md
+    // inner column — otherwise anywhere the viewport is wider than 448px
+    // (desktop, tablet, a browser's "request desktop site" mode) the green
+    // background gets centered along with the content and raw <body>
+    // background (near-black in dark mode) shows through on both sides.
+    <div className="paper-green-bg min-h-screen">
+      <main className="mx-auto max-w-md p-4 flex flex-col gap-4">
+        <div>
+          <h1 className="text-lg font-semibold text-[#23301f]">{job.title}</h1>
+          {job.notes && <p className="text-sm text-[#5b6b53] mt-1">{job.notes}</p>}
         </div>
-      )}
 
-      {techSignOff && (
-        <div className="rounded-2xl border border-black/5 bg-white/85 shadow-sm p-4 text-sm text-green-800">
-          Signed off by {techSignOff.name}. Thanks — the manager has been notified.
+        <div className="w-full bg-black/10 rounded-full h-2">
+          <div
+            className="bg-green-700 h-2 rounded-full transition-all"
+            style={{
+              width: `${job.items.length ? (doneCount / job.items.length) * 100 : 0}%`,
+            }}
+          />
         </div>
-      )}
-    </main>
+        <p className="text-xs text-[#5b6b53] -mt-2">
+          {doneCount}/{job.items.length} done
+        </p>
+
+        <ul className="flex flex-col gap-3">
+          {job.items.map((item) => (
+            <ChecklistItemCard
+              key={item.id}
+              item={item}
+              disabled={!!techSignOff}
+              uploading={uploadingId === item.id}
+              onAddAttachment={(file) => addAttachment(item.id, file)}
+              onCommentBlur={(comment) => updateItem(item.id, { comment })}
+              onToggleDone={() =>
+                updateItem(item.id, { status: item.status === "DONE" ? "PENDING" : "DONE" })
+              }
+            />
+          ))}
+        </ul>
+
+        {!techSignOff && (
+          <div className="rounded-2xl border border-black/5 bg-white/85 shadow-sm p-4 flex flex-col gap-2 mt-2">
+            <span className="text-sm font-medium text-[#23301f]">
+              {allDone ? "All done — sign off" : "Finish all items to sign off"}
+            </span>
+            <input
+              className="border border-black/15 rounded-lg px-3 py-2 text-sm bg-white text-[#23301f] placeholder:text-[#8a9682]"
+              placeholder="Your name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              disabled={!allDone}
+            />
+            {signOffError && <p className="text-xs text-red-600">{signOffError}</p>}
+            <button
+              onClick={handleSignOff}
+              disabled={!allDone || signOffBusy}
+              className="rounded-lg bg-green-800 text-white px-3 py-2 text-sm disabled:opacity-50"
+            >
+              {signOffBusy ? "Submitting…" : "Confirm & sign off"}
+            </button>
+          </div>
+        )}
+
+        {techSignOff && (
+          <div className="rounded-2xl border border-black/5 bg-white/85 shadow-sm p-4 text-sm text-green-800">
+            Signed off by {techSignOff.name}. Thanks — the manager has been notified.
+          </div>
+        )}
+      </main>
+    </div>
   );
 }
 

@@ -12,12 +12,14 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/* No prefers-color-scheme dark override: none of this app's pages (login,
+   dashboard, technician checklist) implement an actual dark theme — they all
+   use hardcoded light-background-oriented Tailwind grays. Following system
+   dark mode here doesn't produce a real dark UI, it just flips <body> to
+   near-black while every page's text/border colors stay tuned for a light
+   background, which is illegible whenever <body> shows through (scroll
+   bounce, a wider-than-content viewport, etc. — see the paper-green-bg
+   fix on the technician page for a case this actually caused). */
 
 body {
   background: var(--background);
