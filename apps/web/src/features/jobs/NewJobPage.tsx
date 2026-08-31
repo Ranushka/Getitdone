@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
 import { toast } from 'sonner'
-import { Plus, Trash2, Paperclip } from 'lucide-react'
+import { Plus, Trash2, Wand2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { trpc } from '@/lib/trpc'
 import { Button } from '@/components/ui/button'
@@ -33,9 +33,11 @@ export function NewJobPage() {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const utils = trpc.useUtils()
+  const suggestItem = trpc.photos.suggestItem.useMutation()
   const [title, setTitle] = useState('')
   const [notes, setNotes] = useState('')
   const [items, setItems] = useState<ItemDraft[]>([{ title: '', attachmentUrls: [], uploading: false }])
+  const [smartAdding, setSmartAdding] = useState(false)
   const itemInputRefs = useRef<(HTMLInputElement | null)[]>([])
   const focusIndexRef = useRef<number | null>(null)
 
@@ -58,23 +60,7 @@ export function NewJobPage() {
     setItems((prev) => prev.map((it, i) => (i === index ? { ...it, ...patch } : it)))
   }
 
-  async function handleAttach(index: number, files: FileList | null) {
-    if (!files || files.length === 0) return
-    updateItem(index, { uploading: true })
-    try {
-      const urls = await Promise.all(Array.from(files).map(uploadFile))
-      setItems((prev) =>
-        prev.map((it, i) =>
-          i === index ? { ...it, attachmentUrls: [...it.attachmentUrls, ...urls], uploading: false } : it,
-        ),
-      )
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'Upload failed')
-      updateItem(index, { uploading: false })
-    }
-  }
-
-  async function handleCameraCapture(index: number, photo: CapturedPhoto) {
+  async function handleItemCapture(index: number, photo: CapturedPhoto) {
     updateItem(index, { uploading: true })
     try {
       const url = await uploadFile(photo.file)
@@ -84,6 +70,25 @@ export function NewJobPage() {
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'Upload failed')
       updateItem(index, { uploading: false })
+    }
+  }
+
+  // "Smart add" — take a photo of whatever needs work, and let the vision
+  // model turn it directly into a new checklist item instead of the manager
+  // having to type one out.
+  async function handleSmartAddCapture(photo: CapturedPhoto) {
+    setSmartAdding(true)
+    try {
+      const [url, { title: suggestedTitle }] = await Promise.all([
+        uploadFile(photo.file),
+        suggestItem.mutateAsync({ imageDataUrl: photo.dataUrl }),
+      ])
+      focusIndexRef.current = items.length
+      setItems((prev) => [...prev, { title: suggestedTitle, attachmentUrls: [url], uploading: false }])
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Could not generate an item from that photo')
+    } finally {
+      setSmartAdding(false)
     }
   }
 
@@ -147,20 +152,10 @@ export function NewJobPage() {
                   </Button>
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
-                  <label
-                    title={t('common.attachPhotoVideo')}
-                    className="inline-flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-lg border border-input bg-card text-muted-foreground hover:bg-secondary hover:text-foreground"
-                  >
-                    <Paperclip className="size-5" />
-                    <input
-                      type="file"
-                      accept="image/*,video/*"
-                      multiple
-                      className="hidden"
-                      onChange={(e) => handleAttach(i, e.target.files)}
-                    />
-                  </label>
-                  <CameraCaptureButton onCapture={(photo) => handleCameraCapture(i, photo)} />
+                  <CameraCaptureButton
+                    label={t('common.attachPhotoVideo')}
+                    onCapture={(photo) => handleItemCapture(i, photo)}
+                  />
                   {item.uploading ? (
                     <span className="text-xs text-muted-foreground">{t('common.uploading')}</span>
                   ) : null}
@@ -173,14 +168,24 @@ export function NewJobPage() {
               </CardContent>
             </Card>
           ))}
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={() => setItems((prev) => [...prev, { title: '', attachmentUrls: [], uploading: false }])}
-          >
-            <Plus /> {t('jobs.addItem')}
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => setItems((prev) => [...prev, { title: '', attachmentUrls: [], uploading: false }])}
+            >
+              <Plus /> {t('jobs.addItem')}
+            </Button>
+            <CameraCaptureButton
+              icon={Wand2}
+              label={t('jobs.smartAddItem')}
+              onCapture={handleSmartAddCapture}
+            />
+            {smartAdding ? (
+              <span className="text-xs text-muted-foreground">{t('jobs.smartAdding')}</span>
+            ) : null}
+          </div>
         </div>
 
         <Button type="submit" disabled={createJob.isPending || !title.trim()}>

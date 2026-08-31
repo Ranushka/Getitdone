@@ -1,5 +1,7 @@
 {
-  "app": { "name": "GetItDone" },
+  "app": {
+    "name": "GetItDone"
+  },
   "common": {
     "loading": "පූරණය වෙමින්…",
     "jobNotFound": "රැකියාව හමු නොවීය.",
@@ -49,7 +51,9 @@
     "addChecklistItemPlaceholder": "කාර්ය ලැයිස්තු අයිතමයක් එක් කරන්න…",
     "generatePdf": "PDF වාර්තාව සාදන්න",
     "generatingPdf": "සාදමින්…",
-    "jobCompleted": "රැකියාව සම්පූර්ණයි"
+    "jobCompleted": "රැකියාව සම්පූර්ණයි",
+    "smartAddItem": "ඡායාරූපයෙන් අයිතමයක් එකතු කරන්න",
+    "smartAdding": "අයිතමය සාදමින්…"
   },
   "technician": {
     "markDone": "සම්පූර්ණ ලෙස සලකුණු කරන්න",
@@ -68,7 +72,9 @@
     "whatsapp": "WhatsApp",
     "whatsappMessagePrefix": "රැකියා කාර්ය ලැයිස්තුව"
   },
-  "dialog": { "close": "වසන්න" },
+  "dialog": {
+    "close": "වසන්න"
+  },
   "translate": {
     "translate": "පරිවර්තනය කරන්න",
     "showOriginal": "මුල් පෙළ පෙන්වන්න",
