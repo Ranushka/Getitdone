@@ -1,0 +1,77 @@
+{
+  "app": { "name": "GetItDone" },
+  "common": {
+    "loading": "لوڈ ہو رہا ہے…",
+    "jobNotFound": "کام نہیں ملا۔",
+    "signOff": "دستخط کریں",
+    "yourName": "آپ کا نام",
+    "technician": "ٹیکنیشن",
+    "manager": "مینیجر",
+    "pending": "زیر التوا",
+    "attachPhotoVideo": "تصویر/ویڈیو منسلک کریں",
+    "uploading": "اپ لوڈ ہو رہا ہے…",
+    "attachedCount": "{{count}} منسلک",
+    "checklist": "چیک لسٹ",
+    "signOffSection": "دستخط",
+    "progress": "{{done}}/{{total}} مکمل"
+  },
+  "status": {
+    "in_progress": "جاری ہے",
+    "tech_signed_off": "ٹیکنیشن نے دستخط کر دیے",
+    "completed": "مکمل"
+  },
+  "auth": {
+    "signInSubtitle": "اپنے اکاؤنٹ میں سائن ان کریں",
+    "registerSubtitle": "مینیجر اکاؤنٹ بنائیں",
+    "email": "ای میل",
+    "password": "پاس ورڈ",
+    "confirmPassword": "پاس ورڈ کی تصدیق کریں",
+    "signIn": "سائن ان کریں",
+    "createAccount": "اکاؤنٹ بنائیں",
+    "continueWithGoogle": "Google کے ساتھ جاری رکھیں",
+    "toRegister": "اکاؤنٹ نہیں ہے؟ رجسٹر کریں",
+    "toSignIn": "پہلے سے اکاؤنٹ ہے؟ سائن ان کریں",
+    "accountCreated": "اکاؤنٹ بن گیا — نیچے سائن ان کریں",
+    "signOut": "سائن آؤٹ"
+  },
+  "jobs": {
+    "title": "کام",
+    "newJob": "نیا کام",
+    "searchPlaceholder": "کام تلاش کریں…",
+    "noJobsYet": "ابھی تک کوئی کام نہیں۔",
+    "newJobHeading": "نیا کام",
+    "titleLabel": "عنوان",
+    "notesLabel": "نوٹس",
+    "checklistItemsLabel": "چیک لسٹ آئٹمز",
+    "itemPlaceholder": "آئٹم {{number}}",
+    "addItem": "آئٹم شامل کریں",
+    "createJob": "کام بنائیں",
+    "addChecklistItemPlaceholder": "چیک لسٹ میں آئٹم شامل کریں…",
+    "generatePdf": "PDF رپورٹ بنائیں",
+    "generatingPdf": "بن رہی ہے…",
+    "jobCompleted": "کام مکمل ہو گیا"
+  },
+  "technician": {
+    "markDone": "مکمل نشان زد کریں",
+    "done": "مکمل",
+    "commentPlaceholder": "تبصرہ…",
+    "signedOffThanks": "دستخط ہو گئے — شکریہ!",
+    "markAllDoneNotice": "دستخط کرنے سے پہلے تمام آئٹمز مکمل کریں۔",
+    "signedOffToast": "دستخط ہو گئے",
+    "updateItemFailed": "آئٹم اپ ڈیٹ کرنے میں ناکامی",
+    "uploadFailed": "اپ لوڈ ناکام ہو گیا",
+    "signOffFailed": "دستخط ناکام ہو گئے"
+  },
+  "share": {
+    "copy": "کاپی کریں",
+    "copied": "کاپی ہو گیا",
+    "whatsapp": "واٹس ایپ",
+    "whatsappMessagePrefix": "کام کی چیک لسٹ"
+  },
+  "dialog": { "close": "بند کریں" },
+  "translate": {
+    "translate": "ترجمہ کریں",
+    "showOriginal": "اصل متن دکھائیں",
+    "translating": "ترجمہ ہو رہا ہے…"
+  }
+}

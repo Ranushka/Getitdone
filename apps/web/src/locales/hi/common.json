@@ -1,0 +1,77 @@
+{
+  "app": { "name": "GetItDone" },
+  "common": {
+    "loading": "लोड हो रहा है…",
+    "jobNotFound": "कार्य नहीं मिला।",
+    "signOff": "हस्ताक्षर करें",
+    "yourName": "आपका नाम",
+    "technician": "तकनीशियन",
+    "manager": "प्रबंधक",
+    "pending": "लंबित",
+    "attachPhotoVideo": "फ़ोटो/वीडियो संलग्न करें",
+    "uploading": "अपलोड हो रहा है…",
+    "attachedCount": "{{count}} संलग्न",
+    "checklist": "चेकलिस्ट",
+    "signOffSection": "हस्ताक्षर",
+    "progress": "{{done}}/{{total}} पूर्ण"
+  },
+  "status": {
+    "in_progress": "प्रगति पर है",
+    "tech_signed_off": "तकनीशियन ने हस्ताक्षर किए",
+    "completed": "पूर्ण"
+  },
+  "auth": {
+    "signInSubtitle": "अपने खाते में साइन इन करें",
+    "registerSubtitle": "प्रबंधक खाता बनाएं",
+    "email": "ईमेल",
+    "password": "पासवर्ड",
+    "confirmPassword": "पासवर्ड की पुष्टि करें",
+    "signIn": "साइन इन करें",
+    "createAccount": "खाता बनाएं",
+    "continueWithGoogle": "Google से जारी रखें",
+    "toRegister": "खाता नहीं है? रजिस्टर करें",
+    "toSignIn": "पहले से खाता है? साइन इन करें",
+    "accountCreated": "खाता बन गया — नीचे साइन इन करें",
+    "signOut": "साइन आउट"
+  },
+  "jobs": {
+    "title": "कार्य",
+    "newJob": "नया कार्य",
+    "searchPlaceholder": "कार्य खोजें…",
+    "noJobsYet": "अभी तक कोई कार्य नहीं है।",
+    "newJobHeading": "नया कार्य",
+    "titleLabel": "शीर्षक",
+    "notesLabel": "टिप्पणियाँ",
+    "checklistItemsLabel": "चेकलिस्ट आइटम",
+    "itemPlaceholder": "आइटम {{number}}",
+    "addItem": "आइटम जोड़ें",
+    "createJob": "कार्य बनाएं",
+    "addChecklistItemPlaceholder": "चेकलिस्ट में आइटम जोड़ें…",
+    "generatePdf": "PDF रिपोर्ट बनाएं",
+    "generatingPdf": "बन रही है…",
+    "jobCompleted": "कार्य पूर्ण हुआ"
+  },
+  "technician": {
+    "markDone": "पूर्ण के रूप में चिह्नित करें",
+    "done": "पूर्ण",
+    "commentPlaceholder": "टिप्पणी…",
+    "signedOffThanks": "हस्ताक्षर हो गए — धन्यवाद!",
+    "markAllDoneNotice": "हस्ताक्षर करने से पहले सभी आइटम पूर्ण करें।",
+    "signedOffToast": "हस्ताक्षर हो गए",
+    "updateItemFailed": "आइटम अपडेट करने में विफल",
+    "uploadFailed": "अपलोड विफल हुआ",
+    "signOffFailed": "हस्ताक्षर विफल हुआ"
+  },
+  "share": {
+    "copy": "कॉपी करें",
+    "copied": "कॉपी हो गया",
+    "whatsapp": "व्हाट्सएप",
+    "whatsappMessagePrefix": "कार्य चेकलिस्ट"
+  },
+  "dialog": { "close": "बंद करें" },
+  "translate": {
+    "translate": "अनुवाद करें",
+    "showOriginal": "मूल पाठ दिखाएं",
+    "translating": "अनुवाद हो रहा है…"
+  }
+}
