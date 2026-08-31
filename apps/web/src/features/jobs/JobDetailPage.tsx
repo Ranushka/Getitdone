@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { ShareLinkBox } from '@/components/shared/ShareLinkBox'
 import { TranslatableText } from '@/components/shared/TranslatableText'
 import { TranslatableItem } from '@/components/shared/TranslatableItem'
-import { formatDateTime } from '@/lib/utils'
+import { formatDateTime, formatAED } from '@/lib/utils'
 
 function isVideoUrl(url: string) {
   return /\.(mp4|mov|webm)$/i.test(url)
@@ -49,6 +49,26 @@ export function JobDetailPage({ jobId }: { jobId: number }) {
     onError: (err) => toast.error(err.message),
   })
 
+  const updateDetails = trpc.jobs.updateDetails.useMutation({
+    onSuccess: async () => {
+      await utils.jobs.get.invalidate({ id: jobId })
+      toast.success(t('jobs.detailsSaved'))
+    },
+    onError: (err) => toast.error(err.message),
+  })
+
+  function handleSaveDetails(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    const formData = new FormData(e.currentTarget)
+    const priceRaw = String(formData.get('price') ?? '').trim()
+    const phoneRaw = String(formData.get('technicianPhone') ?? '').trim()
+    updateDetails.mutate({
+      id: jobId,
+      price: priceRaw ? Number(priceRaw) : null,
+      technicianPhone: phoneRaw || null,
+    })
+  }
+
   if (isLoading) return <p className="p-4 text-sm text-muted-foreground">{t('common.loading')}</p>
   if (!job) return <p className="p-4 text-sm text-muted-foreground">{t('common.jobNotFound')}</p>
 
@@ -71,7 +91,41 @@ export function JobDetailPage({ jobId }: { jobId: number }) {
         </p>
       ) : null}
 
-      <ShareLinkBox shareToken={job.shareToken} />
+      <ShareLinkBox shareToken={job.shareToken} technicianPhone={job.technicianPhone} />
+
+      <Card>
+        <CardHeader>
+          <h2 className="text-sm font-semibold">{t('jobs.detailsHeading')}</h2>
+        </CardHeader>
+        <CardContent>
+          <form key={`${job.price ?? ''}-${job.technicianPhone ?? ''}`} onSubmit={handleSaveDetails} className="flex flex-col gap-3">
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-muted-foreground">{t('jobs.totalLabel')}</span>
+              <span className="font-semibold">{job.price ? formatAED(job.price) : t('jobs.noPriceSet')}</span>
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              <Input
+                name="price"
+                type="number"
+                min="0"
+                step="0.01"
+                inputMode="decimal"
+                placeholder={t('jobs.priceLabel')}
+                defaultValue={job.price ?? ''}
+              />
+              <Input
+                name="technicianPhone"
+                type="tel"
+                placeholder={t('jobs.technicianPhonePlaceholder')}
+                defaultValue={job.technicianPhone ?? ''}
+              />
+            </div>
+            <Button type="submit" variant="outline" size="sm" disabled={updateDetails.isPending} className="self-start">
+              {t('jobs.saveDetails')}
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
 
       <Card>
         <CardHeader>

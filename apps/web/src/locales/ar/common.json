@@ -53,7 +53,16 @@
     "generatingPdf": "جارٍ الإنشاء…",
     "jobCompleted": "تم إنجاز المهمة",
     "smartAddItem": "إضافة عنصر من صورة",
-    "smartAdding": "جارٍ إنشاء العنصر…"
+    "smartAdding": "جارٍ إنشاء العنصر…",
+    "priceLabel": "السعر (درهم)",
+    "technicianPhoneLabel": "رقم هاتف الفني",
+    "technicianPhonePlaceholder": "+971501234567",
+    "totalLabel": "الإجمالي",
+    "saveDetails": "حفظ",
+    "detailsSaved": "تم تحديث تفاصيل المهمة",
+    "noPriceSet": "لم يتم تحديد سعر",
+    "noPhoneSet": "لم يتم تحديد رقم هاتف",
+    "detailsHeading": "تفاصيل المهمة"
   },
   "technician": {
     "markDone": "وضع علامة \"تم\"",

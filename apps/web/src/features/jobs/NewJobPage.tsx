@@ -36,6 +36,8 @@ export function NewJobPage() {
   const suggestItem = trpc.photos.suggestItem.useMutation()
   const [title, setTitle] = useState('')
   const [notes, setNotes] = useState('')
+  const [price, setPrice] = useState('')
+  const [technicianPhone, setTechnicianPhone] = useState('')
   const [items, setItems] = useState<ItemDraft[]>([{ title: '', attachmentUrls: [], uploading: false }])
   const [smartAdding, setSmartAdding] = useState(false)
   const itemInputRefs = useRef<(HTMLInputElement | null)[]>([])
@@ -109,6 +111,8 @@ export function NewJobPage() {
     createJob.mutate({
       title,
       notes: notes || undefined,
+      price: price.trim() ? Number(price) : undefined,
+      technicianPhone: technicianPhone.trim() || undefined,
       items: cleanItems.map((it) => ({ title: it.title, attachmentUrls: it.attachmentUrls })),
     })
   }
@@ -124,6 +128,30 @@ export function NewJobPage() {
         <div className="flex flex-col gap-1.5">
           <Label htmlFor="notes">{t('jobs.notesLabel')}</Label>
           <Textarea id="notes" value={notes} onChange={(e) => setNotes(e.target.value)} />
+        </div>
+        <div className="grid grid-cols-2 gap-3">
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="price">{t('jobs.priceLabel')}</Label>
+            <Input
+              id="price"
+              type="number"
+              min="0"
+              step="0.01"
+              inputMode="decimal"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+            />
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="technicianPhone">{t('jobs.technicianPhoneLabel')}</Label>
+            <Input
+              id="technicianPhone"
+              type="tel"
+              placeholder={t('jobs.technicianPhonePlaceholder')}
+              value={technicianPhone}
+              onChange={(e) => setTechnicianPhone(e.target.value)}
+            />
+          </div>
         </div>
 
         <div className="flex flex-col gap-2">

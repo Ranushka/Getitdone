@@ -71,6 +71,7 @@ export async function writeJobPdf(jobId: number): Promise<{ pdfUrl: string }> {
     title: job.title,
     notes: job.notes,
     status: job.status,
+    price: job.price,
     items: pdfItems,
     signOffs: signOffRows.map((s) => ({ role: s.role, name: s.name, signedAt: s.signedAt })),
     generatedAt: new Date(),

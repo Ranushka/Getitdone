@@ -19,9 +19,17 @@ export interface JobPdfData {
   title: string
   notes: string | null
   status: string
+  price: string | null
   items: JobPdfItem[]
   signOffs: JobPdfSignOff[]
   generatedAt: Date
+}
+
+function formatAED(price: string | null): string | null {
+  if (!price) return null
+  const num = parseFloat(price)
+  if (Number.isNaN(num)) return null
+  return `AED ${num.toFixed(2)}`
 }
 
 const styles = StyleSheet.create({
@@ -46,7 +54,10 @@ export function JobPdf({ data }: { data: JobPdfData }) {
     <Document>
       <Page size="A4" style={styles.page}>
         <Text style={styles.h1}>{data.title}</Text>
-        <Text style={styles.meta}>Status: {data.status}</Text>
+        <Text style={styles.meta}>
+          Status: {data.status}
+          {formatAED(data.price) ? `   •   Total: ${formatAED(data.price)}` : ''}
+        </Text>
         {data.notes ? (
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Notes</Text>

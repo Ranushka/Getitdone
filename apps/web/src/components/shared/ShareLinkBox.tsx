@@ -3,7 +3,13 @@ import { Copy, Check } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Button } from '@/components/ui/button'
 
-export function ShareLinkBox({ shareToken }: { shareToken: string }) {
+export function ShareLinkBox({
+  shareToken,
+  technicianPhone,
+}: {
+  shareToken: string
+  technicianPhone?: string | null
+}) {
   const { t } = useTranslation()
   const [copied, setCopied] = useState(false)
   const url = `${window.location.origin}/t/${shareToken}`
@@ -14,7 +20,11 @@ export function ShareLinkBox({ shareToken }: { shareToken: string }) {
     setTimeout(() => setCopied(false), 2000)
   }
 
-  const whatsappHref = `https://wa.me/?text=${encodeURIComponent(`${t('share.whatsappMessagePrefix')}: ${url}`)}`
+  // If a technician phone is on file, open a chat with them directly
+  // instead of WhatsApp's blank "pick a contact" compose screen — strip
+  // everything but digits since wa.me wants a bare country-code+number.
+  const digitsOnly = technicianPhone?.replace(/[^0-9]/g, '')
+  const whatsappHref = `https://wa.me/${digitsOnly ?? ''}?text=${encodeURIComponent(`${t('share.whatsappMessagePrefix')}: ${url}`)}`
 
   return (
     <div className="flex flex-col gap-2 rounded-lg border border-border bg-secondary/50 p-3 sm:flex-row sm:items-center">
