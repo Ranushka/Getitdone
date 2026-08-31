@@ -100,7 +100,7 @@ export default function NewJobPage() {
         <button
           type="button"
           onClick={addItem}
-          className="text-sm text-blue-600 self-start"
+          className="text-sm text-blue-600 self-end"
         >
           + Add item
         </button>
@@ -204,12 +204,12 @@ function ItemDraftRow({
         onChange={handleFile}
         className="hidden"
       />
-      <div className="flex gap-2">
+      <div className="flex gap-2 justify-end">
         <button
           type="button"
           onClick={() => photoInputRef.current?.click()}
           disabled={uploading}
-          className="flex-1 rounded-lg border px-2 py-1.5 text-xs disabled:opacity-50"
+          className="rounded-lg border px-2 py-1.5 text-xs disabled:opacity-50"
         >
           {uploading ? "Uploading…" : "📷 Photo"}
         </button>
@@ -217,7 +217,7 @@ function ItemDraftRow({
           type="button"
           onClick={() => videoInputRef.current?.click()}
           disabled={uploading}
-          className="flex-1 rounded-lg border px-2 py-1.5 text-xs disabled:opacity-50"
+          className="rounded-lg border px-2 py-1.5 text-xs disabled:opacity-50"
         >
           {uploading ? "Uploading…" : "🎥 Video"}
         </button>

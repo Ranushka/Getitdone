@@ -88,21 +88,21 @@ export default function TechChecklistClient({
   }
 
   return (
-    <main className="mx-auto max-w-md p-4 flex flex-col gap-4 min-h-screen">
+    <main className="paper-green-bg mx-auto max-w-md p-4 flex flex-col gap-4 min-h-screen">
       <div>
-        <h1 className="text-lg font-semibold">{job.title}</h1>
-        {job.notes && <p className="text-sm text-gray-500 mt-1">{job.notes}</p>}
+        <h1 className="text-lg font-semibold text-[#23301f]">{job.title}</h1>
+        {job.notes && <p className="text-sm text-[#5b6b53] mt-1">{job.notes}</p>}
       </div>
 
-      <div className="w-full bg-gray-100 rounded-full h-2">
+      <div className="w-full bg-black/10 rounded-full h-2">
         <div
-          className="bg-green-600 h-2 rounded-full transition-all"
+          className="bg-green-700 h-2 rounded-full transition-all"
           style={{
             width: `${job.items.length ? (doneCount / job.items.length) * 100 : 0}%`,
           }}
         />
       </div>
-      <p className="text-xs text-gray-500 -mt-2">
+      <p className="text-xs text-[#5b6b53] -mt-2">
         {doneCount}/{job.items.length} done
       </p>
 
@@ -123,12 +123,12 @@ export default function TechChecklistClient({
       </ul>
 
       {!techSignOff && (
-        <div className="rounded-lg border p-4 flex flex-col gap-2 mt-2">
-          <span className="text-sm font-medium">
+        <div className="rounded-2xl border border-black/5 bg-white/85 shadow-sm p-4 flex flex-col gap-2 mt-2">
+          <span className="text-sm font-medium text-[#23301f]">
             {allDone ? "All done — sign off" : "Finish all items to sign off"}
           </span>
           <input
-            className="border rounded-lg px-3 py-2 text-sm"
+            className="border border-black/15 rounded-lg px-3 py-2 text-sm bg-white text-[#23301f] placeholder:text-[#8a9682]"
             placeholder="Your name"
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -138,7 +138,7 @@ export default function TechChecklistClient({
           <button
             onClick={handleSignOff}
             disabled={!allDone || signOffBusy}
-            className="rounded-lg bg-black text-white px-3 py-2 text-sm disabled:opacity-50"
+            className="rounded-lg bg-green-800 text-white px-3 py-2 text-sm disabled:opacity-50"
           >
             {signOffBusy ? "Submitting…" : "Confirm & sign off"}
           </button>
@@ -146,7 +146,7 @@ export default function TechChecklistClient({
       )}
 
       {techSignOff && (
-        <div className="rounded-lg border p-4 text-sm text-green-700">
+        <div className="rounded-2xl border border-black/5 bg-white/85 shadow-sm p-4 text-sm text-green-800">
           Signed off by {techSignOff.name}. Thanks — the manager has been notified.
         </div>
       )}
@@ -180,17 +180,28 @@ function ChecklistItemCard({
   }
 
   return (
-    <li className="rounded-lg border p-3 flex flex-col gap-2">
-      <div className="flex items-center justify-between">
-        <span className="text-sm font-medium">{item.title}</span>
+    <li className="rounded-2xl border border-black/5 bg-white/85 shadow-sm p-3 flex flex-col gap-2">
+      <div className="flex items-center gap-3">
         <span
-          className={`text-xs rounded-full px-2 py-0.5 ${
+          className={`shrink-0 h-8 w-8 rounded-full flex items-center justify-center text-sm ${
             item.status === "DONE"
-              ? "bg-green-100 text-green-700"
-              : "bg-gray-100 text-gray-500"
+              ? "bg-green-100 text-green-800"
+              : "bg-black/5 text-[#5b6b53]"
           }`}
         >
-          {item.status === "DONE" ? "Done" : "Pending"}
+          {item.status === "DONE" ? "✓" : "•"}
+        </span>
+        <span className="min-w-0 flex-1 flex items-center justify-between gap-2">
+          <span className="text-sm font-medium text-[#23301f] truncate">{item.title}</span>
+          <span
+            className={`shrink-0 text-xs rounded-full px-2 py-0.5 ${
+              item.status === "DONE"
+                ? "bg-green-100 text-green-800"
+                : "bg-black/5 text-[#5b6b53]"
+            }`}
+          >
+            {item.status === "DONE" ? "Done" : "Pending"}
+          </span>
         </span>
       </div>
 
@@ -233,12 +244,12 @@ function ChecklistItemCard({
         onChange={handleFile}
         className="hidden"
       />
-      <div className="flex gap-2">
+      <div className="flex gap-2 justify-end">
         <button
           type="button"
           onClick={() => photoInputRef.current?.click()}
           disabled={disabled || uploading}
-          className="flex-1 rounded-lg border px-3 py-2 text-sm disabled:opacity-50"
+          className="rounded-lg border border-black/15 bg-white text-[#23301f] px-3 py-2 text-sm disabled:opacity-50"
         >
           {uploading ? "Uploading…" : "📷 Photo"}
         </button>
@@ -246,14 +257,14 @@ function ChecklistItemCard({
           type="button"
           onClick={() => videoInputRef.current?.click()}
           disabled={disabled || uploading}
-          className="flex-1 rounded-lg border px-3 py-2 text-sm disabled:opacity-50"
+          className="rounded-lg border border-black/15 bg-white text-[#23301f] px-3 py-2 text-sm disabled:opacity-50"
         >
           {uploading ? "Uploading…" : "🎥 Video"}
         </button>
       </div>
 
       <textarea
-        className="border rounded-lg px-3 py-2 text-sm"
+        className="border border-black/15 rounded-lg px-3 py-2 text-sm bg-white text-[#23301f] placeholder:text-[#8a9682]"
         placeholder="Add a comment"
         value={comment}
         disabled={disabled}
@@ -268,8 +279,8 @@ function ChecklistItemCard({
         disabled={disabled}
         className={`rounded-lg px-3 py-2 text-sm disabled:opacity-50 ${
           item.status === "DONE"
-            ? "border text-gray-600"
-            : "bg-black text-white"
+            ? "border border-black/15 bg-white text-[#5b6b53]"
+            : "bg-green-800 text-white"
         }`}
       >
         {item.status === "DONE" ? "Mark as not done" : "Mark done"}
