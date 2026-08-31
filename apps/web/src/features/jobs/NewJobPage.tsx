@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent } from '@/components/ui/card'
+import { CameraCaptureButton, type CapturedPhoto } from '@/components/shared/CameraCaptureButton'
 
 interface ItemDraft {
   title: string
@@ -57,6 +58,19 @@ export function NewJobPage() {
         prev.map((it, i) =>
           i === index ? { ...it, attachmentUrls: [...it.attachmentUrls, ...urls], uploading: false } : it,
         ),
+      )
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Upload failed')
+      updateItem(index, { uploading: false })
+    }
+  }
+
+  async function handleCameraCapture(index: number, photo: CapturedPhoto) {
+    updateItem(index, { uploading: true })
+    try {
+      const url = await uploadFile(photo.file)
+      setItems((prev) =>
+        prev.map((it, i) => (i === index ? { ...it, attachmentUrls: [...it.attachmentUrls, url], uploading: false } : it)),
       )
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'Upload failed')
@@ -120,6 +134,7 @@ export function NewJobPage() {
                       onChange={(e) => handleAttach(i, e.target.files)}
                     />
                   </label>
+                  <CameraCaptureButton onCapture={(photo) => handleCameraCapture(i, photo)} />
                   {item.uploading ? (
                     <span className="text-xs text-muted-foreground">{t('common.uploading')}</span>
                   ) : null}

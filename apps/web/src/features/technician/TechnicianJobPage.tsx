@@ -3,6 +3,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import { Camera, Check } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import { trpc } from '@/lib/trpc'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -10,6 +11,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { ProgressBar } from '@/components/shared/ProgressBar'
 import { LanguageSwitcher } from '@/components/shared/LanguageSwitcher'
 import { TranslatableText } from '@/components/shared/TranslatableText'
+import { CameraCaptureButton, type CapturedPhoto } from '@/components/shared/CameraCaptureButton'
 
 interface TechAttachment {
   id: number
@@ -58,6 +60,7 @@ export function TechnicianJobPage({ token }: { token: string }) {
   const queryClient = useQueryClient()
   const queryKey = ['technician-job', token]
   const { data: job, isLoading } = useQuery({ queryKey, queryFn: () => fetchJob(token) })
+  const describePhoto = trpc.photos.describe.useMutation()
   const [signOffName, setSignOffName] = useState('')
   const [signingOff, setSigningOff] = useState(false)
 
@@ -89,6 +92,36 @@ export function TechnicianJobPage({ token }: { token: string }) {
           body: JSON.stringify({ url }),
         })
       }
+      await invalidate()
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : t('technician.uploadFailed'))
+    }
+  }
+
+  async function handleCameraCapture(itemId: number, photo: CapturedPhoto) {
+    try {
+      const url = await uploadFile(photo.file)
+      await fetch(`/api/t/${token}/items/${itemId}/attachments`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url }),
+      })
+
+      // Best-effort — a failed description shouldn't block the attachment
+      // itself, which is already saved above.
+      try {
+        const { description } = await describePhoto.mutateAsync({ imageDataUrl: photo.dataUrl })
+        const existing = job?.items.find((i) => i.id === itemId)?.comment
+        const mergedComment = existing ? `${existing}\n${description}` : description
+        await fetch(`/api/t/${token}/items/${itemId}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ comment: mergedComment }),
+        })
+      } catch {
+        // AI description failed (e.g. no OpenRouter key configured) — ignore.
+      }
+
       await invalidate()
     } catch (err) {
       toast.error(err instanceof Error ? err.message : t('technician.uploadFailed'))
@@ -162,6 +195,7 @@ export function TechnicianJobPage({ token }: { token: string }) {
             </CardHeader>
             <CardContent className="flex flex-col gap-2">
               <Textarea
+                key={`${item.id}-${item.comment ?? ''}`}
                 placeholder={t('technician.commentPlaceholder')}
                 defaultValue={item.comment ?? ''}
                 onBlur={(e) => updateItem(item.id, { comment: e.target.value })}
@@ -177,18 +211,21 @@ export function TechnicianJobPage({ token }: { token: string }) {
                   )}
                 </div>
               ) : null}
-              <label className="inline-flex w-fit cursor-pointer items-center gap-1 text-xs font-medium text-muted-foreground hover:text-foreground">
-                <Camera className="size-3.5" />
-                {t('common.attachPhotoVideo')}
-                <input
-                  type="file"
-                  accept="image/*,video/*"
-                  capture="environment"
-                  multiple
-                  className="hidden"
-                  onChange={(e) => handleAttach(item.id, e.target.files)}
-                />
-              </label>
+              <div className="flex items-center gap-2">
+                <label className="inline-flex w-fit cursor-pointer items-center gap-1 text-xs font-medium text-muted-foreground hover:text-foreground">
+                  <Camera className="size-3.5" />
+                  {t('common.attachPhotoVideo')}
+                  <input
+                    type="file"
+                    accept="image/*,video/*"
+                    capture="environment"
+                    multiple
+                    className="hidden"
+                    onChange={(e) => handleAttach(item.id, e.target.files)}
+                  />
+                </label>
+                <CameraCaptureButton onCapture={(photo) => handleCameraCapture(item.id, photo)} />
+              </div>
             </CardContent>
           </Card>
         ))}
