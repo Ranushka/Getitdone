@@ -1,5 +1,7 @@
 node_modules
-.next
+**/node_modules
+**/dist
+**/.turbo
 .git
 uploads
 .env

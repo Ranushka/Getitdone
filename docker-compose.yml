@@ -1,31 +1,54 @@
 services:
-  db:
-    image: postgres:16-alpine
+  postgres:
+    image: postgres:16
     restart: unless-stopped
     environment:
       POSTGRES_USER: getitdone
-      POSTGRES_PASSWORD: getitdone
+      POSTGRES_PASSWORD: ${GETITDONE_PG_PASSWORD}
       POSTGRES_DB: getitdone
     volumes:
-      - db-data:/var/lib/postgresql/data
+      - getitdone-postgres-data:/var/lib/postgresql/data
 
-  app:
-    build: .
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
     restart: unless-stopped
     depends_on:
-      - db
-    ports:
-      - "3000:3000"
+      - postgres
     environment:
-      DATABASE_URL: postgresql://getitdone:getitdone@db:5432/getitdone?schema=public
-      NEXTAUTH_URL: https://getitdone.ranu.win
-      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
+      DATABASE_URL: postgres://getitdone:${GETITDONE_PG_PASSWORD}@postgres:5432/getitdone
+      JWT_SECRET: ${GETITDONE_JWT_SECRET}
+      PORT: 3659
+      NODE_ENV: production
+      WEB_ORIGIN: ${GETITDONE_WEB_ORIGIN}
+      UPLOADS_DIR: /repo/apps/api/uploads
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
-      UPLOAD_DIR: /app/uploads
+      GOOGLE_REDIRECT_URI: ${GOOGLE_REDIRECT_URI}
+    ports:
+      - "3659:3659"
     volumes:
-      - uploads-data:/app/uploads
+      - getitdone-uploads:/repo/apps/api/uploads
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      args:
+        # Relative path: nginx (see apps/web/nginx.conf) proxies /trpc to the api
+        # service on the same origin — do NOT bake in an absolute LAN/public URL.
+        VITE_API_URL: /trpc
+    restart: unless-stopped
+    depends_on:
+      - api
+    ports:
+      - "3658:3658"
 
 volumes:
-  db-data:
-  uploads-data:
+  getitdone-postgres-data:
+    external: true
+    name: getitdone_getitdone-postgres-data
+  getitdone-uploads:
+    external: true
+    name: getitdone_getitdone-uploads
