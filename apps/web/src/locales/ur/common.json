@@ -53,7 +53,16 @@
     "generatingPdf": "بن رہی ہے…",
     "jobCompleted": "کام مکمل ہو گیا",
     "smartAddItem": "تصویر سے آئٹم شامل کریں",
-    "smartAdding": "آئٹم بن رہا ہے…"
+    "smartAdding": "آئٹم بن رہا ہے…",
+    "priceLabel": "قیمت (درہم)",
+    "technicianPhoneLabel": "ٹیکنیشن کا فون نمبر",
+    "technicianPhonePlaceholder": "+971501234567",
+    "totalLabel": "کل رقم",
+    "saveDetails": "محفوظ کریں",
+    "detailsSaved": "کام کی تفصیلات اپ ڈیٹ ہو گئیں",
+    "noPriceSet": "کوئی قیمت مقرر نہیں",
+    "noPhoneSet": "کوئی فون نمبر مقرر نہیں",
+    "detailsHeading": "کام کی تفصیلات"
   },
   "technician": {
     "markDone": "مکمل نشان زد کریں",

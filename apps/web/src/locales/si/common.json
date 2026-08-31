@@ -53,7 +53,16 @@
     "generatingPdf": "සාදමින්…",
     "jobCompleted": "රැකියාව සම්පූර්ණයි",
     "smartAddItem": "ඡායාරූපයෙන් අයිතමයක් එකතු කරන්න",
-    "smartAdding": "අයිතමය සාදමින්…"
+    "smartAdding": "අයිතමය සාදමින්…",
+    "priceLabel": "මිල (AED)",
+    "technicianPhoneLabel": "තාක්ෂණවේදියාගේ දුරකථන අංකය",
+    "technicianPhonePlaceholder": "+971501234567",
+    "totalLabel": "එකතුව",
+    "saveDetails": "සුරකින්න",
+    "detailsSaved": "රැකියා විස්තර යාවත්කාලීන කරන ලදී",
+    "noPriceSet": "මිලක් සකසා නැත",
+    "noPhoneSet": "දුරකථන අංකයක් සකසා නැත",
+    "detailsHeading": "රැකියා විස්තර"
   },
   "technician": {
     "markDone": "සම්පූර්ණ ලෙස සලකුණු කරන්න",

@@ -53,7 +53,16 @@
     "generatingPdf": "बन रही है…",
     "jobCompleted": "कार्य पूर्ण हुआ",
     "smartAddItem": "फ़ोटो से आइटम जोड़ें",
-    "smartAdding": "आइटम बन रहा है…"
+    "smartAdding": "आइटम बन रहा है…",
+    "priceLabel": "मूल्य (AED)",
+    "technicianPhoneLabel": "तकनीशियन का फ़ोन नंबर",
+    "technicianPhonePlaceholder": "+971501234567",
+    "totalLabel": "कुल राशि",
+    "saveDetails": "सहेजें",
+    "detailsSaved": "कार्य विवरण अपडेट किया गया",
+    "noPriceSet": "कोई मूल्य निर्धारित नहीं",
+    "noPhoneSet": "कोई फ़ोन नंबर निर्धारित नहीं",
+    "detailsHeading": "कार्य विवरण"
   },
   "technician": {
     "markDone": "पूर्ण के रूप में चिह्नित करें",

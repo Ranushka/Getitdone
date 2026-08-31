@@ -3,7 +3,13 @@ import { TRPCError } from '@trpc/server'
 import { router, authenticatedProcedure } from '../trpc.js'
 import { db } from '../db/index.js'
 import { jobs, checklistItems, attachments, signOffs } from '@getitdone/db'
-import { createJobSchema, addItemSchema, jobIdParamSchema, signOffSchema } from '@getitdone/shared'
+import {
+  createJobSchema,
+  addItemSchema,
+  jobIdParamSchema,
+  signOffSchema,
+  updateJobDetailsSchema,
+} from '@getitdone/shared'
 import { writeJobPdf } from '../services/pdf/writeJobPdf.js'
 
 async function loadOwnedJob(jobId: number, managerId: number) {
@@ -61,7 +67,13 @@ export const jobsRouter = router({
   create: authenticatedProcedure.input(createJobSchema).mutation(async ({ input, ctx }) => {
     const [job] = await db
       .insert(jobs)
-      .values({ title: input.title, notes: input.notes, managerId: ctx.user.sub })
+      .values({
+        title: input.title,
+        notes: input.notes,
+        price: input.price !== undefined ? String(input.price) : undefined,
+        technicianPhone: input.technicianPhone,
+        managerId: ctx.user.sub,
+      })
       .returning()
 
     for (const [index, draft] of input.items.entries()) {
@@ -78,6 +90,20 @@ export const jobsRouter = router({
     }
 
     return job
+  }),
+
+  updateDetails: authenticatedProcedure.input(updateJobDetailsSchema).mutation(async ({ input, ctx }) => {
+    await loadOwnedJob(input.id, ctx.user.sub)
+    const [updated] = await db
+      .update(jobs)
+      .set({
+        ...(input.price !== undefined ? { price: input.price === null ? null : String(input.price) } : {}),
+        ...(input.technicianPhone !== undefined ? { technicianPhone: input.technicianPhone } : {}),
+        updatedAt: new Date(),
+      })
+      .where(eq(jobs.id, input.id))
+      .returning()
+    return updated
   }),
 
   addItem: authenticatedProcedure.input(addItemSchema).mutation(async ({ input, ctx }) => {

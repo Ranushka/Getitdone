@@ -53,7 +53,16 @@
     "generatingPdf": "Generating…",
     "jobCompleted": "Job completed",
     "smartAddItem": "Add item from photo",
-    "smartAdding": "Generating item…"
+    "smartAdding": "Generating item…",
+    "priceLabel": "Price (AED)",
+    "technicianPhoneLabel": "Technician phone number",
+    "technicianPhonePlaceholder": "+971501234567",
+    "totalLabel": "Total",
+    "saveDetails": "Save",
+    "detailsSaved": "Job details updated",
+    "noPriceSet": "No price set",
+    "noPhoneSet": "No phone number set",
+    "detailsHeading": "Job details"
   },
   "technician": {
     "markDone": "Mark done",
