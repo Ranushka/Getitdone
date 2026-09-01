@@ -73,7 +73,9 @@
     "signedOffToast": "دستخط ہو گئے",
     "updateItemFailed": "آئٹم اپ ڈیٹ کرنے میں ناکامی",
     "uploadFailed": "اپ لوڈ ناکام ہو گیا",
-    "signOffFailed": "دستخط ناکام ہو گئے"
+    "signOffFailed": "دستخط ناکام ہو گئے",
+    "confirmationHint": "کام مکمل ہونے کے بعد، براہ کرم تصدیق کے لیے ایک تصویر اپ لوڈ کریں۔",
+    "noPhotoYet": "ابھی تک کوئی تصویر نہیں"
   },
   "share": {
     "copy": "کاپی کریں",

@@ -73,7 +73,9 @@
     "signedOffToast": "हस्ताक्षर हो गए",
     "updateItemFailed": "आइटम अपडेट करने में विफल",
     "uploadFailed": "अपलोड विफल हुआ",
-    "signOffFailed": "हस्ताक्षर विफल हुआ"
+    "signOffFailed": "हस्ताक्षर विफल हुआ",
+    "confirmationHint": "काम पूरा होने के बाद, कृपया पुष्टि के लिए एक फ़ोटो अपलोड करें।",
+    "noPhotoYet": "अभी तक कोई फ़ोटो नहीं"
   },
   "share": {
     "copy": "कॉपी करें",

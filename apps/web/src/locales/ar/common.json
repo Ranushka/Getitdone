@@ -73,7 +73,9 @@
     "signedOffToast": "تم التوقيع",
     "updateItemFailed": "فشل تحديث العنصر",
     "uploadFailed": "فشل الرفع",
-    "signOffFailed": "فشل التوقيع"
+    "signOffFailed": "فشل التوقيع",
+    "confirmationHint": "بعد الانتهاء، يُرجى رفع صورة لتأكيد إنجاز العمل.",
+    "noPhotoYet": "لا توجد صورة بعد"
   },
   "share": {
     "copy": "نسخ",
