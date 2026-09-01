@@ -1,17 +1,18 @@
 import { useState } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
-import { Check } from 'lucide-react'
+import { Check, Languages, ImageOff } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { trpc } from '@/lib/trpc'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
 import { ProgressBar } from '@/components/shared/ProgressBar'
 import { LanguageSwitcher } from '@/components/shared/LanguageSwitcher'
-import { TranslatableText } from '@/components/shared/TranslatableText'
 import { CameraCaptureButton, type CapturedPhoto } from '@/components/shared/CameraCaptureButton'
+import { cn } from '@/lib/utils'
 
 interface TechAttachment {
   id: number
@@ -56,13 +57,48 @@ function isVideoUrl(url: string) {
 }
 
 export function TechnicianJobPage({ token }: { token: string }) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const queryClient = useQueryClient()
   const queryKey = ['technician-job', token]
   const { data: job, isLoading } = useQuery({ queryKey, queryFn: () => fetchJob(token) })
   const describePhoto = trpc.photos.describe.useMutation()
+  const utils = trpc.useUtils()
   const [signOffName, setSignOffName] = useState('')
   const [signingOff, setSigningOff] = useState(false)
+  const [lightboxUrl, setLightboxUrl] = useState<string | null>(null)
+
+  // One translate control for the whole page instead of a button per field —
+  // hidden entirely when the UI is already in English (content is assumed
+  // to be typed in English by default).
+  const targetLang = (i18n.resolvedLanguage ?? i18n.language) as 'en' | 'ar' | 'si' | 'ur' | 'hi'
+  const [translations, setTranslations] = useState<Record<string, string>>({})
+  const [showingOriginal, setShowingOriginal] = useState(true)
+  const [translating, setTranslating] = useState(false)
+
+  function displayText(text: string) {
+    return !showingOriginal && translations[text] ? translations[text] : text
+  }
+
+  async function handleTranslatePage() {
+    if (!job) return
+    if (Object.keys(translations).length > 0) {
+      setShowingOriginal(false)
+      return
+    }
+    setTranslating(true)
+    try {
+      const texts = [...new Set([job.title, ...(job.notes ? [job.notes] : []), ...job.items.map((i) => i.title)])]
+      const results = await Promise.all(texts.map((text) => utils.translate.text.fetch({ text, targetLang })))
+      const map: Record<string, string> = {}
+      texts.forEach((text, i) => (map[text] = results[i].translated))
+      setTranslations(map)
+      setShowingOriginal(false)
+    } catch {
+      toast.error(t('translate.translating'))
+    } finally {
+      setTranslating(false)
+    }
+  }
 
   function invalidate() {
     return queryClient.invalidateQueries({ queryKey })
@@ -143,19 +179,34 @@ export function TechnicianJobPage({ token }: { token: string }) {
 
   return (
     <div className="mx-auto flex max-w-2xl flex-col gap-4 p-4 pb-24">
-      <div className="flex justify-end">
+      <div className="flex items-center justify-end gap-2">
+        {targetLang !== 'en' ? (
+          showingOriginal ? (
+            <button
+              type="button"
+              onClick={handleTranslatePage}
+              disabled={translating}
+              className="inline-flex h-8 items-center gap-1.5 rounded-md border border-input bg-card px-2 text-xs font-medium text-foreground hover:bg-secondary"
+            >
+              <Languages className="size-3.5" />
+              {translating ? t('translate.translating') : t('translate.translate')}
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={() => setShowingOriginal(true)}
+              className="inline-flex h-8 items-center gap-1.5 rounded-md border border-input bg-card px-2 text-xs font-medium text-foreground hover:bg-secondary"
+            >
+              {t('translate.showOriginal')}
+            </button>
+          )
+        ) : null}
         <LanguageSwitcher />
       </div>
 
       <div>
-        <h1 className="text-xl font-bold">
-          <TranslatableText text={job.title} />
-        </h1>
-        {job.notes ? (
-          <p className="text-sm text-muted-foreground">
-            <TranslatableText text={job.notes} />
-          </p>
-        ) : null}
+        <h1 className="text-xl font-bold">{displayText(job.title)}</h1>
+        {job.notes ? <p className="text-sm text-muted-foreground">{displayText(job.notes)}</p> : null}
       </div>
 
       <ProgressBar done={doneCount} total={job.items.length} />
@@ -163,37 +214,52 @@ export function TechnicianJobPage({ token }: { token: string }) {
       <div className="flex flex-col gap-3">
         {job.items.map((item) => (
           <Card key={item.id}>
-            <CardHeader className="flex-row items-center justify-between">
-              <span className="font-medium">
-                <TranslatableText text={item.title} />
-              </span>
-              <Button
-                type="button"
-                variant={item.status === 'done' ? 'default' : 'outline'}
-                size="sm"
-                onClick={() => updateItem(item.id, { status: item.status === 'done' ? 'pending' : 'done' })}
-              >
-                <Check /> {item.status === 'done' ? t('technician.done') : t('technician.markDone')}
-              </Button>
-            </CardHeader>
-            <CardContent className="flex flex-col gap-2">
+            <CardContent className="flex flex-col gap-3 p-3">
+              {item.attachments.length > 0 ? (
+                <div className="flex flex-wrap gap-2">
+                  {item.attachments.map((a) => (
+                    <button
+                      key={a.id}
+                      type="button"
+                      onClick={() => setLightboxUrl(a.url)}
+                      className="overflow-hidden rounded-md"
+                    >
+                      {isVideoUrl(a.url) ? (
+                        <video src={a.url} className="h-24 w-24 object-cover" />
+                      ) : (
+                        <img src={a.url} alt="" className="h-24 w-24 object-cover" />
+                      )}
+                    </button>
+                  ))}
+                </div>
+              ) : (
+                <div className="flex h-16 items-center justify-center gap-2 rounded-md bg-secondary text-xs text-muted-foreground">
+                  <ImageOff className="size-4" />
+                  {t('technician.noPhotoYet')}
+                </div>
+              )}
+
+              <div className="flex items-center justify-between gap-2">
+                <span className="font-medium">{displayText(item.title)}</span>
+                <Button
+                  type="button"
+                  variant={item.status === 'done' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => updateItem(item.id, { status: item.status === 'done' ? 'pending' : 'done' })}
+                >
+                  <Check /> {item.status === 'done' ? t('technician.done') : t('technician.markDone')}
+                </Button>
+              </div>
+
               <Textarea
                 key={`${item.id}-${item.comment ?? ''}`}
                 placeholder={t('technician.commentPlaceholder')}
                 defaultValue={item.comment ?? ''}
                 onBlur={(e) => updateItem(item.id, { comment: e.target.value })}
               />
-              {item.attachments.length > 0 ? (
-                <div className="flex flex-wrap gap-2">
-                  {item.attachments.map((a) =>
-                    isVideoUrl(a.url) ? (
-                      <video key={a.id} src={a.url} controls className="h-20 w-20 rounded-md object-cover" />
-                    ) : (
-                      <img key={a.id} src={a.url} alt="" className="h-20 w-20 rounded-md object-cover" />
-                    ),
-                  )}
-                </div>
-              ) : null}
+
+              <p className="text-xs text-muted-foreground">{t('technician.confirmationHint')}</p>
+
               <div className="flex items-center gap-2">
                 <CameraCaptureButton
                   label={t('common.attachPhotoVideo')}
@@ -230,6 +296,19 @@ export function TechnicianJobPage({ token }: { token: string }) {
           ) : null}
         </CardContent>
       </Card>
+
+      <Dialog open={!!lightboxUrl} onOpenChange={(open) => !open && setLightboxUrl(null)}>
+        <DialogContent className={cn('max-w-2xl border-none bg-transparent p-0 shadow-none')}>
+          <DialogTitle className="sr-only">{t('common.attachPhotoVideo')}</DialogTitle>
+          {lightboxUrl ? (
+            isVideoUrl(lightboxUrl) ? (
+              <video src={lightboxUrl} controls autoPlay className="w-full rounded-lg" />
+            ) : (
+              <img src={lightboxUrl} alt="" className="w-full rounded-lg" />
+            )
+          ) : null}
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

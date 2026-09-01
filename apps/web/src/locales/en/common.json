@@ -73,7 +73,9 @@
     "signedOffToast": "Signed off",
     "updateItemFailed": "Failed to update item",
     "uploadFailed": "Upload failed",
-    "signOffFailed": "Sign-off failed"
+    "signOffFailed": "Sign-off failed",
+    "confirmationHint": "Once done, please upload a photo to confirm the work.",
+    "noPhotoYet": "No photo yet"
   },
   "share": {
     "copy": "Copy",
