@@ -37,6 +37,9 @@ export type AddItemInput = z.infer<typeof addItemSchema>
 
 export const signOffSchema = z.object({
   name: z.string().min(1),
+  // Set by the technician-side signature pad; managers still sign off with
+  // just a name for now.
+  signatureUrl: z.string().min(1).optional(),
 })
 export type SignOffInput = z.infer<typeof signOffSchema>
 

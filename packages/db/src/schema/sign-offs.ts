@@ -12,6 +12,9 @@ export const signOffs = pgTable(
       .references(() => jobs.id, { onDelete: 'cascade' }),
     role: signOffRoleEnum('role').notNull(),
     name: varchar('name', { length: 255 }).notNull(),
+    // Drawn on a touchscreen (technician sign-off only, for now) and uploaded
+    // as a PNG through the same /api/upload path as photo attachments.
+    signatureUrl: varchar('signature_url', { length: 500 }),
     signedAt: timestamp('signed_at', { withTimezone: true }).notNull().defaultNow(),
   },
   (table) => [

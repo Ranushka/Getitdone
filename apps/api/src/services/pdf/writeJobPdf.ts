@@ -67,13 +67,22 @@ export async function writeJobPdf(jobId: number): Promise<{ pdfUrl: string }> {
     }),
   )
 
+  const signOffsForPdf = await Promise.all(
+    signOffRows.map(async (s) => ({
+      role: s.role,
+      name: s.name,
+      signedAt: s.signedAt,
+      signatureDataUri: s.signatureUrl ? await toDataUri(s.signatureUrl) : null,
+    })),
+  )
+
   const data: JobPdfData = {
     title: job.title,
     notes: job.notes,
     status: job.status,
     price: job.price,
     items: pdfItems,
-    signOffs: signOffRows.map((s) => ({ role: s.role, name: s.name, signedAt: s.signedAt })),
+    signOffs: signOffsForPdf,
     generatedAt: new Date(),
   }
 

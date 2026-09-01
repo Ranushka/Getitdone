@@ -1,0 +1,1 @@
+ALTER TABLE "sign_offs" ADD COLUMN "signature_url" varchar(500);

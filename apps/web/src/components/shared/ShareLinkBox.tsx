@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Copy, Check } from 'lucide-react'
+import { Copy, Check, ExternalLink } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Button } from '@/components/ui/button'
 
@@ -42,6 +42,11 @@ export function ShareLinkBox({
         <Button variant="outline" size="sm" asChild>
           <a href={whatsappHref} target="_blank" rel="noreferrer">
             {t('share.whatsapp')}
+          </a>
+        </Button>
+        <Button variant="outline" size="sm" asChild aria-label={t('share.openInNewTab')} title={t('share.openInNewTab')}>
+          <a href={url} target="_blank" rel="noreferrer">
+            <ExternalLink />
           </a>
         </Button>
       </div>

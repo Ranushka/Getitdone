@@ -74,6 +74,9 @@
     "updateItemFailed": "आइटम अपडेट करने में विफल",
     "uploadFailed": "अपलोड विफल हुआ",
     "signOffFailed": "हस्ताक्षर विफल हुआ",
+    "signatureLabel": "हस्ताक्षर",
+    "signatureClear": "मिटाएं",
+    "signatureRequired": "कृपया जमा करने से पहले हस्ताक्षर करें",
     "confirmationHint": "काम पूरा होने के बाद, कृपया पुष्टि के लिए एक फ़ोटो अपलोड करें।",
     "noPhotoYet": "अभी तक कोई फ़ोटो नहीं"
   },
@@ -81,7 +84,8 @@
     "copy": "कॉपी करें",
     "copied": "कॉपी हो गया",
     "whatsapp": "व्हाट्सएप",
-    "whatsappMessagePrefix": "कार्य चेकलिस्ट"
+    "whatsappMessagePrefix": "कार्य चेकलिस्ट",
+    "openInNewTab": "नए टैब में खोलें"
   },
   "dialog": {
     "close": "बंद करें"

@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
-import { Check, Languages, ImageOff } from 'lucide-react'
+import { Check, Languages, ImageOff, Eraser } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { trpc } from '@/lib/trpc'
 import { Button } from '@/components/ui/button'
@@ -12,6 +12,7 @@ import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
 import { ProgressBar } from '@/components/shared/ProgressBar'
 import { LanguageSwitcher } from '@/components/shared/LanguageSwitcher'
 import { CameraCaptureButton, type CapturedPhoto } from '@/components/shared/CameraCaptureButton'
+import { SignaturePad, type SignaturePadHandle } from '@/components/shared/SignaturePad'
 import { cn } from '@/lib/utils'
 
 interface TechAttachment {
@@ -32,7 +33,7 @@ interface TechJob {
   status: string
   shareToken: string
   items: TechItem[]
-  signOffs: { role: string; name: string }[]
+  signOffs: { role: string; name: string; signatureUrl: string | null }[]
 }
 
 async function fetchJob(token: string): Promise<TechJob> {
@@ -66,6 +67,8 @@ export function TechnicianJobPage({ token }: { token: string }) {
   const [signOffName, setSignOffName] = useState('')
   const [signingOff, setSigningOff] = useState(false)
   const [lightboxUrl, setLightboxUrl] = useState<string | null>(null)
+  const signaturePadRef = useRef<SignaturePadHandle>(null)
+  const [hasSignature, setHasSignature] = useState(false)
 
   // One translate control for the whole page instead of a button per field —
   // hidden entirely when the UI is already in English (content is assumed
@@ -150,12 +153,22 @@ export function TechnicianJobPage({ token }: { token: string }) {
   async function handleSignOff(e: React.FormEvent) {
     e.preventDefault()
     if (!signOffName.trim()) return
+    if (signaturePadRef.current?.isEmpty()) {
+      toast.error(t('technician.signatureRequired'))
+      return
+    }
     setSigningOff(true)
     try {
+      const blob = await signaturePadRef.current?.toBlob()
+      let signatureUrl: string | undefined
+      if (blob) {
+        signatureUrl = await uploadFile(new File([blob], `signature-${Date.now()}.png`, { type: 'image/png' }))
+      }
+
       const res = await fetch(`/api/t/${token}/signoff`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: signOffName }),
+        body: JSON.stringify({ name: signOffName, signatureUrl }),
       })
       if (!res.ok) {
         const body = await res.json().catch(() => ({}))
@@ -175,7 +188,8 @@ export function TechnicianJobPage({ token }: { token: string }) {
 
   const doneCount = job.items.filter((i) => i.status === 'done').length
   const allDone = job.items.length > 0 && doneCount === job.items.length
-  const techSignedOff = job.signOffs.some((s) => s.role === 'technician')
+  const techSignOff = job.signOffs.find((s) => s.role === 'technician')
+  const techSignedOff = !!techSignOff
 
   return (
     <div className="mx-auto flex max-w-2xl flex-col gap-4 p-4 pb-24">
@@ -277,16 +291,47 @@ export function TechnicianJobPage({ token }: { token: string }) {
         </CardHeader>
         <CardContent>
           {techSignedOff ? (
-            <p className="text-sm text-muted-foreground">{t('technician.signedOffThanks')}</p>
+            <div className="flex flex-col gap-2">
+              <p className="text-sm text-muted-foreground">{t('technician.signedOffThanks')}</p>
+              {techSignOff?.signatureUrl ? (
+                <img
+                  src={techSignOff.signatureUrl}
+                  alt={t('technician.signatureLabel')}
+                  className="h-24 w-fit rounded-md border border-border bg-white p-1"
+                />
+              ) : null}
+            </div>
           ) : (
-            <form className="flex gap-2" onSubmit={handleSignOff}>
+            <form className="flex flex-col gap-3" onSubmit={handleSignOff}>
               <Input
                 placeholder={t('common.yourName')}
                 value={signOffName}
                 onChange={(e) => setSignOffName(e.target.value)}
                 disabled={!allDone}
               />
-              <Button type="submit" disabled={!allDone || signingOff}>
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-muted-foreground">{t('technician.signatureLabel')}</span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      signaturePadRef.current?.clear()
+                      setHasSignature(false)
+                    }}
+                    disabled={!allDone || !hasSignature}
+                    className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground disabled:opacity-50"
+                  >
+                    <Eraser className="size-3.5" />
+                    {t('technician.signatureClear')}
+                  </button>
+                </div>
+                <SignaturePad
+                  ref={signaturePadRef}
+                  onChange={setHasSignature}
+                  className={cn('h-32 w-full', !allDone && 'pointer-events-none opacity-50')}
+                />
+              </div>
+              <Button type="submit" disabled={!allDone || !hasSignature || signingOff}>
                 {t('common.signOff')}
               </Button>
             </form>

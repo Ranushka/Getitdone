@@ -13,6 +13,7 @@ export interface JobPdfSignOff {
   role: 'technician' | 'manager'
   name: string
   signedAt: Date
+  signatureDataUri: string | null
 }
 
 export interface JobPdfData {
@@ -45,7 +46,8 @@ const styles = StyleSheet.create({
   thumbRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
   thumb: { width: 90, height: 90, objectFit: 'cover', marginRight: 6, marginBottom: 6 },
   videoNote: { color: '#555', fontStyle: 'italic' },
-  signOffRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 4 },
+  signOffRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 },
+  signatureImg: { width: 100, height: 40, objectFit: 'contain' },
   footer: { position: 'absolute', bottom: 24, left: 32, right: 32, color: '#999', fontSize: 8 },
 })
 
@@ -99,6 +101,10 @@ export function JobPdf({ data }: { data: JobPdfData }) {
                 <Text>
                   {s.role === 'technician' ? 'Technician' : 'Manager'}: {s.name}
                 </Text>
+                {s.signatureDataUri ? (
+                  // eslint-disable-next-line jsx-a11y/alt-text
+                  <Image src={s.signatureDataUri} style={styles.signatureImg} />
+                ) : null}
                 <Text>{s.signedAt.toLocaleString()}</Text>
               </View>
             ))

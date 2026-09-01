@@ -74,6 +74,9 @@
     "updateItemFailed": "آئٹم اپ ڈیٹ کرنے میں ناکامی",
     "uploadFailed": "اپ لوڈ ناکام ہو گیا",
     "signOffFailed": "دستخط ناکام ہو گئے",
+    "signatureLabel": "دستخط",
+    "signatureClear": "صاف کریں",
+    "signatureRequired": "براہ کرم جمع کروانے سے پہلے دستخط کریں",
     "confirmationHint": "کام مکمل ہونے کے بعد، براہ کرم تصدیق کے لیے ایک تصویر اپ لوڈ کریں۔",
     "noPhotoYet": "ابھی تک کوئی تصویر نہیں"
   },
@@ -81,7 +84,8 @@
     "copy": "کاپی کریں",
     "copied": "کاپی ہو گیا",
     "whatsapp": "واٹس ایپ",
-    "whatsappMessagePrefix": "کام کی چیک لسٹ"
+    "whatsappMessagePrefix": "کام کی چیک لسٹ",
+    "openInNewTab": "نئے ٹیب میں کھولیں"
   },
   "dialog": {
     "close": "بند کریں"

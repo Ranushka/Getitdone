@@ -74,6 +74,9 @@
     "updateItemFailed": "අයිතමය යාවත්කාලීන කිරීම අසාර්ථක විය",
     "uploadFailed": "උඩුගත කිරීම අසාර්ථක විය",
     "signOffFailed": "අත්සන් කිරීම අසාර්ථක විය",
+    "signatureLabel": "අත්සන",
+    "signatureClear": "මකන්න",
+    "signatureRequired": "ඉදිරිපත් කිරීමට පෙර කරුණාකර අත්සන් කරන්න",
     "confirmationHint": "කාර්යය අවසන් වූ පසු, එය තහවුරු කිරීමට කරුණාකර ඡායාරූපයක් උඩුගත කරන්න.",
     "noPhotoYet": "තවම ඡායාරූපයක් නැත"
   },
@@ -81,7 +84,8 @@
     "copy": "පිටපත් කරන්න",
     "copied": "පිටපත් කරන ලදී",
     "whatsapp": "WhatsApp",
-    "whatsappMessagePrefix": "රැකියා කාර්ය ලැයිස්තුව"
+    "whatsappMessagePrefix": "රැකියා කාර්ය ලැයිස්තුව",
+    "openInNewTab": "නව ටැබයක විවෘත කරන්න"
   },
   "dialog": {
     "close": "වසන්න"

@@ -104,10 +104,15 @@ export function registerTechnicianRoutes(app: FastifyInstance) {
 
     await db
       .insert(signOffs)
-      .values({ jobId: job.id, role: 'technician', name: parsed.data.name })
+      .values({
+        jobId: job.id,
+        role: 'technician',
+        name: parsed.data.name,
+        signatureUrl: parsed.data.signatureUrl ?? null,
+      })
       .onConflictDoUpdate({
         target: [signOffs.jobId, signOffs.role],
-        set: { name: parsed.data.name, signedAt: new Date() },
+        set: { name: parsed.data.name, signatureUrl: parsed.data.signatureUrl ?? null, signedAt: new Date() },
       })
 
     const [updated] = await db

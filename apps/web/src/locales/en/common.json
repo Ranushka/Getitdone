@@ -74,6 +74,9 @@
     "updateItemFailed": "Failed to update item",
     "uploadFailed": "Upload failed",
     "signOffFailed": "Sign-off failed",
+    "signatureLabel": "Signature",
+    "signatureClear": "Clear",
+    "signatureRequired": "Please sign before submitting",
     "confirmationHint": "Once done, please upload a photo to confirm the work.",
     "noPhotoYet": "No photo yet"
   },
@@ -81,7 +84,8 @@
     "copy": "Copy",
     "copied": "Copied",
     "whatsapp": "WhatsApp",
-    "whatsappMessagePrefix": "Job checklist"
+    "whatsappMessagePrefix": "Job checklist",
+    "openInNewTab": "Open in new tab"
   },
   "dialog": {
     "close": "Close"

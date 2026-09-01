@@ -74,6 +74,9 @@
     "updateItemFailed": "فشل تحديث العنصر",
     "uploadFailed": "فشل الرفع",
     "signOffFailed": "فشل التوقيع",
+    "signatureLabel": "التوقيع",
+    "signatureClear": "مسح",
+    "signatureRequired": "يرجى التوقيع قبل الإرسال",
     "confirmationHint": "بعد الانتهاء، يُرجى رفع صورة لتأكيد إنجاز العمل.",
     "noPhotoYet": "لا توجد صورة بعد"
   },
@@ -81,7 +84,8 @@
     "copy": "نسخ",
     "copied": "تم النسخ",
     "whatsapp": "واتساب",
-    "whatsappMessagePrefix": "قائمة مهام الوظيفة"
+    "whatsappMessagePrefix": "قائمة مهام الوظيفة",
+    "openInNewTab": "فتح في علامة تبويب جديدة"
   },
   "dialog": {
     "close": "إغلاق"
