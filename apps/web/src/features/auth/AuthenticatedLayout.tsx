@@ -1,4 +1,4 @@
-import { type ReactNode } from 'react'
+import { type ReactNode, useEffect } from 'react'
 import { Link, useNavigate } from '@tanstack/react-router'
 import { LogOut } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
@@ -14,10 +14,27 @@ export function AuthenticatedLayout({ children }: { children: ReactNode }) {
 
   const logout = trpc.auth.logout.useMutation({
     onSuccess: async () => {
-      await utils.auth.me.invalidate()
-      navigate({ to: '/login' })
+      // `invalidate()` leaves the previous (still-authenticated) auth.me
+      // result sitting in the cache until its background refetch resolves,
+      // so whichever page mounts first after navigating reads stale data
+      // and bounces off it (HomePage back to /dashboard, which then flips
+      // to logged-out and redirects again to /login — never landing on
+      // '/'). `reset()` clears that cached user synchronously, so the next
+      // mount sees "logged out" immediately.
+      await utils.auth.me.reset()
+      navigate({ to: '/' })
     },
   })
+
+  // Side-effecting navigation belongs in an effect, not the render body —
+  // doing it inline used to race with other navigations (e.g. sign-out)
+  // triggered in the same tick and could win, sending the user to the wrong
+  // page.
+  useEffect(() => {
+    if (!isLoading && (isError || !user)) {
+      navigate({ to: '/login' })
+    }
+  }, [isLoading, isError, user, navigate])
 
   if (isLoading) {
     return (
@@ -28,7 +45,6 @@ export function AuthenticatedLayout({ children }: { children: ReactNode }) {
   }
 
   if (isError || !user) {
-    navigate({ to: '/login' })
     return null
   }
 

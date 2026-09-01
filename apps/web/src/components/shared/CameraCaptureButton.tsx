@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 import { Paperclip, X, Camera as CameraIcon, type LucideIcon } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 export interface CapturedPhoto {
   file: File
@@ -23,10 +24,14 @@ export function CameraCaptureButton({
   onCapture,
   icon: IconOverride,
   label = 'Capture photo',
+  size = 'default',
 }: {
   onCapture: (photo: CapturedPhoto) => void
   icon?: LucideIcon
   label?: string
+  /** Matches Button's sm (h-9) vs default (h-10) heights so this lines up
+   * with adjacent Button components instead of always being 4px taller. */
+  size?: 'default' | 'sm'
 }) {
   const isTouchDevice =
     typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches
@@ -49,9 +54,12 @@ export function CameraCaptureButton({
         aria-label={label}
         title={label}
         onClick={() => (isTouchDevice ? setCameraOpen(true) : fileInputRef.current?.click())}
-        className="inline-flex size-10 shrink-0 items-center justify-center rounded-lg border border-input bg-card text-muted-foreground hover:bg-secondary hover:text-foreground"
+        className={cn(
+          'inline-flex shrink-0 items-center justify-center rounded-lg border border-input bg-card text-muted-foreground hover:bg-secondary hover:text-foreground',
+          size === 'sm' ? 'size-9' : 'size-10',
+        )}
       >
-        <Icon className="size-5" />
+        <Icon className={size === 'sm' ? 'size-4' : 'size-5'} />
       </button>
       <input
         ref={fileInputRef}

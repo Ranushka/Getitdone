@@ -196,7 +196,16 @@ export function NewJobPage() {
               </CardContent>
             </Card>
           ))}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center justify-end gap-2">
+            {smartAdding ? (
+              <span className="text-xs text-muted-foreground">{t('jobs.smartAdding')}</span>
+            ) : null}
+            <CameraCaptureButton
+              icon={Wand2}
+              label={t('jobs.smartAddItem')}
+              onCapture={handleSmartAddCapture}
+              size="sm"
+            />
             <Button
               type="button"
               variant="outline"
@@ -205,14 +214,6 @@ export function NewJobPage() {
             >
               <Plus /> {t('jobs.addItem')}
             </Button>
-            <CameraCaptureButton
-              icon={Wand2}
-              label={t('jobs.smartAddItem')}
-              onCapture={handleSmartAddCapture}
-            />
-            {smartAdding ? (
-              <span className="text-xs text-muted-foreground">{t('jobs.smartAdding')}</span>
-            ) : null}
           </div>
         </div>
 

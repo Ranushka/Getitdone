@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import {
@@ -11,9 +11,6 @@ import {
   Link2,
   MessageCircle,
   FileSignature,
-  ClipboardList,
-  Send,
-  ShieldCheck,
   ChevronDown,
   ArrowRight,
 } from 'lucide-react'
@@ -25,7 +22,7 @@ import { cn } from '@/lib/utils'
 
 const FEATURE_ICONS = [Camera, Users, FileCheck2, Globe, Wand2] as const
 const HIGHLIGHT_ICONS = [Link2, MessageCircle, FileSignature] as const
-const STEP_ICONS = [ClipboardList, Send, ShieldCheck] as const
+const STEP_IMAGES = ['/images/step-create.png', '/images/step-share.png', '/images/step-confirm.png'] as const
 
 export function HomePage() {
   const { t } = useTranslation()
@@ -33,8 +30,13 @@ export function HomePage() {
   const { data: user, isLoading } = trpc.auth.me.useQuery(undefined, { retry: false })
   const [openFaq, setOpenFaq] = useState<number | null>(0)
 
+  useEffect(() => {
+    if (!isLoading && user) {
+      navigate({ to: '/dashboard' })
+    }
+  }, [isLoading, user, navigate])
+
   if (!isLoading && user) {
-    navigate({ to: '/dashboard' })
     return null
   }
 
@@ -59,7 +61,7 @@ export function HomePage() {
     title: t(`home.step${n}Title`),
     desc: t(`home.step${n}Desc`),
     bullets: [t(`home.step${n}Bullet1`), t(`home.step${n}Bullet2`)],
-    Icon: STEP_ICONS[n - 1],
+    image: STEP_IMAGES[n - 1],
   }))
 
   const faqs = [1, 2, 3, 4, 5].map((n) => ({
@@ -127,34 +129,16 @@ export function HomePage() {
           <p className="text-xs text-muted-foreground">{t('home.heroNote')}</p>
         </div>
 
-        {/* Illustrative job-checklist mockup — not a real screenshot */}
-        <div className="relative mx-auto w-full max-w-sm">
-          <Card className="rotate-1 shadow-xl">
-            <CardContent className="flex flex-col gap-3 p-4">
-              <div className="flex items-center justify-between">
-                <span className="font-semibold">Kitchen sink repair</span>
-                <span className="rounded-full bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground">
-                  AED 600
-                </span>
-              </div>
-              {['Inspect P-trap', 'Replace washer', 'Test water flow'].map((title, i) => (
-                <div key={title} className="flex items-center gap-2 rounded-lg border border-border bg-card p-2 text-sm">
-                  <span
-                    className={cn(
-                      'grid size-5 shrink-0 place-items-center rounded-full',
-                      i < 2 ? 'bg-accent text-accent-foreground' : 'border border-border text-transparent',
-                    )}
-                  >
-                    <Check className="size-3" />
-                  </span>
-                  <span className={cn(i < 2 && 'text-muted-foreground line-through')}>{title}</span>
-                </div>
-              ))}
-            </CardContent>
-          </Card>
+        {/* Real screenshot of an actual GetItDone job */}
+        <div className="relative mx-auto w-full max-w-md">
+          <img
+            src="/images/hero-job-detail.png"
+            alt="A GetItDone job showing its checklist, price, and share link"
+            className="w-full rotate-1 rounded-xl border border-border shadow-xl"
+          />
           <div className="absolute -bottom-5 -left-5 flex items-center gap-2 rounded-xl border border-border bg-card px-3 py-2 text-xs font-medium shadow-lg sm:-left-8">
             <MessageCircle className="size-4 text-accent-foreground" />
-            Sent to technician · A3Y9BV
+            Sent to technician · 4F9HTN
           </div>
         </div>
       </section>
@@ -183,7 +167,7 @@ export function HomePage() {
           <h2 className="mt-2 text-2xl font-bold sm:text-3xl">{t('home.stepsTitle')}</h2>
         </div>
         <div className="flex flex-col gap-12">
-          {steps.map(({ label, title, desc, bullets, Icon }, i) => (
+          {steps.map(({ label, title, desc, bullets, image }, i) => (
             <div
               key={label}
               className={cn(
@@ -204,11 +188,9 @@ export function HomePage() {
                   ))}
                 </ul>
               </div>
-              <Card>
-                <CardContent className="grid place-items-center gap-3 p-10">
-                  <div className="grid size-16 place-items-center rounded-2xl bg-secondary text-foreground">
-                    <Icon className="size-8" />
-                  </div>
+              <Card className="overflow-hidden">
+                <CardContent className="grid place-items-center bg-secondary/40 p-6">
+                  <img src={image} alt={title} className="max-h-80 w-full rounded-lg object-contain" />
                 </CardContent>
               </Card>
             </div>
