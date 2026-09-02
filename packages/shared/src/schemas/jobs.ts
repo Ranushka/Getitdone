@@ -1,22 +1,48 @@
 import { z } from 'zod'
+import { createAddressSchema } from './addresses'
+import { isValidScheduleForAddressType } from '../scheduling'
 
 export const jobItemDraftSchema = z.object({
   title: z.string().min(1),
   attachmentUrls: z.array(z.string()).default([]),
 })
 
-export const createJobSchema = z.object({
-  title: z.string().min(1),
-  notes: z.string().optional(),
-  // Flat AED price for the whole job — jobs are the pricing unit, not
-  // individual checklist items (categorize different scopes of work into
-  // separate jobs instead).
-  price: z.number().nonnegative().optional(),
-  // E.164-ish, digits/plus only — used to open a WhatsApp chat with this
-  // technician directly instead of a blank compose screen.
-  technicianPhone: z.string().min(6).max(20).optional(),
-  items: z.array(jobItemDraftSchema).default([]),
-})
+export const createJobSchema = z
+  .object({
+    title: z.string().min(1),
+    notes: z.string().optional(),
+    // Flat AED price for the whole job — jobs are the pricing unit, not
+    // individual checklist items (categorize different scopes of work into
+    // separate jobs instead).
+    price: z.number().nonnegative().optional(),
+    // E.164-ish, digits/plus only — used to open a WhatsApp chat with this
+    // technician directly instead of a blank compose screen.
+    technicianPhone: z.string().min(6).max(20).optional(),
+    items: z.array(jobItemDraftSchema).default([]),
+    // Address book — set at creation only. Either pick a saved address
+    // (addressId) or add a new one on the fly (newAddress), never both.
+    addressId: z.number().int().positive().optional(),
+    newAddress: createAddressSchema.optional(),
+    // ISO datetime string — validated below against the resolved address's
+    // type (an office is closed weekends, a home is empty during work
+    // hours). Optional: a job can be created without a scheduled visit.
+    scheduledAt: z.string().datetime().optional(),
+  })
+  .refine((data) => !(data.addressId && data.newAddress), {
+    message: 'Choose a saved address or add a new one, not both',
+    path: ['newAddress'],
+  })
+  .refine(
+    (data) => {
+      if (!data.scheduledAt || !data.newAddress) return true
+      return isValidScheduleForAddressType(data.newAddress.type, new Date(data.scheduledAt))
+    },
+    {
+      message:
+        'Offices are closed on weekends and homes are empty during working hours (9am-6pm) — pick a different time',
+      path: ['scheduledAt'],
+    },
+  )
 export type CreateJobInput = z.infer<typeof createJobSchema>
 
 export const jobIdParamSchema = z.object({

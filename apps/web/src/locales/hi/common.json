@@ -62,7 +62,18 @@
     "detailsSaved": "कार्य विवरण अपडेट किया गया",
     "noPriceSet": "कोई मूल्य निर्धारित नहीं",
     "noPhoneSet": "कोई फ़ोन नंबर निर्धारित नहीं",
-    "detailsHeading": "कार्य विवरण"
+    "detailsHeading": "कार्य विवरण",
+    "addressLabel": "पता",
+    "addressNone": "कोई पता नहीं",
+    "addressAddNew": "+ नया पता जोड़ें",
+    "addressLabelPlaceholder": "लेबल (जैसे मुख्य कार्यालय)",
+    "addressLine1Placeholder": "पता",
+    "addressTypeHome": "घर",
+    "addressTypeOffice": "कार्यालय",
+    "scheduledAtLabel": "निर्धारित यात्रा (वैकल्पिक)",
+    "scheduleWarningOffice": "कार्यालय सप्ताहांत में बंद रहते हैं — कोई कार्यदिवस चुनें।",
+    "scheduleWarningHome": "घर आमतौर पर कार्य के घंटों (सुबह 9 से शाम 6) के दौरान खाली रहते हैं — कोई और समय चुनें।",
+    "scheduleConflictBlocked": "कार्य बनाने से पहले कृपया कोई और समय चुनें।"
   },
   "technician": {
     "markDone": "पूर्ण के रूप में चिह्नित करें",

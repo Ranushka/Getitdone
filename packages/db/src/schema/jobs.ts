@@ -1,6 +1,7 @@
 import { pgTable, pgEnum, serial, varchar, text, integer, numeric, timestamp } from 'drizzle-orm/pg-core'
 import { customAlphabet } from 'nanoid'
 import { users } from './users'
+import { addresses } from './addresses'
 
 export const jobStatusEnum = pgEnum('job_status', ['in_progress', 'tech_signed_off', 'completed'])
 
@@ -33,6 +34,11 @@ export const jobs = pgTable('jobs', {
   managerId: integer('manager_id')
     .notNull()
     .references(() => users.id),
+  // Both set at job creation only (see NewJobPage) — chosen from the
+  // manager's saved address book, or a new one added on the fly. Nullable
+  // since neither existed before this and older jobs won't have them.
+  addressId: integer('address_id').references(() => addresses.id),
+  scheduledAt: timestamp('scheduled_at', { withTimezone: true }),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
 })

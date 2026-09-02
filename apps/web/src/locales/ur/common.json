@@ -62,7 +62,18 @@
     "detailsSaved": "کام کی تفصیلات اپ ڈیٹ ہو گئیں",
     "noPriceSet": "کوئی قیمت مقرر نہیں",
     "noPhoneSet": "کوئی فون نمبر مقرر نہیں",
-    "detailsHeading": "کام کی تفصیلات"
+    "detailsHeading": "کام کی تفصیلات",
+    "addressLabel": "پتہ",
+    "addressNone": "کوئی پتہ نہیں",
+    "addressAddNew": "+ نیا پتہ شامل کریں",
+    "addressLabelPlaceholder": "لیبل (مثلاً مرکزی دفتر)",
+    "addressLine1Placeholder": "پتہ",
+    "addressTypeHome": "گھر",
+    "addressTypeOffice": "دفتر",
+    "scheduledAtLabel": "طے شدہ وقت (اختیاری)",
+    "scheduleWarningOffice": "دفاتر ہفتہ اور اتوار کو بند ہوتے ہیں — کوئی ہفتے کا دن منتخب کریں۔",
+    "scheduleWarningHome": "گھر عام طور پر کام کے اوقات (صبح 9 سے شام 6) کے دوران خالی ہوتے ہیں — کوئی اور وقت منتخب کریں۔",
+    "scheduleConflictBlocked": "کام بنانے سے پہلے براہ کرم کوئی اور وقت منتخب کریں۔"
   },
   "technician": {
     "markDone": "مکمل نشان زد کریں",

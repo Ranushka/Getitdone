@@ -62,7 +62,18 @@
     "detailsSaved": "Job details updated",
     "noPriceSet": "No price set",
     "noPhoneSet": "No phone number set",
-    "detailsHeading": "Job details"
+    "detailsHeading": "Job details",
+    "addressLabel": "Address",
+    "addressNone": "No address",
+    "addressAddNew": "+ Add new address",
+    "addressLabelPlaceholder": "Label (e.g. Main office)",
+    "addressLine1Placeholder": "Address",
+    "addressTypeHome": "Home",
+    "addressTypeOffice": "Office",
+    "scheduledAtLabel": "Scheduled visit (optional)",
+    "scheduleWarningOffice": "Offices are closed on weekends — pick a weekday.",
+    "scheduleWarningHome": "Homes are usually empty during working hours (9am–6pm) — pick a different time.",
+    "scheduleConflictBlocked": "Please pick a different time before creating the job."
   },
   "technician": {
     "markDone": "Mark done",

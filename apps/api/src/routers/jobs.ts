@@ -2,13 +2,14 @@ import { eq, and, desc } from 'drizzle-orm'
 import { TRPCError } from '@trpc/server'
 import { router, authenticatedProcedure } from '../trpc.js'
 import { db } from '../db/index.js'
-import { jobs, checklistItems, attachments, signOffs } from '@getitdone/db'
+import { jobs, checklistItems, attachments, signOffs, addresses } from '@getitdone/db'
 import {
   createJobSchema,
   addItemSchema,
   jobIdParamSchema,
   signOffSchema,
   updateJobDetailsSchema,
+  isValidScheduleForAddressType,
 } from '@getitdone/shared'
 import { writeJobPdf } from '../services/pdf/writeJobPdf.js'
 
@@ -46,6 +47,9 @@ export const jobsRouter = router({
 
   get: authenticatedProcedure.input(jobIdParamSchema).query(async ({ input, ctx }) => {
     const job = await loadOwnedJob(input.id, ctx.user.sub)
+    const address = job.addressId
+      ? (await db.select().from(addresses).where(eq(addresses.id, job.addressId)))[0]
+      : null
     const items = await db
       .select()
       .from(checklistItems)
@@ -61,10 +65,39 @@ export const jobsRouter = router({
 
     const jobSignOffs = await db.select().from(signOffs).where(eq(signOffs.jobId, job.id))
 
-    return { ...job, items: itemsWithAttachments, signOffs: jobSignOffs }
+    return { ...job, address, items: itemsWithAttachments, signOffs: jobSignOffs }
   }),
 
   create: authenticatedProcedure.input(createJobSchema).mutation(async ({ input, ctx }) => {
+    // Resolve the address: either a saved one the manager already owns, or
+    // a new one added inline (saved to their address book for next time).
+    let addressId: number | undefined
+    let addressType: 'home' | 'office' | undefined
+    if (input.addressId) {
+      const [existing] = await db
+        .select()
+        .from(addresses)
+        .where(and(eq(addresses.id, input.addressId), eq(addresses.managerId, ctx.user.sub)))
+      if (!existing) throw new TRPCError({ code: 'NOT_FOUND', message: 'Address not found' })
+      addressId = existing.id
+      addressType = existing.type
+    } else if (input.newAddress) {
+      const [created] = await db
+        .insert(addresses)
+        .values({ ...input.newAddress, managerId: ctx.user.sub })
+        .returning()
+      addressId = created.id
+      addressType = created.type
+    }
+
+    if (input.scheduledAt && addressType && !isValidScheduleForAddressType(addressType, new Date(input.scheduledAt))) {
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message:
+          'Offices are closed on weekends and homes are empty during working hours (9am-6pm) — pick a different time',
+      })
+    }
+
     const [job] = await db
       .insert(jobs)
       .values({
@@ -73,6 +106,8 @@ export const jobsRouter = router({
         price: input.price !== undefined ? String(input.price) : undefined,
         technicianPhone: input.technicianPhone,
         managerId: ctx.user.sub,
+        addressId,
+        scheduledAt: input.scheduledAt ? new Date(input.scheduledAt) : undefined,
       })
       .returning()
 

@@ -10,6 +10,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent } from '@/components/ui/card'
 import { CameraCaptureButton, type CapturedPhoto } from '@/components/shared/CameraCaptureButton'
+import { AddressAndScheduleFields, type AddressAndScheduleValue } from '@/components/shared/AddressAndScheduleFields'
 
 interface ItemDraft {
   title: string
@@ -39,6 +40,7 @@ export function NewJobPage() {
   const [price, setPrice] = useState('')
   const [technicianPhone, setTechnicianPhone] = useState('')
   const [items, setItems] = useState<ItemDraft[]>([{ title: '', attachmentUrls: [], uploading: false }])
+  const [addressAndSchedule, setAddressAndSchedule] = useState<AddressAndScheduleValue>({ hasScheduleConflict: false })
   const [smartAdding, setSmartAdding] = useState(false)
   const itemInputRefs = useRef<(HTMLInputElement | null)[]>([])
   const focusIndexRef = useRef<number | null>(null)
@@ -107,6 +109,10 @@ export function NewJobPage() {
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
+    if (addressAndSchedule.hasScheduleConflict) {
+      toast.error(t('jobs.scheduleConflictBlocked'))
+      return
+    }
     const cleanItems = items.filter((it) => it.title.trim().length > 0)
     createJob.mutate({
       title,
@@ -114,6 +120,9 @@ export function NewJobPage() {
       price: price.trim() ? Number(price) : undefined,
       technicianPhone: technicianPhone.trim() || undefined,
       items: cleanItems.map((it) => ({ title: it.title, attachmentUrls: it.attachmentUrls })),
+      addressId: addressAndSchedule.addressId,
+      newAddress: addressAndSchedule.newAddress,
+      scheduledAt: addressAndSchedule.scheduledAt,
     })
   }
 
@@ -153,6 +162,8 @@ export function NewJobPage() {
             />
           </div>
         </div>
+
+        <AddressAndScheduleFields onChange={setAddressAndSchedule} />
 
         <div className="flex flex-col gap-2">
           <Label>{t('jobs.checklistItemsLabel')}</Label>
@@ -217,7 +228,7 @@ export function NewJobPage() {
           </div>
         </div>
 
-        <Button type="submit" disabled={createJob.isPending || !title.trim()}>
+        <Button type="submit" disabled={createJob.isPending || !title.trim() || addressAndSchedule.hasScheduleConflict}>
           {t('jobs.createJob')}
         </Button>
       </form>

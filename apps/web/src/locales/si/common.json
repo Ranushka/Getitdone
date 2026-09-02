@@ -62,7 +62,18 @@
     "detailsSaved": "රැකියා විස්තර යාවත්කාලීන කරන ලදී",
     "noPriceSet": "මිලක් සකසා නැත",
     "noPhoneSet": "දුරකථන අංකයක් සකසා නැත",
-    "detailsHeading": "රැකියා විස්තර"
+    "detailsHeading": "රැකියා විස්තර",
+    "addressLabel": "ලිපිනය",
+    "addressNone": "ලිපිනයක් නැත",
+    "addressAddNew": "+ නව ලිපිනයක් එක් කරන්න",
+    "addressLabelPlaceholder": "නම (උදා: ප්‍රධාන කාර්යාලය)",
+    "addressLine1Placeholder": "ලිපිනය",
+    "addressTypeHome": "නිවස",
+    "addressTypeOffice": "කාර්යාලය",
+    "scheduledAtLabel": "නියමිත සංචාරය (විකල්පයි)",
+    "scheduleWarningOffice": "කාර්යාල සති අන්තයේ වසා ඇත — සතියේ දිනයක් තෝරන්න.",
+    "scheduleWarningHome": "නිවාස සාමාන්‍යයෙන් රැකියා වේලාවන්හිදී (උදේ 9 සිට සවස 6) හිස්ව පවතී — වෙනත් වේලාවක් තෝරන්න.",
+    "scheduleConflictBlocked": "රැකියාව සෑදීමට පෙර කරුණාකර වෙනත් වේලාවක් තෝරන්න."
   },
   "technician": {
     "markDone": "සම්පූර්ණ ලෙස සලකුණු කරන්න",

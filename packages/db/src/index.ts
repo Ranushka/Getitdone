@@ -2,6 +2,7 @@ import { createInsertSchema, createSelectSchema } from 'drizzle-zod'
 
 // ── table + enum re-exports ────────────────────────────────────────────────
 export * from './schema/users.js'
+export * from './schema/addresses.js'
 export * from './schema/jobs.js'
 export * from './schema/checklist-items.js'
 export * from './schema/attachments.js'
@@ -10,6 +11,7 @@ export * from './schema/translations.js'
 
 // ── combined schema object (pass to drizzle()) ────────────────────────────
 import * as usersSchema from './schema/users.js'
+import * as addressesSchema from './schema/addresses.js'
 import * as jobsSchema from './schema/jobs.js'
 import * as checklistItemsSchema from './schema/checklist-items.js'
 import * as attachmentsSchema from './schema/attachments.js'
@@ -18,6 +20,7 @@ import * as translationsSchema from './schema/translations.js'
 
 export const schema = {
   ...usersSchema,
+  ...addressesSchema,
   ...jobsSchema,
   ...checklistItemsSchema,
   ...attachmentsSchema,
@@ -28,6 +31,9 @@ export const schema = {
 // ── drizzle-zod generated schemas ─────────────────────────────────────────
 export const insertUserSchema = createInsertSchema(usersSchema.users)
 export const selectUserSchema = createSelectSchema(usersSchema.users)
+
+export const insertAddressSchema = createInsertSchema(addressesSchema.addresses)
+export const selectAddressSchema = createSelectSchema(addressesSchema.addresses)
 
 export const insertJobSchema = createInsertSchema(jobsSchema.jobs)
 export const selectJobSchema = createSelectSchema(jobsSchema.jobs)

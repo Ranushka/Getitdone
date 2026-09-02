@@ -90,6 +90,13 @@ export function JobDetailPage({ jobId }: { jobId: number }) {
           <TranslatableText text={job.notes} />
         </p>
       ) : null}
+      {job.address || job.scheduledAt ? (
+        <p className="text-sm text-muted-foreground">
+          {job.address ? `${job.address.label} — ${job.address.line1}` : null}
+          {job.address && job.scheduledAt ? ' · ' : null}
+          {job.scheduledAt ? formatDateTime(job.scheduledAt) : null}
+        </p>
+      ) : null}
 
       <ShareLinkBox shareToken={job.shareToken} technicianPhone={job.technicianPhone} />
 

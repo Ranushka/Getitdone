@@ -62,7 +62,18 @@
     "detailsSaved": "تم تحديث تفاصيل المهمة",
     "noPriceSet": "لم يتم تحديد سعر",
     "noPhoneSet": "لم يتم تحديد رقم هاتف",
-    "detailsHeading": "تفاصيل المهمة"
+    "detailsHeading": "تفاصيل المهمة",
+    "addressLabel": "العنوان",
+    "addressNone": "بدون عنوان",
+    "addressAddNew": "+ إضافة عنوان جديد",
+    "addressLabelPlaceholder": "الاسم (مثال: المكتب الرئيسي)",
+    "addressLine1Placeholder": "العنوان",
+    "addressTypeHome": "منزل",
+    "addressTypeOffice": "مكتب",
+    "scheduledAtLabel": "موعد الزيارة (اختياري)",
+    "scheduleWarningOffice": "المكاتب مغلقة في عطلة نهاية الأسبوع — اختر يوم عمل.",
+    "scheduleWarningHome": "المنازل عادة فارغة خلال ساعات العمل (9 صباحًا-6 مساءً) — اختر وقتًا آخر.",
+    "scheduleConflictBlocked": "يرجى اختيار وقت آخر قبل إنشاء المهمة."
   },
   "technician": {
     "markDone": "وضع علامة \"تم\"",
