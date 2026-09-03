@@ -43,6 +43,13 @@
       "when": 1788418649896,
       "tag": "0005_equal_lyja",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1788423111976,
+      "tag": "0006_clever_azazel",
+      "breakpoints": true
     }
   ]
 }

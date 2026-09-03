@@ -74,7 +74,11 @@
     "scheduleWarningOffice": "المكاتب مغلقة في عطلة نهاية الأسبوع — اختر يوم عمل.",
     "scheduleWarningHome": "المنازل عادة فارغة خلال ساعات العمل (9 صباحًا-6 مساءً) — اختر وقتًا آخر.",
     "scheduleConflictBlocked": "يرجى اختيار وقت آخر قبل إنشاء المهمة.",
-    "needsToolsAndPartsLabel": "هذه المهمة تحتاج أدوات وقطع غيار"
+    "needsToolsAndPartsLabel": "هذه المهمة تحتاج أدوات وقطع غيار",
+    "loadTemplate": "تحميل قالب",
+    "saveAsTemplate": "حفظ كقالب",
+    "templateNameLabel": "اسم القالب",
+    "templateSaved": "تم حفظ القالب"
   },
   "technician": {
     "toolsAndPartsNotice": "أحضر الأدوات وقطع الغيار لهذه المهمة",

@@ -74,7 +74,11 @@
     "scheduleWarningOffice": "කාර්යාල සති අන්තයේ වසා ඇත — සතියේ දිනයක් තෝරන්න.",
     "scheduleWarningHome": "නිවාස සාමාන්‍යයෙන් රැකියා වේලාවන්හිදී (උදේ 9 සිට සවස 6) හිස්ව පවතී — වෙනත් වේලාවක් තෝරන්න.",
     "scheduleConflictBlocked": "රැකියාව සෑදීමට පෙර කරුණාකර වෙනත් වේලාවක් තෝරන්න.",
-    "needsToolsAndPartsLabel": "මෙම රැකියාවට මෙවලම් සහ අමතර කොටස් අවශ්‍යයි"
+    "needsToolsAndPartsLabel": "මෙම රැකියාවට මෙවලම් සහ අමතර කොටස් අවශ්‍යයි",
+    "loadTemplate": "ආකෘතියක් පූරණය කරන්න",
+    "saveAsTemplate": "ආකෘතියක් ලෙස සුරකින්න",
+    "templateNameLabel": "ආකෘති නම",
+    "templateSaved": "ආකෘතිය සුරකින ලදී"
   },
   "technician": {
     "toolsAndPartsNotice": "මෙම රැකියාව සඳහා මෙවලම් සහ අමතර කොටස් රැගෙන එන්න",

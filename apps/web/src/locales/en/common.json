@@ -74,7 +74,11 @@
     "scheduleWarningOffice": "Offices are closed on weekends — pick a weekday.",
     "scheduleWarningHome": "Homes are usually empty during working hours (9am–6pm) — pick a different time.",
     "scheduleConflictBlocked": "Please pick a different time before creating the job.",
-    "needsToolsAndPartsLabel": "This job needs tools & parts"
+    "needsToolsAndPartsLabel": "This job needs tools & parts",
+    "loadTemplate": "Load template",
+    "saveAsTemplate": "Save as template",
+    "templateNameLabel": "Template name",
+    "templateSaved": "Template saved"
   },
   "technician": {
     "toolsAndPartsNotice": "Bring tools & parts for this job",

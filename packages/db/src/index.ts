@@ -8,6 +8,7 @@ export * from './schema/checklist-items.js'
 export * from './schema/attachments.js'
 export * from './schema/sign-offs.js'
 export * from './schema/translations.js'
+export * from './schema/job-templates.js'
 
 // ── combined schema object (pass to drizzle()) ────────────────────────────
 import * as usersSchema from './schema/users.js'
@@ -17,6 +18,7 @@ import * as checklistItemsSchema from './schema/checklist-items.js'
 import * as attachmentsSchema from './schema/attachments.js'
 import * as signOffsSchema from './schema/sign-offs.js'
 import * as translationsSchema from './schema/translations.js'
+import * as jobTemplatesSchema from './schema/job-templates.js'
 
 export const schema = {
   ...usersSchema,
@@ -26,6 +28,7 @@ export const schema = {
   ...attachmentsSchema,
   ...signOffsSchema,
   ...translationsSchema,
+  ...jobTemplatesSchema,
 }
 
 // ── drizzle-zod generated schemas ─────────────────────────────────────────
@@ -49,3 +52,9 @@ export const selectSignOffSchema = createSelectSchema(signOffsSchema.signOffs)
 
 export const insertTranslationSchema = createInsertSchema(translationsSchema.translations)
 export const selectTranslationSchema = createSelectSchema(translationsSchema.translations)
+
+export const insertJobTemplateSchema = createInsertSchema(jobTemplatesSchema.jobTemplates)
+export const selectJobTemplateSchema = createSelectSchema(jobTemplatesSchema.jobTemplates)
+
+export const insertJobTemplateItemSchema = createInsertSchema(jobTemplatesSchema.jobTemplateItems)
+export const selectJobTemplateItemSchema = createSelectSchema(jobTemplatesSchema.jobTemplateItems)

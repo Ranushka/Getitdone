@@ -74,7 +74,11 @@
     "scheduleWarningOffice": "دفاتر ہفتہ اور اتوار کو بند ہوتے ہیں — کوئی ہفتے کا دن منتخب کریں۔",
     "scheduleWarningHome": "گھر عام طور پر کام کے اوقات (صبح 9 سے شام 6) کے دوران خالی ہوتے ہیں — کوئی اور وقت منتخب کریں۔",
     "scheduleConflictBlocked": "کام بنانے سے پہلے براہ کرم کوئی اور وقت منتخب کریں۔",
-    "needsToolsAndPartsLabel": "اس کام کے لیے اوزار اور پرزے درکار ہیں"
+    "needsToolsAndPartsLabel": "اس کام کے لیے اوزار اور پرزے درکار ہیں",
+    "loadTemplate": "ٹیمپلیٹ لوڈ کریں",
+    "saveAsTemplate": "ٹیمپلیٹ کے طور پر محفوظ کریں",
+    "templateNameLabel": "ٹیمپلیٹ کا نام",
+    "templateSaved": "ٹیمپلیٹ محفوظ ہو گیا"
   },
   "technician": {
     "toolsAndPartsNotice": "اس کام کے لیے اوزار اور پرزے ساتھ لائیں",
