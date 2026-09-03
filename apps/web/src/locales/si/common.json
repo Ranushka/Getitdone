@@ -75,8 +75,7 @@
     "scheduleWarningHome": "නිවාස සාමාන්‍යයෙන් රැකියා වේලාවන්හිදී (උදේ 9 සිට සවස 6) හිස්ව පවතී — වෙනත් වේලාවක් තෝරන්න.",
     "scheduleConflictBlocked": "රැකියාව සෑදීමට පෙර කරුණාකර වෙනත් වේලාවක් තෝරන්න.",
     "needsToolsAndPartsLabel": "මෙම රැකියාවට මෙවලම් සහ අමතර කොටස් අවශ්‍යයි",
-    "loadTemplate": "ආකෘතියක් පූරණය කරන්න",
-    "manageTemplates": "ආකෘති කළමනාකරණය"
+    "loadTemplate": "ආකෘතියක් පූරණය කරන්න"
   },
   "technician": {
     "toolsAndPartsNotice": "මෙම රැකියාව සඳහා මෙවලම් සහ අමතර කොටස් රැගෙන එන්න",

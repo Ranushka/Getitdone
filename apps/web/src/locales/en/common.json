@@ -75,8 +75,7 @@
     "scheduleWarningHome": "Homes are usually empty during working hours (9am–6pm) — pick a different time.",
     "scheduleConflictBlocked": "Please pick a different time before creating the job.",
     "needsToolsAndPartsLabel": "This job needs tools & parts",
-    "loadTemplate": "Load template",
-    "manageTemplates": "Manage templates"
+    "loadTemplate": "Load template"
   },
   "technician": {
     "toolsAndPartsNotice": "Bring tools & parts for this job",

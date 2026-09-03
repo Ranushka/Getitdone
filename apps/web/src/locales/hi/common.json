@@ -75,8 +75,7 @@
     "scheduleWarningHome": "घर आमतौर पर कार्य के घंटों (सुबह 9 से शाम 6) के दौरान खाली रहते हैं — कोई और समय चुनें।",
     "scheduleConflictBlocked": "कार्य बनाने से पहले कृपया कोई और समय चुनें।",
     "needsToolsAndPartsLabel": "इस कार्य के लिए औज़ार और पुर्ज़े चाहिए",
-    "loadTemplate": "टेम्पलेट लोड करें",
-    "manageTemplates": "टेम्पलेट प्रबंधित करें"
+    "loadTemplate": "टेम्पलेट लोड करें"
   },
   "technician": {
     "toolsAndPartsNotice": "इस कार्य के लिए औज़ार और पुर्ज़े साथ लाएं",

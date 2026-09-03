@@ -75,8 +75,7 @@
     "scheduleWarningHome": "المنازل عادة فارغة خلال ساعات العمل (9 صباحًا-6 مساءً) — اختر وقتًا آخر.",
     "scheduleConflictBlocked": "يرجى اختيار وقت آخر قبل إنشاء المهمة.",
     "needsToolsAndPartsLabel": "هذه المهمة تحتاج أدوات وقطع غيار",
-    "loadTemplate": "تحميل قالب",
-    "manageTemplates": "إدارة القوالب"
+    "loadTemplate": "تحميل قالب"
   },
   "technician": {
     "toolsAndPartsNotice": "أحضر الأدوات وقطع الغيار لهذه المهمة",

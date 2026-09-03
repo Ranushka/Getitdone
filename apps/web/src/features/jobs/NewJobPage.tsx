@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Link, useNavigate } from '@tanstack/react-router'
+import { useNavigate } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import { Plus, Trash2, Wand2, ClipboardList } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
@@ -213,9 +213,6 @@ export function NewJobPage() {
                   </DropdownMenuContent>
                 </DropdownMenu>
               ) : null}
-              <Button type="button" variant="outline" size="sm" asChild>
-                <Link to="/templates">{t('jobs.manageTemplates')}</Link>
-              </Button>
             </div>
           </div>
           {items.map((item, i) => (
