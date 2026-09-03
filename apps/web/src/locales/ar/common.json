@@ -91,6 +91,7 @@
     "signatureClear": "مسح",
     "signatureRequired": "يرجى التوقيع قبل الإرسال",
     "confirmationHint": "بعد الانتهاء، يُرجى رفع صورة لتأكيد إنجاز العمل.",
+    "photoRequiredToast": "أرفق صورة لتأكيد العمل قبل تحديده كمنجز",
     "noPhotoYet": "لا توجد صورة بعد"
   },
   "share": {

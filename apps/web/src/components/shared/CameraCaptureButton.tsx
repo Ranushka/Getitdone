@@ -1,10 +1,17 @@
-import { useRef, useState } from 'react'
+import { forwardRef, useImperativeHandle, useRef, useState } from 'react'
 import { Paperclip, X, Camera as CameraIcon, type LucideIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 export interface CapturedPhoto {
   file: File
   dataUrl: string
+}
+
+export interface CameraCaptureButtonHandle {
+  /** Opens the same file picker / camera overlay a tap on the button would —
+   * lets a parent prompt for a photo from its own UI (e.g. a "Done" action
+   * that requires one) without needing a second, hidden trigger element. */
+  open: () => void
 }
 
 /**
@@ -20,24 +27,29 @@ export interface CapturedPhoto {
  * regardless of device, since it's a distinct feature (AI-generated
  * checklist item), not a plain attach control.
  */
-export function CameraCaptureButton({
-  onCapture,
-  icon: IconOverride,
-  label = 'Capture photo',
-  size = 'default',
-}: {
+export const CameraCaptureButton = forwardRef<CameraCaptureButtonHandle, {
   onCapture: (photo: CapturedPhoto) => void
   icon?: LucideIcon
   label?: string
   /** Matches Button's sm (h-9) vs default (h-10) heights so this lines up
    * with adjacent Button components instead of always being 4px taller. */
   size?: 'default' | 'sm'
-}) {
+}>(function CameraCaptureButton(
+  { onCapture, icon: IconOverride, label = 'Capture photo', size = 'default' },
+  ref,
+) {
   const isTouchDevice =
     typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [cameraOpen, setCameraOpen] = useState(false)
   const Icon = IconOverride ?? (isTouchDevice ? CameraIcon : Paperclip)
+
+  function open() {
+    if (isTouchDevice) setCameraOpen(true)
+    else fileInputRef.current?.click()
+  }
+
+  useImperativeHandle(ref, () => ({ open }))
 
   function handleFilePicked(files: FileList | null) {
     const file = files?.[0]
@@ -53,7 +65,7 @@ export function CameraCaptureButton({
         type="button"
         aria-label={label}
         title={label}
-        onClick={() => (isTouchDevice ? setCameraOpen(true) : fileInputRef.current?.click())}
+        onClick={open}
         className={cn(
           'inline-flex shrink-0 items-center justify-center rounded-lg border border-input bg-card text-muted-foreground hover:bg-secondary hover:text-foreground',
           size === 'sm' ? 'size-9' : 'size-10',
@@ -79,7 +91,7 @@ export function CameraCaptureButton({
       ) : null}
     </>
   )
-}
+})
 
 function CameraOverlay({
   onClose,

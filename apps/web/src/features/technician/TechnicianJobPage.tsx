@@ -11,7 +11,11 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
 import { ProgressBar } from '@/components/shared/ProgressBar'
 import { LanguageSwitcher } from '@/components/shared/LanguageSwitcher'
-import { CameraCaptureButton, type CapturedPhoto } from '@/components/shared/CameraCaptureButton'
+import {
+  CameraCaptureButton,
+  type CapturedPhoto,
+  type CameraCaptureButtonHandle,
+} from '@/components/shared/CameraCaptureButton'
 import { SignaturePad, type SignaturePadHandle } from '@/components/shared/SignaturePad'
 import { cn } from '@/lib/utils'
 
@@ -68,6 +72,7 @@ export function TechnicianJobPage({ token }: { token: string }) {
   const [signOffName, setSignOffName] = useState('')
   const [signingOff, setSigningOff] = useState(false)
   const [lightboxUrl, setLightboxUrl] = useState<string | null>(null)
+  const captureButtonRefs = useRef<Record<number, CameraCaptureButtonHandle | null>>({})
   const signaturePadRef = useRef<SignaturePadHandle>(null)
   const [hasSignature, setHasSignature] = useState(false)
 
@@ -106,6 +111,21 @@ export function TechnicianJobPage({ token }: { token: string }) {
 
   function invalidate() {
     return queryClient.invalidateQueries({ queryKey })
+  }
+
+  function handleToggleDone(item: TechItem) {
+    if (item.status === 'done') {
+      updateItem(item.id, { status: 'pending' })
+      return
+    }
+    // Marking done requires photo confirmation — if none is attached yet,
+    // prompt for one instead of completing the item outright.
+    if (item.attachments.length === 0) {
+      toast.error(t('technician.photoRequiredToast'))
+      captureButtonRefs.current[item.id]?.open()
+      return
+    }
+    updateItem(item.id, { status: 'done' })
   }
 
   async function updateItem(itemId: number, patch: { comment?: string; status?: 'pending' | 'done' }) {
@@ -261,17 +281,7 @@ export function TechnicianJobPage({ token }: { token: string }) {
                 </div>
               )}
 
-              <div className="flex items-center justify-between gap-2">
-                <span className="font-medium">{displayText(item.title)}</span>
-                <Button
-                  type="button"
-                  variant={item.status === 'done' ? 'default' : 'outline'}
-                  size="sm"
-                  onClick={() => updateItem(item.id, { status: item.status === 'done' ? 'pending' : 'done' })}
-                >
-                  <Check /> {item.status === 'done' ? t('technician.done') : t('technician.markDone')}
-                </Button>
-              </div>
+              <span className="font-medium">{displayText(item.title)}</span>
 
               <Textarea
                 key={`${item.id}-${item.comment ?? ''}`}
@@ -284,10 +294,21 @@ export function TechnicianJobPage({ token }: { token: string }) {
 
               <div className="flex items-center gap-2">
                 <CameraCaptureButton
+                  ref={(handle) => {
+                    captureButtonRefs.current[item.id] = handle
+                  }}
                   label={t('common.attachPhotoVideo')}
                   onCapture={(photo) => handleCameraCapture(item.id, photo)}
                 />
               </div>
+
+              <Button
+                type="button"
+                variant={item.status === 'done' ? 'default' : 'outline'}
+                onClick={() => handleToggleDone(item)}
+              >
+                <Check /> {item.status === 'done' ? t('technician.done') : t('technician.markDone')}
+              </Button>
             </CardContent>
           </Card>
         ))}

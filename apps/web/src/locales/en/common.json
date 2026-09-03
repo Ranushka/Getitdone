@@ -91,6 +91,7 @@
     "signatureClear": "Clear",
     "signatureRequired": "Please sign before submitting",
     "confirmationHint": "Once done, please upload a photo to confirm the work.",
+    "photoRequiredToast": "Attach a photo to confirm the work before marking it done",
     "noPhotoYet": "No photo yet"
   },
   "share": {
