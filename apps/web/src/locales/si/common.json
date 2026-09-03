@@ -50,6 +50,10 @@
     "createJob": "රැකියාව සාදන්න",
     "addChecklistItemPlaceholder": "කාර්ය ලැයිස්තු අයිතමයක් එක් කරන්න…",
     "generatePdf": "PDF වාර්තාව සාදන්න",
+    "sendReminder": "මතක් කිරීමක් යවන්න",
+    "sendInvoice": "ඉන්වොයිසිය යවන්න",
+    "reminderSent": "මතක් කිරීම යවන ලදී",
+    "invoiceSent": "ඉන්වොයිසිය යවන ලදී",
     "generatingPdf": "සාදමින්…",
     "jobCompleted": "රැකියාව සම්පූර්ණයි",
     "smartAddItem": "ඡායාරූපයෙන් අයිතමයක් එකතු කරන්න",
@@ -199,5 +203,15 @@
     "created": "ආකෘතිය සුරකින ලදී",
     "deleted": "ආකෘතිය මකා දමන ලදී",
     "noTemplatesYet": "තවම ආකෘති නොමැත."
+  },
+  "whatsapp": {
+    "navLabel": "WhatsApp",
+    "heading": "WhatsApp",
+    "explainer": "රැකියා මතක් කිරීම් සහ ඉන්වොයිසි ස්වයංක්‍රීයව යැවීමට මෙහි WhatsApp අංකයක් සම්බන්ධ කරන්න.",
+    "connected": "සම්බන්ධයි",
+    "rePair": "විසන්ධි කරන්න / වෙනත් අංකයක් සම්බන්ධ කරන්න",
+    "scanAlt": "WhatsApp සම්බන්ධතා QR කේතය",
+    "scanInstructions": "ඔබේ දුරකථනයේ WhatsApp විවෘත කරන්න → සම්බන්ධිත උපාංග → උපාංගයක් සම්බන්ධ කරන්න, පසුව මෙම කේතය පරිලෝකනය කරන්න.",
+    "waitingForQr": "QR කේතයක් සඳහා රැඳී සිටිමින්…"
   }
 }

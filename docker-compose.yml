@@ -23,6 +23,7 @@ services:
       NODE_ENV: production
       WEB_ORIGIN: ${GETITDONE_WEB_ORIGIN}
       UPLOADS_DIR: /repo/apps/api/uploads
+      WHATSAPP_AUTH_DIR: /repo/apps/api/whatsapp-auth
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
       GOOGLE_REDIRECT_URI: ${GOOGLE_REDIRECT_URI}
@@ -33,6 +34,7 @@ services:
       - "3659:3659"
     volumes:
       - getitdone-uploads:/repo/apps/api/uploads
+      - getitdone-whatsapp-auth:/repo/apps/api/whatsapp-auth
 
   web:
     build:
@@ -55,3 +57,6 @@ volumes:
   getitdone-uploads:
     external: true
     name: getitdone_getitdone-uploads
+  getitdone-whatsapp-auth:
+    external: true
+    name: getitdone_getitdone-whatsapp-auth

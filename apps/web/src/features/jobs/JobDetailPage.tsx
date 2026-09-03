@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { toast } from 'sonner'
-import { FileText, Plus } from 'lucide-react'
+import { FileText, Plus, Bell, Receipt } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { trpc } from '@/lib/trpc'
 import { Button } from '@/components/ui/button'
@@ -46,6 +46,16 @@ export function JobDetailPage({ jobId }: { jobId: number }) {
 
   const generatePdf = trpc.jobs.generatePdf.useMutation({
     onSuccess: (result) => window.open(result.pdfUrl, '_blank'),
+    onError: (err) => toast.error(err.message),
+  })
+
+  const sendReminder = trpc.jobs.sendReminder.useMutation({
+    onSuccess: () => toast.success(t('jobs.reminderSent')),
+    onError: (err) => toast.error(err.message),
+  })
+
+  const sendInvoice = trpc.jobs.sendInvoice.useMutation({
+    onSuccess: () => toast.success(t('jobs.invoiceSent')),
     onError: (err) => toast.error(err.message),
   })
 
@@ -248,6 +258,25 @@ export function JobDetailPage({ jobId }: { jobId: number }) {
           ) : null}
         </CardContent>
       </Card>
+
+      <div className="flex flex-col gap-2 sm:flex-row">
+        <Button
+          variant="outline"
+          className="flex-1"
+          onClick={() => sendReminder.mutate({ id: jobId })}
+          disabled={!job.technicianPhone || sendReminder.isPending}
+        >
+          <Bell /> {t('jobs.sendReminder')}
+        </Button>
+        <Button
+          variant="outline"
+          className="flex-1"
+          onClick={() => sendInvoice.mutate({ id: jobId })}
+          disabled={!job.technicianPhone || !job.price || sendInvoice.isPending}
+        >
+          <Receipt /> {t('jobs.sendInvoice')}
+        </Button>
+      </div>
 
       <Button variant="outline" onClick={() => generatePdf.mutate({ id: jobId })} disabled={generatePdf.isPending}>
         <FileText /> {generatePdf.isPending ? t('jobs.generatingPdf') : t('jobs.generatePdf')}

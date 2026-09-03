@@ -14,6 +14,7 @@ import {
 } from '@getitdone/shared'
 import { writeJobPdf } from '../services/pdf/writeJobPdf.js'
 import { saveFile } from '../services/storage.js'
+import { sendWhatsAppMessage, WhatsAppNotConnectedError } from '../services/whatsapp.js'
 
 async function loadOwnedJob(jobId: number, managerId: number) {
   const [job] = await db
@@ -22,6 +23,24 @@ async function loadOwnedJob(jobId: number, managerId: number) {
     .where(and(eq(jobs.id, jobId), eq(jobs.managerId, managerId)))
   if (!job) throw new TRPCError({ code: 'NOT_FOUND', message: 'Job not found' })
   return job
+}
+
+function requireTechnicianPhone(job: { technicianPhone: string | null }): string {
+  if (!job.technicianPhone) {
+    throw new TRPCError({ code: 'BAD_REQUEST', message: 'No technician phone number set for this job' })
+  }
+  return job.technicianPhone
+}
+
+async function sendOrThrow(phone: string, text: string): Promise<void> {
+  try {
+    await sendWhatsAppMessage(phone, text)
+  } catch (err) {
+    if (err instanceof WhatsAppNotConnectedError) {
+      throw new TRPCError({ code: 'PRECONDITION_FAILED', message: err.message })
+    }
+    throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Failed to send WhatsApp message' })
+  }
 }
 
 // Minimal RFC 4180 quoting — wrap in quotes and escape embedded quotes
@@ -230,5 +249,37 @@ export const jobsRouter = router({
 
     const csvUrl = await saveFile('jobs-report', 'text/csv', Buffer.from(lines.join('\n'), 'utf-8'))
     return { csvUrl }
+  }),
+
+  sendReminder: authenticatedProcedure.input(jobIdParamSchema).mutation(async ({ input, ctx }) => {
+    const job = await loadOwnedJob(input.id, ctx.user.sub)
+    const phone = requireTechnicianPhone(job)
+
+    const lines = [`Reminder: "${job.title}"`]
+    if (job.scheduledAt) lines.push(`Scheduled: ${job.scheduledAt.toLocaleString()}`)
+    if (job.notes) lines.push(job.notes)
+
+    await sendOrThrow(phone, lines.join('\n'))
+    return { success: true }
+  }),
+
+  sendInvoice: authenticatedProcedure.input(jobIdParamSchema).mutation(async ({ input, ctx }) => {
+    const job = await loadOwnedJob(input.id, ctx.user.sub)
+    const phone = requireTechnicianPhone(job)
+    if (!job.price) {
+      throw new TRPCError({ code: 'BAD_REQUEST', message: 'Set a price for this job before sending an invoice' })
+    }
+
+    const { pdfUrl } = await writeJobPdf(job.id)
+    const webOrigin = (process.env.WEB_ORIGIN ?? '').split(',')[0]?.trim() ?? ''
+
+    const lines = [
+      `Invoice: "${job.title}"`,
+      `Total: AED ${job.price}`,
+      webOrigin ? `Details: ${webOrigin}${pdfUrl}` : `Details: ${pdfUrl}`,
+    ]
+
+    await sendOrThrow(phone, lines.join('\n'))
+    return { success: true }
   }),
 })

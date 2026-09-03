@@ -50,6 +50,10 @@
     "createJob": "إنشاء المهمة",
     "addChecklistItemPlaceholder": "أضف عنصرًا إلى القائمة…",
     "generatePdf": "إنشاء تقرير PDF",
+    "sendReminder": "إرسال تذكير",
+    "sendInvoice": "إرسال فاتورة",
+    "reminderSent": "تم إرسال التذكير",
+    "invoiceSent": "تم إرسال الفاتورة",
     "generatingPdf": "جارٍ الإنشاء…",
     "jobCompleted": "تم إنجاز المهمة",
     "smartAddItem": "إضافة عنصر من صورة",
@@ -199,5 +203,15 @@
     "created": "تم حفظ القالب",
     "deleted": "تم حذف القالب",
     "noTemplatesYet": "لا توجد قوالب بعد."
+  },
+  "whatsapp": {
+    "navLabel": "واتساب",
+    "heading": "واتساب",
+    "explainer": "اربط رقم واتساب هنا حتى يتم إرسال تذكيرات المهام والفواتير منه تلقائيًا.",
+    "connected": "متصل",
+    "rePair": "قطع الاتصال / ربط رقم آخر",
+    "scanAlt": "رمز QR لربط واتساب",
+    "scanInstructions": "افتح واتساب على هاتفك ← الأجهزة المرتبطة ← ربط جهاز، ثم امسح هذا الرمز.",
+    "waitingForQr": "في انتظار رمز QR…"
   }
 }

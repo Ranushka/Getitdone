@@ -50,6 +50,10 @@
     "createJob": "Create job",
     "addChecklistItemPlaceholder": "Add checklist item…",
     "generatePdf": "Generate PDF report",
+    "sendReminder": "Send reminder",
+    "sendInvoice": "Send invoice",
+    "reminderSent": "Reminder sent",
+    "invoiceSent": "Invoice sent",
     "generatingPdf": "Generating…",
     "jobCompleted": "Job completed",
     "smartAddItem": "Add item from photo",
@@ -199,5 +203,15 @@
     "created": "Template saved",
     "deleted": "Template deleted",
     "noTemplatesYet": "No templates yet."
+  },
+  "whatsapp": {
+    "navLabel": "WhatsApp",
+    "heading": "WhatsApp",
+    "explainer": "Pair a WhatsApp number here so job reminders and invoices can be sent from it automatically.",
+    "connected": "Connected",
+    "rePair": "Disconnect / pair a different number",
+    "scanAlt": "WhatsApp pairing QR code",
+    "scanInstructions": "Open WhatsApp on your phone → Linked devices → Link a device, then scan this code.",
+    "waitingForQr": "Waiting for a QR code…"
   }
 }
