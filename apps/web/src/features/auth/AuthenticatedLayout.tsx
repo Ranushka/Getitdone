@@ -1,6 +1,6 @@
 import { type ReactNode, useEffect } from 'react'
 import { Link, useNavigate } from '@tanstack/react-router'
-import { LogOut } from 'lucide-react'
+import { LogOut, BarChart3 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { trpc } from '@/lib/trpc'
 import { Button } from '@/components/ui/button'
@@ -55,6 +55,15 @@ export function AuthenticatedLayout({ children }: { children: ReactNode }) {
           GetItDone
         </Link>
         <div className="flex items-center gap-3">
+          <Link
+            to="/reports"
+            aria-label={t('reports.navLabel')}
+            title={t('reports.navLabel')}
+            className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground"
+          >
+            <BarChart3 className="size-4" />
+            <span className="hidden sm:inline">{t('reports.navLabel')}</span>
+          </Link>
           <LanguageSwitcher />
           <span className="hidden text-sm text-muted-foreground sm:inline">{user.email}</span>
           <Button variant="ghost" size="sm" onClick={() => logout.mutate()}>

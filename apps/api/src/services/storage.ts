@@ -14,6 +14,7 @@ const EXT_MAP: Record<string, string> = {
   'video/quicktime': '.mov',
   'video/webm': '.webm',
   'application/pdf': '.pdf',
+  'text/csv': '.csv',
 }
 
 function buildKey(prefix: string, mimetype: string): string {

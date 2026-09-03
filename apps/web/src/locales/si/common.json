@@ -182,5 +182,15 @@
     "footerLinkFaq": "නිතර අසන ප්‍රශ්න",
     "footerAccountHeading": "ගිණුම",
     "footerRights": "© {{year}} GetItDone. සියලුම හිමිකම් ඇවිරිණි."
+  },
+  "reports": {
+    "navLabel": "වාර්තා",
+    "heading": "වාර්තා",
+    "fromLabel": "සිට",
+    "toLabel": "දක්වා",
+    "exportCsv": "CSV අපනයනය කරන්න",
+    "totalJobs": "මුළු රැකියා",
+    "completedJobs": "නිම කළ",
+    "totalRevenue": "ආදායම"
   }
 }

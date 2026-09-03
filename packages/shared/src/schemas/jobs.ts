@@ -79,6 +79,15 @@ export const updateChecklistItemSchema = z.object({
 })
 export type UpdateChecklistItemInput = z.infer<typeof updateChecklistItemSchema>
 
+// ── Reporting ────────────────────────────────────────────────────────────
+export const exportJobsCsvSchema = z.object({
+  // ISO datetime strings — both optional, an unset bound means "no limit"
+  // on that side of the range.
+  from: z.string().datetime().optional(),
+  to: z.string().datetime().optional(),
+})
+export type ExportJobsCsvInput = z.infer<typeof exportJobsCsvSchema>
+
 export const addAttachmentSchema = z.object({
   url: z.string().min(1),
 })

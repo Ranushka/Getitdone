@@ -1,4 +1,4 @@
-import { eq, and, desc } from 'drizzle-orm'
+import { eq, and, gte, lte, desc } from 'drizzle-orm'
 import { TRPCError } from '@trpc/server'
 import { router, authenticatedProcedure } from '../trpc.js'
 import { db } from '../db/index.js'
@@ -9,9 +9,11 @@ import {
   jobIdParamSchema,
   signOffSchema,
   updateJobDetailsSchema,
+  exportJobsCsvSchema,
   isValidScheduleForAddressType,
 } from '@getitdone/shared'
 import { writeJobPdf } from '../services/pdf/writeJobPdf.js'
+import { saveFile } from '../services/storage.js'
 
 async function loadOwnedJob(jobId: number, managerId: number) {
   const [job] = await db
@@ -20,6 +22,12 @@ async function loadOwnedJob(jobId: number, managerId: number) {
     .where(and(eq(jobs.id, jobId), eq(jobs.managerId, managerId)))
   if (!job) throw new TRPCError({ code: 'NOT_FOUND', message: 'Job not found' })
   return job
+}
+
+// Minimal RFC 4180 quoting — wrap in quotes and escape embedded quotes
+// whenever a field could otherwise break the column boundary.
+function csvField(value: string): string {
+  return /[",\n]/.test(value) ? `"${value.replace(/"/g, '""')}"` : value
 }
 
 export const jobsRouter = router({
@@ -189,5 +197,38 @@ export const jobsRouter = router({
   generatePdf: authenticatedProcedure.input(jobIdParamSchema).mutation(async ({ input, ctx }) => {
     await loadOwnedJob(input.id, ctx.user.sub)
     return writeJobPdf(input.id)
+  }),
+
+  exportCsv: authenticatedProcedure.input(exportJobsCsvSchema).mutation(async ({ input, ctx }) => {
+    const conditions = [eq(jobs.managerId, ctx.user.sub)]
+    if (input.from) conditions.push(gte(jobs.createdAt, new Date(input.from)))
+    if (input.to) conditions.push(lte(jobs.createdAt, new Date(input.to)))
+
+    const rows = await db
+      .select()
+      .from(jobs)
+      .where(and(...conditions))
+      .orderBy(desc(jobs.createdAt))
+
+    const header = ['Title', 'Status', 'Price (AED)', 'Technician Phone', 'Scheduled At', 'Created At']
+    const lines = [header.join(',')]
+    for (const job of rows) {
+      lines.push(
+        [
+          csvField(job.title),
+          job.status,
+          job.price ?? '',
+          job.technicianPhone ?? '',
+          job.scheduledAt?.toISOString() ?? '',
+          job.createdAt.toISOString(),
+        ]
+          .map(String)
+          .map(csvField)
+          .join(','),
+      )
+    }
+
+    const csvUrl = await saveFile('jobs-report', 'text/csv', Buffer.from(lines.join('\n'), 'utf-8'))
+    return { csvUrl }
   }),
 })

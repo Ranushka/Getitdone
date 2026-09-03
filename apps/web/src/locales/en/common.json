@@ -182,5 +182,15 @@
     "footerLinkFaq": "FAQ",
     "footerAccountHeading": "Account",
     "footerRights": "© {{year}} GetItDone. All rights reserved."
+  },
+  "reports": {
+    "navLabel": "Reports",
+    "heading": "Reports",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "exportCsv": "Export CSV",
+    "totalJobs": "Total jobs",
+    "completedJobs": "Completed",
+    "totalRevenue": "Revenue"
   }
 }

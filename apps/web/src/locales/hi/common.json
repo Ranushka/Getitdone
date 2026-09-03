@@ -182,5 +182,15 @@
     "footerLinkFaq": "अक्सर पूछे जाने वाले प्रश्न",
     "footerAccountHeading": "खाता",
     "footerRights": "© {{year}} GetItDone. सर्वाधिकार सुरक्षित।"
+  },
+  "reports": {
+    "navLabel": "रिपोर्ट",
+    "heading": "रिपोर्ट",
+    "fromLabel": "से",
+    "toLabel": "तक",
+    "exportCsv": "CSV निर्यात करें",
+    "totalJobs": "कुल कार्य",
+    "completedJobs": "पूर्ण",
+    "totalRevenue": "राजस्व"
   }
 }

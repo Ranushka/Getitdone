@@ -182,5 +182,15 @@
     "footerLinkFaq": "الأسئلة الشائعة",
     "footerAccountHeading": "الحساب",
     "footerRights": "© {{year}} GetItDone. جميع الحقوق محفوظة."
+  },
+  "reports": {
+    "navLabel": "التقارير",
+    "heading": "التقارير",
+    "fromLabel": "من",
+    "toLabel": "إلى",
+    "exportCsv": "تصدير CSV",
+    "totalJobs": "إجمالي المهام",
+    "completedJobs": "المنجزة",
+    "totalRevenue": "الإيرادات"
   }
 }

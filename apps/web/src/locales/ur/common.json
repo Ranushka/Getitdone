@@ -182,5 +182,15 @@
     "footerLinkFaq": "اکثر پوچھے گئے سوالات",
     "footerAccountHeading": "اکاؤنٹ",
     "footerRights": "© {{year}} GetItDone۔ جملہ حقوق محفوظ ہیں۔"
+  },
+  "reports": {
+    "navLabel": "رپورٹس",
+    "heading": "رپورٹس",
+    "fromLabel": "سے",
+    "toLabel": "تک",
+    "exportCsv": "CSV ایکسپورٹ کریں",
+    "totalJobs": "کل کام",
+    "completedJobs": "مکمل شدہ",
+    "totalRevenue": "آمدنی"
   }
 }
