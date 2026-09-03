@@ -14,6 +14,7 @@ import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthDashboardRouteImport } from './routes/_auth/dashboard'
 import { Route as AuthReportsRouteImport } from './routes/_auth/reports'
+import { Route as AuthTemplatesRouteImport } from './routes/_auth/templates'
 import { Route as TTokenRouteImport } from './routes/t.$token'
 import { Route as AuthJobsJobIdRouteImport } from './routes/_auth/jobs.$jobId'
 import { Route as AuthJobsNewRouteImport } from './routes/_auth/jobs.new'
@@ -42,6 +43,11 @@ const AuthReportsRoute = AuthReportsRouteImport.update({
   path: '/reports',
   getParentRoute: () => AuthRoute,
 } as any)
+const AuthTemplatesRoute = AuthTemplatesRouteImport.update({
+  id: '/templates',
+  path: '/templates',
+  getParentRoute: () => AuthRoute,
+} as any)
 const TTokenRoute = TTokenRouteImport.update({
   id: '/t/$token',
   path: '/t/$token',
@@ -63,6 +69,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/dashboard': typeof AuthDashboardRoute
   '/reports': typeof AuthReportsRoute
+  '/templates': typeof AuthTemplatesRoute
   '/t/$token': typeof TTokenRoute
   '/jobs/$jobId': typeof AuthJobsJobIdRoute
   '/jobs/new': typeof AuthJobsNewRoute
@@ -72,6 +79,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/dashboard': typeof AuthDashboardRoute
   '/reports': typeof AuthReportsRoute
+  '/templates': typeof AuthTemplatesRoute
   '/t/$token': typeof TTokenRoute
   '/jobs/$jobId': typeof AuthJobsJobIdRoute
   '/jobs/new': typeof AuthJobsNewRoute
@@ -83,6 +91,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/_auth/dashboard': typeof AuthDashboardRoute
   '/_auth/reports': typeof AuthReportsRoute
+  '/_auth/templates': typeof AuthTemplatesRoute
   '/t/$token': typeof TTokenRoute
   '/_auth/jobs/$jobId': typeof AuthJobsJobIdRoute
   '/_auth/jobs/new': typeof AuthJobsNewRoute
@@ -94,6 +103,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/dashboard'
     | '/reports'
+    | '/templates'
     | '/t/$token'
     | '/jobs/$jobId'
     | '/jobs/new'
@@ -103,6 +113,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/dashboard'
     | '/reports'
+    | '/templates'
     | '/t/$token'
     | '/jobs/$jobId'
     | '/jobs/new'
@@ -113,6 +124,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/_auth/dashboard'
     | '/_auth/reports'
+    | '/_auth/templates'
     | '/t/$token'
     | '/_auth/jobs/$jobId'
     | '/_auth/jobs/new'
@@ -162,6 +174,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthReportsRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_auth/templates': {
+      id: '/_auth/templates'
+      path: '/templates'
+      fullPath: '/templates'
+      preLoaderRoute: typeof AuthTemplatesRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/t/$token': {
       id: '/t/$token'
       path: '/t/$token'
@@ -189,6 +208,7 @@ declare module '@tanstack/react-router' {
 interface AuthRouteChildren {
   AuthDashboardRoute: typeof AuthDashboardRoute
   AuthReportsRoute: typeof AuthReportsRoute
+  AuthTemplatesRoute: typeof AuthTemplatesRoute
   AuthJobsJobIdRoute: typeof AuthJobsJobIdRoute
   AuthJobsNewRoute: typeof AuthJobsNewRoute
 }
@@ -196,6 +216,7 @@ interface AuthRouteChildren {
 const AuthRouteChildren: AuthRouteChildren = {
   AuthDashboardRoute: AuthDashboardRoute,
   AuthReportsRoute: AuthReportsRoute,
+  AuthTemplatesRoute: AuthTemplatesRoute,
   AuthJobsJobIdRoute: AuthJobsJobIdRoute,
   AuthJobsNewRoute: AuthJobsNewRoute,
 }

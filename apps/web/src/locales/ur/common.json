@@ -76,9 +76,7 @@
     "scheduleConflictBlocked": "کام بنانے سے پہلے براہ کرم کوئی اور وقت منتخب کریں۔",
     "needsToolsAndPartsLabel": "اس کام کے لیے اوزار اور پرزے درکار ہیں",
     "loadTemplate": "ٹیمپلیٹ لوڈ کریں",
-    "saveAsTemplate": "ٹیمپلیٹ کے طور پر محفوظ کریں",
-    "templateNameLabel": "ٹیمپلیٹ کا نام",
-    "templateSaved": "ٹیمپلیٹ محفوظ ہو گیا"
+    "manageTemplates": "ٹیمپلیٹس کا نظم کریں"
   },
   "technician": {
     "toolsAndPartsNotice": "اس کام کے لیے اوزار اور پرزے ساتھ لائیں",
@@ -192,5 +190,15 @@
     "totalJobs": "کل کام",
     "completedJobs": "مکمل شدہ",
     "totalRevenue": "آمدنی"
+  },
+  "templates": {
+    "navLabel": "ٹیمپلیٹس",
+    "heading": "ٹیمپلیٹس",
+    "newTemplate": "نیا ٹیمپلیٹ",
+    "nameLabel": "ٹیمپلیٹ کا نام",
+    "create": "ٹیمپلیٹ بنائیں",
+    "created": "ٹیمپلیٹ محفوظ ہو گیا",
+    "deleted": "ٹیمپلیٹ حذف ہو گیا",
+    "noTemplatesYet": "ابھی تک کوئی ٹیمپلیٹ نہیں۔"
   }
 }

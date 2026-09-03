@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
-import { useNavigate } from '@tanstack/react-router'
+import { Link, useNavigate } from '@tanstack/react-router'
 import { toast } from 'sonner'
-import { Plus, Trash2, Wand2, ClipboardList, Save } from 'lucide-react'
+import { Plus, Trash2, Wand2, ClipboardList } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { trpc } from '@/lib/trpc'
 import { Button } from '@/components/ui/button'
@@ -9,7 +9,6 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent } from '@/components/ui/card'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog'
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -50,21 +49,10 @@ export function NewJobPage() {
   const [items, setItems] = useState<ItemDraft[]>([{ title: '', attachmentUrls: [], uploading: false }])
   const [addressAndSchedule, setAddressAndSchedule] = useState<AddressAndScheduleValue>({ hasScheduleConflict: false })
   const [smartAdding, setSmartAdding] = useState(false)
-  const [saveTemplateOpen, setSaveTemplateOpen] = useState(false)
-  const [templateName, setTemplateName] = useState('')
   const itemInputRefs = useRef<(HTMLInputElement | null)[]>([])
   const focusIndexRef = useRef<number | null>(null)
 
   const { data: templates } = trpc.templates.list.useQuery()
-  const saveTemplate = trpc.templates.create.useMutation({
-    onSuccess: async () => {
-      await utils.templates.list.invalidate()
-      toast.success(t('jobs.templateSaved'))
-      setSaveTemplateOpen(false)
-      setTemplateName('')
-    },
-    onError: (err) => toast.error(err.message),
-  })
 
   useEffect(() => {
     if (focusIndexRef.current !== null) {
@@ -133,12 +121,6 @@ export function NewJobPage() {
   // they don't carry over (a template is titles only).
   function handleApplyTemplate(templateItems: { title: string }[]) {
     setItems(templateItems.map((it) => ({ title: it.title, attachmentUrls: [], uploading: false })))
-  }
-
-  function handleSaveTemplate() {
-    const titles = items.map((it) => it.title.trim()).filter(Boolean)
-    if (titles.length === 0) return
-    saveTemplate.mutate({ name: templateName.trim(), items: titles })
   }
 
   function handleSubmit(e: React.FormEvent) {
@@ -231,14 +213,8 @@ export function NewJobPage() {
                   </DropdownMenuContent>
                 </DropdownMenu>
               ) : null}
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                disabled={items.every((it) => !it.title.trim())}
-                onClick={() => setSaveTemplateOpen(true)}
-              >
-                <Save /> {t('jobs.saveAsTemplate')}
+              <Button type="button" variant="outline" size="sm" asChild>
+                <Link to="/templates">{t('jobs.manageTemplates')}</Link>
               </Button>
             </div>
           </div>
@@ -307,32 +283,6 @@ export function NewJobPage() {
           {t('jobs.createJob')}
         </Button>
       </form>
-
-      <Dialog open={saveTemplateOpen} onOpenChange={setSaveTemplateOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>{t('jobs.saveAsTemplate')}</DialogTitle>
-          </DialogHeader>
-          <div className="flex flex-col gap-1.5">
-            <Label htmlFor="templateName">{t('jobs.templateNameLabel')}</Label>
-            <Input
-              id="templateName"
-              autoFocus
-              value={templateName}
-              onChange={(e) => setTemplateName(e.target.value)}
-            />
-          </div>
-          <DialogFooter>
-            <Button
-              type="button"
-              onClick={handleSaveTemplate}
-              disabled={!templateName.trim() || saveTemplate.isPending}
-            >
-              {t('jobs.saveAsTemplate')}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
     </div>
   )
 }

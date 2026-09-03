@@ -76,9 +76,7 @@
     "scheduleConflictBlocked": "රැකියාව සෑදීමට පෙර කරුණාකර වෙනත් වේලාවක් තෝරන්න.",
     "needsToolsAndPartsLabel": "මෙම රැකියාවට මෙවලම් සහ අමතර කොටස් අවශ්‍යයි",
     "loadTemplate": "ආකෘතියක් පූරණය කරන්න",
-    "saveAsTemplate": "ආකෘතියක් ලෙස සුරකින්න",
-    "templateNameLabel": "ආකෘති නම",
-    "templateSaved": "ආකෘතිය සුරකින ලදී"
+    "manageTemplates": "ආකෘති කළමනාකරණය"
   },
   "technician": {
     "toolsAndPartsNotice": "මෙම රැකියාව සඳහා මෙවලම් සහ අමතර කොටස් රැගෙන එන්න",
@@ -192,5 +190,15 @@
     "totalJobs": "මුළු රැකියා",
     "completedJobs": "නිම කළ",
     "totalRevenue": "ආදායම"
+  },
+  "templates": {
+    "navLabel": "ආකෘති",
+    "heading": "ආකෘති",
+    "newTemplate": "නව ආකෘතිය",
+    "nameLabel": "ආකෘති නම",
+    "create": "ආකෘතිය සාදන්න",
+    "created": "ආකෘතිය සුරකින ලදී",
+    "deleted": "ආකෘතිය මකා දමන ලදී",
+    "noTemplatesYet": "තවම ආකෘති නොමැත."
   }
 }

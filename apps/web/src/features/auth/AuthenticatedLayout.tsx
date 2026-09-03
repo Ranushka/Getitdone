@@ -1,6 +1,6 @@
 import { type ReactNode, useEffect } from 'react'
 import { Link, useNavigate } from '@tanstack/react-router'
-import { LogOut, BarChart3 } from 'lucide-react'
+import { LogOut, BarChart3, ClipboardList } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { trpc } from '@/lib/trpc'
 import { Button } from '@/components/ui/button'
@@ -55,6 +55,15 @@ export function AuthenticatedLayout({ children }: { children: ReactNode }) {
           GetItDone
         </Link>
         <div className="flex items-center gap-3">
+          <Link
+            to="/templates"
+            aria-label={t('templates.navLabel')}
+            title={t('templates.navLabel')}
+            className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground"
+          >
+            <ClipboardList className="size-4" />
+            <span className="hidden sm:inline">{t('templates.navLabel')}</span>
+          </Link>
           <Link
             to="/reports"
             aria-label={t('reports.navLabel')}

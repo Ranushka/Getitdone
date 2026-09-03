@@ -76,9 +76,7 @@
     "scheduleConflictBlocked": "Please pick a different time before creating the job.",
     "needsToolsAndPartsLabel": "This job needs tools & parts",
     "loadTemplate": "Load template",
-    "saveAsTemplate": "Save as template",
-    "templateNameLabel": "Template name",
-    "templateSaved": "Template saved"
+    "manageTemplates": "Manage templates"
   },
   "technician": {
     "toolsAndPartsNotice": "Bring tools & parts for this job",
@@ -192,5 +190,15 @@
     "totalJobs": "Total jobs",
     "completedJobs": "Completed",
     "totalRevenue": "Revenue"
+  },
+  "templates": {
+    "navLabel": "Templates",
+    "heading": "Templates",
+    "newTemplate": "New template",
+    "nameLabel": "Template name",
+    "create": "Create template",
+    "created": "Template saved",
+    "deleted": "Template deleted",
+    "noTemplatesYet": "No templates yet."
   }
 }

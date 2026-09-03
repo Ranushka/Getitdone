@@ -76,9 +76,7 @@
     "scheduleConflictBlocked": "कार्य बनाने से पहले कृपया कोई और समय चुनें।",
     "needsToolsAndPartsLabel": "इस कार्य के लिए औज़ार और पुर्ज़े चाहिए",
     "loadTemplate": "टेम्पलेट लोड करें",
-    "saveAsTemplate": "टेम्पलेट के रूप में सहेजें",
-    "templateNameLabel": "टेम्पलेट का नाम",
-    "templateSaved": "टेम्पलेट सहेजा गया"
+    "manageTemplates": "टेम्पलेट प्रबंधित करें"
   },
   "technician": {
     "toolsAndPartsNotice": "इस कार्य के लिए औज़ार और पुर्ज़े साथ लाएं",
@@ -192,5 +190,15 @@
     "totalJobs": "कुल कार्य",
     "completedJobs": "पूर्ण",
     "totalRevenue": "राजस्व"
+  },
+  "templates": {
+    "navLabel": "टेम्पलेट",
+    "heading": "टेम्पलेट",
+    "newTemplate": "नया टेम्पलेट",
+    "nameLabel": "टेम्पलेट का नाम",
+    "create": "टेम्पलेट बनाएं",
+    "created": "टेम्पलेट सहेजा गया",
+    "deleted": "टेम्पलेट हटाया गया",
+    "noTemplatesYet": "अभी तक कोई टेम्पलेट नहीं है।"
   }
 }
