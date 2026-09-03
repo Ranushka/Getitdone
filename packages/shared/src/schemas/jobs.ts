@@ -18,6 +18,8 @@ export const createJobSchema = z
     // E.164-ish, digits/plus only — used to open a WhatsApp chat with this
     // technician directly instead of a blank compose screen.
     technicianPhone: z.string().min(6).max(20).optional(),
+    // Whether tools/parts need to be brought along for this job.
+    needsToolsAndParts: z.boolean().default(false),
     items: z.array(jobItemDraftSchema).default([]),
     // Address book — set at creation only. Either pick a saved address
     // (addressId) or add a new one on the fly (newAddress), never both.
@@ -52,6 +54,7 @@ export const jobIdParamSchema = z.object({
 export const updateJobDetailsSchema = jobIdParamSchema.extend({
   price: z.number().nonnegative().nullable().optional(),
   technicianPhone: z.string().min(6).max(20).nullable().optional(),
+  needsToolsAndParts: z.boolean().optional(),
 })
 export type UpdateJobDetailsInput = z.infer<typeof updateJobDetailsSchema>
 

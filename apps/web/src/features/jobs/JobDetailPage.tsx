@@ -66,6 +66,7 @@ export function JobDetailPage({ jobId }: { jobId: number }) {
       id: jobId,
       price: priceRaw ? Number(priceRaw) : null,
       technicianPhone: phoneRaw || null,
+      needsToolsAndParts: formData.get('needsToolsAndParts') === 'on',
     })
   }
 
@@ -105,7 +106,11 @@ export function JobDetailPage({ jobId }: { jobId: number }) {
           <h2 className="text-sm font-semibold">{t('jobs.detailsHeading')}</h2>
         </CardHeader>
         <CardContent>
-          <form key={`${job.price ?? ''}-${job.technicianPhone ?? ''}`} onSubmit={handleSaveDetails} className="flex flex-col gap-3">
+          <form
+            key={`${job.price ?? ''}-${job.technicianPhone ?? ''}-${job.needsToolsAndParts}`}
+            onSubmit={handleSaveDetails}
+            className="flex flex-col gap-3"
+          >
             <div className="flex items-center justify-between text-sm">
               <span className="text-muted-foreground">{t('jobs.totalLabel')}</span>
               <span className="font-semibold">{job.price ? formatAED(job.price) : t('jobs.noPriceSet')}</span>
@@ -127,6 +132,16 @@ export function JobDetailPage({ jobId }: { jobId: number }) {
                 defaultValue={job.technicianPhone ?? ''}
               />
             </div>
+            <label htmlFor="needsToolsAndParts" className="flex items-center gap-2 text-sm">
+              <input
+                id="needsToolsAndParts"
+                name="needsToolsAndParts"
+                type="checkbox"
+                className="size-4 rounded border-input"
+                defaultChecked={job.needsToolsAndParts}
+              />
+              {t('jobs.needsToolsAndPartsLabel')}
+            </label>
             <Button type="submit" variant="outline" size="sm" disabled={updateDetails.isPending} className="self-start">
               {t('jobs.saveDetails')}
             </Button>

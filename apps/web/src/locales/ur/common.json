@@ -73,9 +73,11 @@
     "scheduledAtLabel": "طے شدہ وقت (اختیاری)",
     "scheduleWarningOffice": "دفاتر ہفتہ اور اتوار کو بند ہوتے ہیں — کوئی ہفتے کا دن منتخب کریں۔",
     "scheduleWarningHome": "گھر عام طور پر کام کے اوقات (صبح 9 سے شام 6) کے دوران خالی ہوتے ہیں — کوئی اور وقت منتخب کریں۔",
-    "scheduleConflictBlocked": "کام بنانے سے پہلے براہ کرم کوئی اور وقت منتخب کریں۔"
+    "scheduleConflictBlocked": "کام بنانے سے پہلے براہ کرم کوئی اور وقت منتخب کریں۔",
+    "needsToolsAndPartsLabel": "اس کام کے لیے اوزار اور پرزے درکار ہیں"
   },
   "technician": {
+    "toolsAndPartsNotice": "اس کام کے لیے اوزار اور پرزے ساتھ لائیں",
     "markDone": "مکمل نشان زد کریں",
     "done": "مکمل",
     "commentPlaceholder": "تبصرہ…",

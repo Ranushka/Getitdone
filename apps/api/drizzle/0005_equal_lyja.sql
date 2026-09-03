@@ -1,0 +1,1 @@
+ALTER TABLE "jobs" ADD COLUMN "needs_tools_and_parts" boolean DEFAULT false NOT NULL;

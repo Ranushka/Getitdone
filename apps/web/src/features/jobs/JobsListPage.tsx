@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from '@tanstack/react-router'
-import { Search, Plus } from 'lucide-react'
+import { Search, Plus, Wrench } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { trpc } from '@/lib/trpc'
 import { Input } from '@/components/ui/input'
@@ -55,7 +55,15 @@ export function JobsListPage() {
             <Card className="transition hover:border-input">
               <CardContent className="flex flex-col gap-2 p-4">
                 <div className="flex items-center justify-between gap-2">
-                  <span className="font-semibold">{job.title}</span>
+                  <span className="flex items-center gap-1.5 font-semibold">
+                    {job.title}
+                    {job.needsToolsAndParts ? (
+                      <Wrench
+                        className="size-3.5 shrink-0 text-muted-foreground"
+                        aria-label={t('jobs.needsToolsAndPartsLabel')}
+                      />
+                    ) : null}
+                  </span>
                   <span className="shrink-0 rounded-full bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground">
                     {STATUS_LABEL[job.status] ?? job.status}
                   </span>

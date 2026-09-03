@@ -105,6 +105,7 @@ export const jobsRouter = router({
         notes: input.notes,
         price: input.price !== undefined ? String(input.price) : undefined,
         technicianPhone: input.technicianPhone,
+        needsToolsAndParts: input.needsToolsAndParts,
         managerId: ctx.user.sub,
         addressId,
         scheduledAt: input.scheduledAt ? new Date(input.scheduledAt) : undefined,
@@ -134,6 +135,7 @@ export const jobsRouter = router({
       .set({
         ...(input.price !== undefined ? { price: input.price === null ? null : String(input.price) } : {}),
         ...(input.technicianPhone !== undefined ? { technicianPhone: input.technicianPhone } : {}),
+        ...(input.needsToolsAndParts !== undefined ? { needsToolsAndParts: input.needsToolsAndParts } : {}),
         updatedAt: new Date(),
       })
       .where(eq(jobs.id, input.id))

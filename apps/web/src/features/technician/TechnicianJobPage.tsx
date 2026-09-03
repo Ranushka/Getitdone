@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
-import { Check, Languages, ImageOff, Eraser } from 'lucide-react'
+import { Check, Languages, ImageOff, Eraser, Wrench } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { trpc } from '@/lib/trpc'
 import { Button } from '@/components/ui/button'
@@ -32,6 +32,7 @@ interface TechJob {
   notes: string | null
   status: string
   shareToken: string
+  needsToolsAndParts: boolean
   items: TechItem[]
   signOffs: { role: string; name: string; signatureUrl: string | null }[]
 }
@@ -222,6 +223,13 @@ export function TechnicianJobPage({ token }: { token: string }) {
         <h1 className="text-xl font-bold">{displayText(job.title)}</h1>
         {job.notes ? <p className="text-sm text-muted-foreground">{displayText(job.notes)}</p> : null}
       </div>
+
+      {job.needsToolsAndParts ? (
+        <div className="flex items-center gap-2 rounded-md border border-amber-500/40 bg-amber-500/10 p-2 text-sm text-amber-700">
+          <Wrench className="size-4 shrink-0" />
+          {t('technician.toolsAndPartsNotice')}
+        </div>
+      ) : null}
 
       <ProgressBar done={doneCount} total={job.items.length} />
 

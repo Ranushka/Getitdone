@@ -1,4 +1,4 @@
-import { pgTable, pgEnum, serial, varchar, text, integer, numeric, timestamp } from 'drizzle-orm/pg-core'
+import { pgTable, pgEnum, serial, varchar, text, integer, numeric, timestamp, boolean } from 'drizzle-orm/pg-core'
 import { customAlphabet } from 'nanoid'
 import { users } from './users'
 import { addresses } from './addresses'
@@ -24,6 +24,10 @@ export const jobs = pgTable('jobs', {
   // separate jobs (e.g. "plumbing" vs "cleaning") rather than pricing
   // individual checklist items within one job.
   price: numeric('price', { precision: 10, scale: 2 }),
+  // Flags this job as requiring tools/parts to be brought along — surfaced
+  // to the manager at creation and to the technician on the share page, so
+  // it's not something either party has to remember from the notes field.
+  needsToolsAndParts: boolean('needs_tools_and_parts').notNull().default(false),
   // Sole access control for the technician's share link (/t/:token) — see
   // the alphabet comment above for the entropy/rate-limit tradeoff.
   shareToken: varchar('share_token', { length: 24 })

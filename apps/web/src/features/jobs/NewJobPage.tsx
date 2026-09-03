@@ -39,6 +39,7 @@ export function NewJobPage() {
   const [notes, setNotes] = useState('')
   const [price, setPrice] = useState('')
   const [technicianPhone, setTechnicianPhone] = useState('')
+  const [needsToolsAndParts, setNeedsToolsAndParts] = useState(false)
   const [items, setItems] = useState<ItemDraft[]>([{ title: '', attachmentUrls: [], uploading: false }])
   const [addressAndSchedule, setAddressAndSchedule] = useState<AddressAndScheduleValue>({ hasScheduleConflict: false })
   const [smartAdding, setSmartAdding] = useState(false)
@@ -119,6 +120,7 @@ export function NewJobPage() {
       notes: notes || undefined,
       price: price.trim() ? Number(price) : undefined,
       technicianPhone: technicianPhone.trim() || undefined,
+      needsToolsAndParts,
       items: cleanItems.map((it) => ({ title: it.title, attachmentUrls: it.attachmentUrls })),
       addressId: addressAndSchedule.addressId,
       newAddress: addressAndSchedule.newAddress,
@@ -162,6 +164,17 @@ export function NewJobPage() {
             />
           </div>
         </div>
+
+        <label htmlFor="needsToolsAndParts" className="flex items-center gap-2 text-sm">
+          <input
+            id="needsToolsAndParts"
+            type="checkbox"
+            className="size-4 rounded border-input"
+            checked={needsToolsAndParts}
+            onChange={(e) => setNeedsToolsAndParts(e.target.checked)}
+          />
+          {t('jobs.needsToolsAndPartsLabel')}
+        </label>
 
         <AddressAndScheduleFields onChange={setAddressAndSchedule} />
 
