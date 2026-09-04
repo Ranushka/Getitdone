@@ -20,6 +20,7 @@ import { Route as AuthWhatsappRouteImport } from './routes/_auth/whatsapp'
 import { Route as TTokenRouteImport } from './routes/t.$token'
 import { Route as AuthJobsJobIdRouteImport } from './routes/_auth/jobs.$jobId'
 import { Route as AuthJobsNewRouteImport } from './routes/_auth/jobs.new'
+import { Route as AuthJobsNewPhotoRouteImport } from './routes/_auth/jobs.new-photo'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -75,6 +76,11 @@ const AuthJobsNewRoute = AuthJobsNewRouteImport.update({
   path: '/jobs/new',
   getParentRoute: () => AuthRoute,
 } as any)
+const AuthJobsNewPhotoRoute = AuthJobsNewPhotoRouteImport.update({
+  id: '/jobs/new-photo',
+  path: '/jobs/new-photo',
+  getParentRoute: () => AuthRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -87,6 +93,7 @@ export interface FileRoutesByFullPath {
   '/t/$token': typeof TTokenRoute
   '/jobs/$jobId': typeof AuthJobsJobIdRoute
   '/jobs/new': typeof AuthJobsNewRoute
+  '/jobs/new-photo': typeof AuthJobsNewPhotoRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -99,6 +106,7 @@ export interface FileRoutesByTo {
   '/t/$token': typeof TTokenRoute
   '/jobs/$jobId': typeof AuthJobsJobIdRoute
   '/jobs/new': typeof AuthJobsNewRoute
+  '/jobs/new-photo': typeof AuthJobsNewPhotoRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -113,6 +121,7 @@ export interface FileRoutesById {
   '/t/$token': typeof TTokenRoute
   '/_auth/jobs/$jobId': typeof AuthJobsJobIdRoute
   '/_auth/jobs/new': typeof AuthJobsNewRoute
+  '/_auth/jobs/new-photo': typeof AuthJobsNewPhotoRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -127,6 +136,7 @@ export interface FileRouteTypes {
     | '/t/$token'
     | '/jobs/$jobId'
     | '/jobs/new'
+    | '/jobs/new-photo'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -139,6 +149,7 @@ export interface FileRouteTypes {
     | '/t/$token'
     | '/jobs/$jobId'
     | '/jobs/new'
+    | '/jobs/new-photo'
   id:
     | '__root__'
     | '/'
@@ -152,6 +163,7 @@ export interface FileRouteTypes {
     | '/t/$token'
     | '/_auth/jobs/$jobId'
     | '/_auth/jobs/new'
+    | '/_auth/jobs/new-photo'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -240,6 +252,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthJobsNewRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_auth/jobs/new-photo': {
+      id: '/_auth/jobs/new-photo'
+      path: '/jobs/new-photo'
+      fullPath: '/jobs/new-photo'
+      preLoaderRoute: typeof AuthJobsNewPhotoRouteImport
+      parentRoute: typeof AuthRoute
+    }
   }
 }
 
@@ -251,6 +270,7 @@ interface AuthRouteChildren {
   AuthWhatsappRoute: typeof AuthWhatsappRoute
   AuthJobsJobIdRoute: typeof AuthJobsJobIdRoute
   AuthJobsNewRoute: typeof AuthJobsNewRoute
+  AuthJobsNewPhotoRoute: typeof AuthJobsNewPhotoRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
@@ -261,6 +281,7 @@ const AuthRouteChildren: AuthRouteChildren = {
   AuthWhatsappRoute: AuthWhatsappRoute,
   AuthJobsJobIdRoute: AuthJobsJobIdRoute,
   AuthJobsNewRoute: AuthJobsNewRoute,
+  AuthJobsNewPhotoRoute: AuthJobsNewPhotoRoute,
 }
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)

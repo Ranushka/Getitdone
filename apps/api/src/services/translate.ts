@@ -35,7 +35,7 @@ async function callOpenRouter(text: string, targetLang: string): Promise<string>
       messages: [
         {
           role: 'system',
-          content: `You are a translation engine for a vehicle-repair job checklist app. Translate the user's text into ${languageName}. Preserve technical/mechanical terms accurately. Reply with ONLY the translated text, no quotes, no explanation.`,
+          content: `You are a translation engine for a home/property maintenance job checklist app (plumbing, electrical, cleaning, general repairs). Translate the user's text into ${languageName}. Preserve technical terms accurately. Reply with ONLY the translated text, no quotes, no explanation.`,
         },
         { role: 'user', content: text },
       ],

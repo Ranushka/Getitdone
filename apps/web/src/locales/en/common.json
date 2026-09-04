@@ -79,7 +79,14 @@
     "scheduleWarningHome": "Homes are usually empty during working hours (9am–6pm) — pick a different time.",
     "scheduleConflictBlocked": "Please pick a different time before creating the job.",
     "needsToolsAndPartsLabel": "This job needs tools & parts",
-    "loadTemplate": "Load template"
+    "loadTemplate": "Load template",
+    "startFromPhoto": "Start from a photo",
+    "fillInManually": "Fill in manually",
+    "newJobFromPhotoHeading": "New job from photo",
+    "photoFirstHint": "Take a photo of each problem — AI will draft a title and checklist for you to review below.",
+    "takeAPhoto": "Take a photo",
+    "addAnotherPhoto": "Add another photo",
+    "noItemsYetPhotoHint": "Add a photo above, or add checklist items manually below."
   },
   "technician": {
     "toolsAndPartsNotice": "Bring tools & parts for this job",

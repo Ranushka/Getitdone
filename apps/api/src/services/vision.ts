@@ -44,7 +44,7 @@ async function callVisionModel(imageDataUrl: string, promptText: string): Promis
 export async function describePhoto(imageDataUrl: string): Promise<string> {
   return callVisionModel(
     imageDataUrl,
-    'This photo was taken during a vehicle repair/maintenance job. In one short sentence, describe the work or part condition shown (e.g. "Front brake pad worn to metal", "New oil filter installed"). Reply with ONLY the description, no preamble.',
+    'This photo was taken during a home/property maintenance or repair job (plumbing, electrical, cleaning, general handywork). In one short sentence, describe the work or condition shown (e.g. "Kitchen tap leaking at the base", "New light bulb installed"). Reply with ONLY the description, no preamble.',
   )
 }
 
@@ -54,6 +54,39 @@ export async function describePhoto(imageDataUrl: string): Promise<string> {
 export async function suggestChecklistItem(imageDataUrl: string): Promise<string> {
   return callVisionModel(
     imageDataUrl,
-    'This photo shows something on a vehicle that needs repair or maintenance work. Write ONE short, actionable checklist item title for the to-do list a mechanic would work from (e.g. "Replace worn front brake pad", "Top up coolant", "Repair cracked windshield"). Reply with ONLY the title, no preamble, no trailing punctuation.',
+    'This photo shows something in a home or property that needs repair, maintenance, or cleaning. Write ONE short, actionable checklist item title for the to-do list a contractor would work from (e.g. "Fix leaking kitchen tap", "Replace hallway light bulb", "Clear blocked bathroom pipe"). Reply with ONLY the title, no preamble, no trailing punctuation.',
   )
+}
+
+// Used by the photo-first "New job" flow: a manager photographs a single
+// problem before typing anything, and this drafts both the job title and a
+// short checklist of concrete sub-tasks to fix it — one vision call covers
+// everything for that photo, rather than one call per item.
+export async function suggestJobFromPhoto(
+  imageDataUrl: string,
+): Promise<{ title: string; items: string[] }> {
+  const raw = await callVisionModel(
+    imageDataUrl,
+    'This photo shows a problem in a home or property that needs repair, maintenance, or cleaning. ' +
+      'Reply with ONLY a JSON object (no markdown fences, no preamble) shaped exactly like ' +
+      '{"title": "short job title", "items": ["short actionable checklist item", "..."]}. ' +
+      'The title should name the overall problem (e.g. "Fix kitchen tap leak"). ' +
+      'Give 1 to 4 items, each a concrete step a contractor would tick off (e.g. "Replace worn washer", "Wipe down cabinet under sink", "Test tap for leaks").',
+  )
+
+  try {
+    const cleaned = raw.replace(/^```(?:json)?\s*/i, '').replace(/```\s*$/, '')
+    const parsed = JSON.parse(cleaned) as { title?: unknown; items?: unknown }
+    const title = typeof parsed.title === 'string' ? parsed.title.trim() : ''
+    const items = Array.isArray(parsed.items)
+      ? parsed.items.filter((it): it is string => typeof it === 'string' && it.trim().length > 0)
+      : []
+    if (title && items.length > 0) return { title, items }
+  } catch {
+    // Falls through to the single-item fallback below.
+  }
+
+  // The model didn't return valid JSON — treat its raw reply as one item
+  // title rather than failing the whole capture.
+  return { title: raw, items: [raw] }
 }

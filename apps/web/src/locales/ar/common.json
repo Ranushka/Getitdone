@@ -79,7 +79,14 @@
     "scheduleWarningHome": "المنازل عادة فارغة خلال ساعات العمل (9 صباحًا-6 مساءً) — اختر وقتًا آخر.",
     "scheduleConflictBlocked": "يرجى اختيار وقت آخر قبل إنشاء المهمة.",
     "needsToolsAndPartsLabel": "هذه المهمة تحتاج أدوات وقطع غيار",
-    "loadTemplate": "تحميل قالب"
+    "loadTemplate": "تحميل قالب",
+    "startFromPhoto": "ابدأ بصورة",
+    "fillInManually": "تعبئة يدوية",
+    "newJobFromPhotoHeading": "مهمة جديدة من صورة",
+    "photoFirstHint": "التقط صورة لكل مشكلة — سيقوم الذكاء الاصطناعي بإعداد عنوان وقائمة مهام لمراجعتها أدناه.",
+    "takeAPhoto": "التقط صورة",
+    "addAnotherPhoto": "أضف صورة أخرى",
+    "noItemsYetPhotoHint": "أضف صورة أعلاه، أو أضف عناصر القائمة يدويًا أدناه."
   },
   "technician": {
     "toolsAndPartsNotice": "أحضر الأدوات وقطع الغيار لهذه المهمة",

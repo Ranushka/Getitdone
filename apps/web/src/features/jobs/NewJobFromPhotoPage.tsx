@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from '@tanstack/react-router'
 import { toast } from 'sonner'
-import { Plus, Trash2, Wand2, ClipboardList, Camera } from 'lucide-react'
+import { Plus, Trash2, Wand2, ClipboardList, Camera, X, Type } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { trpc } from '@/lib/trpc'
 import { Button } from '@/components/ui/button'
@@ -24,6 +24,11 @@ interface ItemDraft {
   uploading: boolean
 }
 
+interface ProblemPhoto {
+  previewUrl: string
+  generating: boolean
+}
+
 async function uploadFile(file: File): Promise<string> {
   const form = new FormData()
   form.append('file', file)
@@ -36,21 +41,29 @@ async function uploadFile(file: File): Promise<string> {
   return url
 }
 
-export function NewJobPage() {
+// Photo-first take on job creation: instead of typing a title and checklist
+// from scratch, the manager photographs each problem first and an AI vision
+// call drafts a title + a short checklist per photo — reviewed/edited below
+// exactly like the manual flow (NewJobPage), which stays the default entry
+// point for jobs with nothing to photograph yet.
+export function NewJobFromPhotoPage() {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const utils = trpc.useUtils()
   const suggestItem = trpc.photos.suggestItem.useMutation()
+  const suggestJobItems = trpc.photos.suggestJobItems.useMutation()
   const [title, setTitle] = useState('')
   const [notes, setNotes] = useState('')
   const [price, setPrice] = useState('')
   const [technicianPhone, setTechnicianPhone] = useState('')
   const [needsToolsAndParts, setNeedsToolsAndParts] = useState(false)
-  const [items, setItems] = useState<ItemDraft[]>([{ title: '', attachmentUrls: [], uploading: false }])
+  const [items, setItems] = useState<ItemDraft[]>([])
+  const [problemPhotos, setProblemPhotos] = useState<ProblemPhoto[]>([])
   const [addressAndSchedule, setAddressAndSchedule] = useState<AddressAndScheduleValue>({ hasScheduleConflict: false })
   const [smartAdding, setSmartAdding] = useState(false)
   const itemInputRefs = useRef<(HTMLInputElement | null)[]>([])
   const focusIndexRef = useRef<number | null>(null)
+  const titleSetByAi = useRef(false)
 
   const { data: templates } = trpc.templates.list.useQuery()
 
@@ -73,6 +86,41 @@ export function NewJobPage() {
     setItems((prev) => prev.map((it, i) => (i === index ? { ...it, ...patch } : it)))
   }
 
+  // Each photo is treated as its own problem: uploaded once, then drafted
+  // into a title suggestion (only used if the manager hasn't typed one yet)
+  // plus its own checklist items, appended to whatever's already there —
+  // so several photos in one visit (leaky pipe + broken bulb) merge into
+  // one combined checklist.
+  async function handleProblemPhotoCapture(photo: CapturedPhoto) {
+    const photoIndex = problemPhotos.length
+    setProblemPhotos((prev) => [...prev, { previewUrl: photo.dataUrl, generating: true }])
+
+    try {
+      const [url, draft] = await Promise.all([
+        uploadFile(photo.file),
+        suggestJobItems.mutateAsync({ imageDataUrl: photo.dataUrl }),
+      ])
+
+      if (!titleSetByAi.current && !title.trim()) {
+        setTitle(draft.title)
+        titleSetByAi.current = true
+      }
+
+      setItems((prev) => [
+        ...prev,
+        ...draft.items.map((itemTitle) => ({ title: itemTitle, attachmentUrls: [url], uploading: false })),
+      ])
+      setProblemPhotos((prev) => prev.map((p, i) => (i === photoIndex ? { ...p, generating: false } : p)))
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Could not generate a checklist from that photo')
+      setProblemPhotos((prev) => prev.filter((_, i) => i !== photoIndex))
+    }
+  }
+
+  function removeProblemPhoto(index: number) {
+    setProblemPhotos((prev) => prev.filter((_, i) => i !== index))
+  }
+
   async function handleItemCapture(index: number, photo: CapturedPhoto) {
     updateItem(index, { uploading: true })
     try {
@@ -86,9 +134,6 @@ export function NewJobPage() {
     }
   }
 
-  // "Smart add" — take a photo of whatever needs work, and let the vision
-  // model turn it directly into a new checklist item instead of the manager
-  // having to type one out.
   async function handleSmartAddCapture(photo: CapturedPhoto) {
     setSmartAdding(true)
     try {
@@ -116,9 +161,6 @@ export function NewJobPage() {
     }
   }
 
-  // Replaces the current checklist with the template's items — any photos
-  // already attached to the existing items only make sense for this job, so
-  // they don't carry over (a template is titles only).
   function handleApplyTemplate(templateItems: { title: string }[]) {
     setItems(templateItems.map((it) => ({ title: it.title, attachmentUrls: [], uploading: false })))
   }
@@ -143,16 +185,54 @@ export function NewJobPage() {
     })
   }
 
+  const anyPhotoGenerating = problemPhotos.some((p) => p.generating)
+
   return (
     <div className="mx-auto max-w-2xl p-4 pb-24">
       <div className="mb-4 flex items-center justify-between gap-2">
-        <h1 className="text-xl font-bold">{t('jobs.newJobHeading')}</h1>
+        <h1 className="text-xl font-bold">{t('jobs.newJobFromPhotoHeading')}</h1>
         <Button asChild variant="ghost" size="sm">
-          <Link to="/jobs/new-photo">
-            <Camera /> {t('jobs.startFromPhoto')}
+          <Link to="/jobs/new">
+            <Type /> {t('jobs.fillInManually')}
           </Link>
         </Button>
       </div>
+
+      <Card className="mb-4">
+        <CardContent className="flex flex-col gap-3 p-4">
+          <p className="text-sm text-muted-foreground">{t('jobs.photoFirstHint')}</p>
+          <div className="flex flex-wrap items-center gap-2">
+            {problemPhotos.map((photo, i) => (
+              <div key={i} className="relative">
+                <img
+                  src={photo.previewUrl}
+                  alt=""
+                  className="size-16 rounded-lg border border-border object-cover"
+                />
+                {photo.generating ? (
+                  <div className="absolute inset-0 grid place-items-center rounded-lg bg-black/40 text-[10px] font-medium text-white">
+                    {t('jobs.smartAdding')}
+                  </div>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => removeProblemPhoto(i)}
+                    className="absolute -end-1.5 -top-1.5 grid size-5 place-items-center rounded-full bg-destructive text-destructive-foreground"
+                  >
+                    <X className="size-3" />
+                  </button>
+                )}
+              </div>
+            ))}
+            <CameraCaptureButton
+              icon={Camera}
+              label={problemPhotos.length > 0 ? t('jobs.addAnotherPhoto') : t('jobs.takeAPhoto')}
+              onCapture={handleProblemPhotoCapture}
+            />
+          </div>
+        </CardContent>
+      </Card>
+
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <div className="flex flex-col gap-1.5">
           <Label htmlFor="title">{t('jobs.titleLabel')}</Label>
@@ -222,6 +302,9 @@ export function NewJobPage() {
               ) : null}
             </div>
           </div>
+          {items.length === 0 ? (
+            <p className="text-sm text-muted-foreground">{t('jobs.noItemsYetPhotoHint')}</p>
+          ) : null}
           {items.map((item, i) => (
             <Card key={i}>
               <CardContent className="flex flex-col gap-2 p-3">
@@ -240,7 +323,6 @@ export function NewJobPage() {
                     variant="ghost"
                     size="icon"
                     onClick={() => setItems((prev) => prev.filter((_, idx) => idx !== i))}
-                    disabled={items.length === 1}
                   >
                     <Trash2 />
                   </Button>
@@ -283,7 +365,12 @@ export function NewJobPage() {
           </div>
         </div>
 
-        <Button type="submit" disabled={createJob.isPending || !title.trim() || addressAndSchedule.hasScheduleConflict}>
+        <Button
+          type="submit"
+          disabled={
+            createJob.isPending || !title.trim() || addressAndSchedule.hasScheduleConflict || anyPhotoGenerating
+          }
+        >
           {t('jobs.createJob')}
         </Button>
       </form>

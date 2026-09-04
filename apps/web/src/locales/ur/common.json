@@ -79,7 +79,14 @@
     "scheduleWarningHome": "گھر عام طور پر کام کے اوقات (صبح 9 سے شام 6) کے دوران خالی ہوتے ہیں — کوئی اور وقت منتخب کریں۔",
     "scheduleConflictBlocked": "کام بنانے سے پہلے براہ کرم کوئی اور وقت منتخب کریں۔",
     "needsToolsAndPartsLabel": "اس کام کے لیے اوزار اور پرزے درکار ہیں",
-    "loadTemplate": "ٹیمپلیٹ لوڈ کریں"
+    "loadTemplate": "ٹیمپلیٹ لوڈ کریں",
+    "startFromPhoto": "تصویر سے شروع کریں",
+    "fillInManually": "دستی طور پر پُر کریں",
+    "newJobFromPhotoHeading": "تصویر سے نیا کام",
+    "photoFirstHint": "ہر مسئلے کی تصویر لیں — AI نیچے جائزے کے لیے عنوان اور چیک لسٹ تیار کرے گا۔",
+    "takeAPhoto": "تصویر لیں",
+    "addAnotherPhoto": "ایک اور تصویر شامل کریں",
+    "noItemsYetPhotoHint": "اوپر ایک تصویر شامل کریں، یا نیچے دستی طور پر چیک لسٹ آئٹمز شامل کریں۔"
   },
   "technician": {
     "toolsAndPartsNotice": "اس کام کے لیے اوزار اور پرزے ساتھ لائیں",
