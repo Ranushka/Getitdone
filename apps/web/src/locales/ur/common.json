@@ -230,5 +230,16 @@
     "unscheduled": "غیر شیڈول شدہ کام",
     "moreJobs_one": "+{{count}} مزید",
     "moreJobs_other": "+{{count}} مزید"
+  },
+  "settings": {
+    "navLabel": "ترتیبات",
+    "heading": "ترتیبات",
+    "addressBookHeading": "پتوں کی کتاب",
+    "addAddress": "پتہ شامل کریں",
+    "editAddress": "پتہ میں ترمیم کریں",
+    "noAddressesYet": "ابھی تک کوئی محفوظ شدہ پتہ نہیں ہے۔",
+    "addressSaved": "پتہ محفوظ ہو گیا",
+    "addressDeleted": "پتہ حذف ہو گیا",
+    "save": "محفوظ کریں"
   }
 }

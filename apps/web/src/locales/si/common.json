@@ -230,5 +230,16 @@
     "unscheduled": "කාලසටහන් නොකළ රැකියා",
     "moreJobs_one": "+{{count}} තවත්",
     "moreJobs_other": "+{{count}} තවත්"
+  },
+  "settings": {
+    "navLabel": "සැකසුම්",
+    "heading": "සැකසුම්",
+    "addressBookHeading": "ලිපින පොත",
+    "addAddress": "ලිපිනයක් එක් කරන්න",
+    "editAddress": "ලිපිනය සංස්කරණය කරන්න",
+    "noAddressesYet": "තවම සුරකින ලද ලිපින නැත.",
+    "addressSaved": "ලිපිනය සුරකින ලදී",
+    "addressDeleted": "ලිපිනය මකා දමන ලදී",
+    "save": "සුරකින්න"
   }
 }

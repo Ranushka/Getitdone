@@ -230,5 +230,16 @@
     "unscheduled": "अनिर्धारित कार्य",
     "moreJobs_one": "+{{count}} और",
     "moreJobs_other": "+{{count}} और"
+  },
+  "settings": {
+    "navLabel": "सेटिंग्स",
+    "heading": "सेटिंग्स",
+    "addressBookHeading": "पता पुस्तिका",
+    "addAddress": "पता जोड़ें",
+    "editAddress": "पता संपादित करें",
+    "noAddressesYet": "अभी तक कोई सहेजा गया पता नहीं है।",
+    "addressSaved": "पता सहेजा गया",
+    "addressDeleted": "पता हटाया गया",
+    "save": "सहेजें"
   }
 }

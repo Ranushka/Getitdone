@@ -1,6 +1,6 @@
 import { type ReactNode, useEffect } from 'react'
 import { Link, useNavigate } from '@tanstack/react-router'
-import { LogOut, BarChart3, ClipboardList, Briefcase, MessageCircle, CalendarDays } from 'lucide-react'
+import { LogOut, BarChart3, ClipboardList, Briefcase, Settings, CalendarDays } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { trpc } from '@/lib/trpc'
 import { Button } from '@/components/ui/button'
@@ -93,13 +93,13 @@ export function AuthenticatedLayout({ children }: { children: ReactNode }) {
               <span className="hidden sm:inline">{t('reports.navLabel')}</span>
             </Link>
             <Link
-              to="/whatsapp"
-              aria-label={t('whatsapp.navLabel')}
-              title={t('whatsapp.navLabel')}
+              to="/settings"
+              aria-label={t('settings.navLabel')}
+              title={t('settings.navLabel')}
               className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground"
             >
-              <MessageCircle className="size-4" />
-              <span className="hidden sm:inline">{t('whatsapp.navLabel')}</span>
+              <Settings className="size-4" />
+              <span className="hidden sm:inline">{t('settings.navLabel')}</span>
             </Link>
           </nav>
         </div>

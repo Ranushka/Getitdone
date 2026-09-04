@@ -15,8 +15,8 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthCalendarRouteImport } from './routes/_auth/calendar'
 import { Route as AuthDashboardRouteImport } from './routes/_auth/dashboard'
 import { Route as AuthReportsRouteImport } from './routes/_auth/reports'
+import { Route as AuthSettingsRouteImport } from './routes/_auth/settings'
 import { Route as AuthTemplatesRouteImport } from './routes/_auth/templates'
-import { Route as AuthWhatsappRouteImport } from './routes/_auth/whatsapp'
 import { Route as TTokenRouteImport } from './routes/t.$token'
 import { Route as AuthJobsJobIdRouteImport } from './routes/_auth/jobs.$jobId'
 import { Route as AuthJobsNewRouteImport } from './routes/_auth/jobs.new'
@@ -51,14 +51,14 @@ const AuthReportsRoute = AuthReportsRouteImport.update({
   path: '/reports',
   getParentRoute: () => AuthRoute,
 } as any)
+const AuthSettingsRoute = AuthSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AuthRoute,
+} as any)
 const AuthTemplatesRoute = AuthTemplatesRouteImport.update({
   id: '/templates',
   path: '/templates',
-  getParentRoute: () => AuthRoute,
-} as any)
-const AuthWhatsappRoute = AuthWhatsappRouteImport.update({
-  id: '/whatsapp',
-  path: '/whatsapp',
   getParentRoute: () => AuthRoute,
 } as any)
 const TTokenRoute = TTokenRouteImport.update({
@@ -88,8 +88,8 @@ export interface FileRoutesByFullPath {
   '/calendar': typeof AuthCalendarRoute
   '/dashboard': typeof AuthDashboardRoute
   '/reports': typeof AuthReportsRoute
+  '/settings': typeof AuthSettingsRoute
   '/templates': typeof AuthTemplatesRoute
-  '/whatsapp': typeof AuthWhatsappRoute
   '/t/$token': typeof TTokenRoute
   '/jobs/$jobId': typeof AuthJobsJobIdRoute
   '/jobs/new': typeof AuthJobsNewRoute
@@ -101,8 +101,8 @@ export interface FileRoutesByTo {
   '/calendar': typeof AuthCalendarRoute
   '/dashboard': typeof AuthDashboardRoute
   '/reports': typeof AuthReportsRoute
+  '/settings': typeof AuthSettingsRoute
   '/templates': typeof AuthTemplatesRoute
-  '/whatsapp': typeof AuthWhatsappRoute
   '/t/$token': typeof TTokenRoute
   '/jobs/$jobId': typeof AuthJobsJobIdRoute
   '/jobs/new': typeof AuthJobsNewRoute
@@ -116,8 +116,8 @@ export interface FileRoutesById {
   '/_auth/calendar': typeof AuthCalendarRoute
   '/_auth/dashboard': typeof AuthDashboardRoute
   '/_auth/reports': typeof AuthReportsRoute
+  '/_auth/settings': typeof AuthSettingsRoute
   '/_auth/templates': typeof AuthTemplatesRoute
-  '/_auth/whatsapp': typeof AuthWhatsappRoute
   '/t/$token': typeof TTokenRoute
   '/_auth/jobs/$jobId': typeof AuthJobsJobIdRoute
   '/_auth/jobs/new': typeof AuthJobsNewRoute
@@ -131,8 +131,8 @@ export interface FileRouteTypes {
     | '/calendar'
     | '/dashboard'
     | '/reports'
+    | '/settings'
     | '/templates'
-    | '/whatsapp'
     | '/t/$token'
     | '/jobs/$jobId'
     | '/jobs/new'
@@ -144,8 +144,8 @@ export interface FileRouteTypes {
     | '/calendar'
     | '/dashboard'
     | '/reports'
+    | '/settings'
     | '/templates'
-    | '/whatsapp'
     | '/t/$token'
     | '/jobs/$jobId'
     | '/jobs/new'
@@ -158,8 +158,8 @@ export interface FileRouteTypes {
     | '/_auth/calendar'
     | '/_auth/dashboard'
     | '/_auth/reports'
+    | '/_auth/settings'
     | '/_auth/templates'
-    | '/_auth/whatsapp'
     | '/t/$token'
     | '/_auth/jobs/$jobId'
     | '/_auth/jobs/new'
@@ -217,18 +217,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthReportsRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_auth/settings': {
+      id: '/_auth/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AuthSettingsRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/_auth/templates': {
       id: '/_auth/templates'
       path: '/templates'
       fullPath: '/templates'
       preLoaderRoute: typeof AuthTemplatesRouteImport
-      parentRoute: typeof AuthRoute
-    }
-    '/_auth/whatsapp': {
-      id: '/_auth/whatsapp'
-      path: '/whatsapp'
-      fullPath: '/whatsapp'
-      preLoaderRoute: typeof AuthWhatsappRouteImport
       parentRoute: typeof AuthRoute
     }
     '/t/$token': {
@@ -266,8 +266,8 @@ interface AuthRouteChildren {
   AuthCalendarRoute: typeof AuthCalendarRoute
   AuthDashboardRoute: typeof AuthDashboardRoute
   AuthReportsRoute: typeof AuthReportsRoute
+  AuthSettingsRoute: typeof AuthSettingsRoute
   AuthTemplatesRoute: typeof AuthTemplatesRoute
-  AuthWhatsappRoute: typeof AuthWhatsappRoute
   AuthJobsJobIdRoute: typeof AuthJobsJobIdRoute
   AuthJobsNewRoute: typeof AuthJobsNewRoute
   AuthJobsNewPhotoRoute: typeof AuthJobsNewPhotoRoute
@@ -277,8 +277,8 @@ const AuthRouteChildren: AuthRouteChildren = {
   AuthCalendarRoute: AuthCalendarRoute,
   AuthDashboardRoute: AuthDashboardRoute,
   AuthReportsRoute: AuthReportsRoute,
+  AuthSettingsRoute: AuthSettingsRoute,
   AuthTemplatesRoute: AuthTemplatesRoute,
-  AuthWhatsappRoute: AuthWhatsappRoute,
   AuthJobsJobIdRoute: AuthJobsJobIdRoute,
   AuthJobsNewRoute: AuthJobsNewRoute,
   AuthJobsNewPhotoRoute: AuthJobsNewPhotoRoute,

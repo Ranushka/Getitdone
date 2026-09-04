@@ -230,5 +230,16 @@
     "unscheduled": "Unscheduled jobs",
     "moreJobs_one": "+{{count}} more",
     "moreJobs_other": "+{{count}} more"
+  },
+  "settings": {
+    "navLabel": "Settings",
+    "heading": "Settings",
+    "addressBookHeading": "Address book",
+    "addAddress": "Add address",
+    "editAddress": "Edit address",
+    "noAddressesYet": "No saved addresses yet.",
+    "addressSaved": "Address saved",
+    "addressDeleted": "Address deleted",
+    "save": "Save"
   }
 }

@@ -230,5 +230,16 @@
     "unscheduled": "مهام غير مجدولة",
     "moreJobs_one": "+{{count}} أخرى",
     "moreJobs_other": "+{{count}} أخرى"
+  },
+  "settings": {
+    "navLabel": "الإعدادات",
+    "heading": "الإعدادات",
+    "addressBookHeading": "دفتر العناوين",
+    "addAddress": "إضافة عنوان",
+    "editAddress": "تعديل العنوان",
+    "noAddressesYet": "لا توجد عناوين محفوظة بعد.",
+    "addressSaved": "تم حفظ العنوان",
+    "addressDeleted": "تم حذف العنوان",
+    "save": "حفظ"
   }
 }
