@@ -213,5 +213,15 @@
     "scanAlt": "واٹس ایپ جوڑنے کا QR کوڈ",
     "scanInstructions": "اپنے فون پر واٹس ایپ کھولیں ← منسلک آلات ← ایک آلہ جوڑیں، پھر یہ کوڈ اسکین کریں۔",
     "waitingForQr": "QR کوڈ کا انتظار ہے…"
+  },
+  "calendar": {
+    "navLabel": "کیلنڈر",
+    "title": "کیلنڈر",
+    "today": "آج",
+    "previousMonth": "پچھلا مہینہ",
+    "nextMonth": "اگلا مہینہ",
+    "unscheduled": "غیر شیڈول شدہ کام",
+    "moreJobs_one": "+{{count}} مزید",
+    "moreJobs_other": "+{{count}} مزید"
   }
 }

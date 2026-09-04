@@ -213,5 +213,15 @@
     "scanAlt": "व्हाट्सएप जोड़ने का QR कोड",
     "scanInstructions": "अपने फ़ोन पर व्हाट्सएप खोलें → लिंक्ड डिवाइस → डिवाइस लिंक करें, फिर यह कोड स्कैन करें।",
     "waitingForQr": "QR कोड की प्रतीक्षा…"
+  },
+  "calendar": {
+    "navLabel": "कैलेंडर",
+    "title": "कैलेंडर",
+    "today": "आज",
+    "previousMonth": "पिछला महीना",
+    "nextMonth": "अगला महीना",
+    "unscheduled": "अनिर्धारित कार्य",
+    "moreJobs_one": "+{{count}} और",
+    "moreJobs_other": "+{{count}} और"
   }
 }

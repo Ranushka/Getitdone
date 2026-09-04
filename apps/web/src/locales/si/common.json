@@ -213,5 +213,15 @@
     "scanAlt": "WhatsApp සම්බන්ධතා QR කේතය",
     "scanInstructions": "ඔබේ දුරකථනයේ WhatsApp විවෘත කරන්න → සම්බන්ධිත උපාංග → උපාංගයක් සම්බන්ධ කරන්න, පසුව මෙම කේතය පරිලෝකනය කරන්න.",
     "waitingForQr": "QR කේතයක් සඳහා රැඳී සිටිමින්…"
+  },
+  "calendar": {
+    "navLabel": "දින දර්ශනය",
+    "title": "දින දර්ශනය",
+    "today": "අද",
+    "previousMonth": "පෙර මාසය",
+    "nextMonth": "ඊළඟ මාසය",
+    "unscheduled": "කාලසටහන් නොකළ රැකියා",
+    "moreJobs_one": "+{{count}} තවත්",
+    "moreJobs_other": "+{{count}} තවත්"
   }
 }

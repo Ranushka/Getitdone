@@ -1,6 +1,6 @@
 import { type ReactNode, useEffect } from 'react'
 import { Link, useNavigate } from '@tanstack/react-router'
-import { LogOut, BarChart3, ClipboardList, Briefcase, MessageCircle } from 'lucide-react'
+import { LogOut, BarChart3, ClipboardList, Briefcase, MessageCircle, CalendarDays } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { trpc } from '@/lib/trpc'
 import { Button } from '@/components/ui/button'
@@ -51,46 +51,59 @@ export function AuthenticatedLayout({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-dvh bg-background">
       <header className="flex items-center justify-between border-b border-border bg-card px-4 py-3">
-        <Link to="/dashboard" className="font-bold">
-          GetItDone
-        </Link>
+        <div className="flex items-center gap-4">
+          <Link to="/dashboard" className="font-bold">
+            GetItDone
+          </Link>
+          <nav className="flex items-center gap-3">
+            <Link
+              to="/dashboard"
+              aria-label={t('jobs.title')}
+              title={t('jobs.title')}
+              className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground"
+            >
+              <Briefcase className="size-4" />
+              <span className="hidden sm:inline">{t('jobs.title')}</span>
+            </Link>
+            <Link
+              to="/calendar"
+              aria-label={t('calendar.navLabel')}
+              title={t('calendar.navLabel')}
+              className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground"
+            >
+              <CalendarDays className="size-4" />
+              <span className="hidden sm:inline">{t('calendar.navLabel')}</span>
+            </Link>
+            <Link
+              to="/templates"
+              aria-label={t('templates.navLabel')}
+              title={t('templates.navLabel')}
+              className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground"
+            >
+              <ClipboardList className="size-4" />
+              <span className="hidden sm:inline">{t('templates.navLabel')}</span>
+            </Link>
+            <Link
+              to="/reports"
+              aria-label={t('reports.navLabel')}
+              title={t('reports.navLabel')}
+              className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground"
+            >
+              <BarChart3 className="size-4" />
+              <span className="hidden sm:inline">{t('reports.navLabel')}</span>
+            </Link>
+            <Link
+              to="/whatsapp"
+              aria-label={t('whatsapp.navLabel')}
+              title={t('whatsapp.navLabel')}
+              className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground"
+            >
+              <MessageCircle className="size-4" />
+              <span className="hidden sm:inline">{t('whatsapp.navLabel')}</span>
+            </Link>
+          </nav>
+        </div>
         <div className="flex items-center gap-3">
-          <Link
-            to="/dashboard"
-            aria-label={t('jobs.title')}
-            title={t('jobs.title')}
-            className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground"
-          >
-            <Briefcase className="size-4" />
-            <span className="hidden sm:inline">{t('jobs.title')}</span>
-          </Link>
-          <Link
-            to="/templates"
-            aria-label={t('templates.navLabel')}
-            title={t('templates.navLabel')}
-            className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground"
-          >
-            <ClipboardList className="size-4" />
-            <span className="hidden sm:inline">{t('templates.navLabel')}</span>
-          </Link>
-          <Link
-            to="/reports"
-            aria-label={t('reports.navLabel')}
-            title={t('reports.navLabel')}
-            className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground"
-          >
-            <BarChart3 className="size-4" />
-            <span className="hidden sm:inline">{t('reports.navLabel')}</span>
-          </Link>
-          <Link
-            to="/whatsapp"
-            aria-label={t('whatsapp.navLabel')}
-            title={t('whatsapp.navLabel')}
-            className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground"
-          >
-            <MessageCircle className="size-4" />
-            <span className="hidden sm:inline">{t('whatsapp.navLabel')}</span>
-          </Link>
           <LanguageSwitcher />
           <span className="hidden text-sm text-muted-foreground sm:inline">{user.email}</span>
           <Button variant="ghost" size="sm" onClick={() => logout.mutate()}>

@@ -213,5 +213,15 @@
     "scanAlt": "رمز QR لربط واتساب",
     "scanInstructions": "افتح واتساب على هاتفك ← الأجهزة المرتبطة ← ربط جهاز، ثم امسح هذا الرمز.",
     "waitingForQr": "في انتظار رمز QR…"
+  },
+  "calendar": {
+    "navLabel": "التقويم",
+    "title": "التقويم",
+    "today": "اليوم",
+    "previousMonth": "الشهر السابق",
+    "nextMonth": "الشهر التالي",
+    "unscheduled": "مهام غير مجدولة",
+    "moreJobs_one": "+{{count}} أخرى",
+    "moreJobs_other": "+{{count}} أخرى"
   }
 }

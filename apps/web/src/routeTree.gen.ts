@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as AuthCalendarRouteImport } from './routes/_auth/calendar'
 import { Route as AuthDashboardRouteImport } from './routes/_auth/dashboard'
 import { Route as AuthReportsRouteImport } from './routes/_auth/reports'
 import { Route as AuthTemplatesRouteImport } from './routes/_auth/templates'
@@ -33,6 +34,11 @@ const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthCalendarRoute = AuthCalendarRouteImport.update({
+  id: '/calendar',
+  path: '/calendar',
+  getParentRoute: () => AuthRoute,
 } as any)
 const AuthDashboardRoute = AuthDashboardRouteImport.update({
   id: '/dashboard',
@@ -73,6 +79,7 @@ const AuthJobsNewRoute = AuthJobsNewRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/calendar': typeof AuthCalendarRoute
   '/dashboard': typeof AuthDashboardRoute
   '/reports': typeof AuthReportsRoute
   '/templates': typeof AuthTemplatesRoute
@@ -84,6 +91,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/calendar': typeof AuthCalendarRoute
   '/dashboard': typeof AuthDashboardRoute
   '/reports': typeof AuthReportsRoute
   '/templates': typeof AuthTemplatesRoute
@@ -97,6 +105,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_auth': typeof AuthRouteWithChildren
   '/login': typeof LoginRoute
+  '/_auth/calendar': typeof AuthCalendarRoute
   '/_auth/dashboard': typeof AuthDashboardRoute
   '/_auth/reports': typeof AuthReportsRoute
   '/_auth/templates': typeof AuthTemplatesRoute
@@ -110,6 +119,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/login'
+    | '/calendar'
     | '/dashboard'
     | '/reports'
     | '/templates'
@@ -121,6 +131,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/login'
+    | '/calendar'
     | '/dashboard'
     | '/reports'
     | '/templates'
@@ -133,6 +144,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_auth'
     | '/login'
+    | '/_auth/calendar'
     | '/_auth/dashboard'
     | '/_auth/reports'
     | '/_auth/templates'
@@ -171,6 +183,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_auth/calendar': {
+      id: '/_auth/calendar'
+      path: '/calendar'
+      fullPath: '/calendar'
+      preLoaderRoute: typeof AuthCalendarRouteImport
+      parentRoute: typeof AuthRoute
     }
     '/_auth/dashboard': {
       id: '/_auth/dashboard'
@@ -225,6 +244,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthRouteChildren {
+  AuthCalendarRoute: typeof AuthCalendarRoute
   AuthDashboardRoute: typeof AuthDashboardRoute
   AuthReportsRoute: typeof AuthReportsRoute
   AuthTemplatesRoute: typeof AuthTemplatesRoute
@@ -234,6 +254,7 @@ interface AuthRouteChildren {
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
+  AuthCalendarRoute: AuthCalendarRoute,
   AuthDashboardRoute: AuthDashboardRoute,
   AuthReportsRoute: AuthReportsRoute,
   AuthTemplatesRoute: AuthTemplatesRoute,

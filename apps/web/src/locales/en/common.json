@@ -213,5 +213,15 @@
     "scanAlt": "WhatsApp pairing QR code",
     "scanInstructions": "Open WhatsApp on your phone → Linked devices → Link a device, then scan this code.",
     "waitingForQr": "Waiting for a QR code…"
+  },
+  "calendar": {
+    "navLabel": "Calendar",
+    "title": "Calendar",
+    "today": "Today",
+    "previousMonth": "Previous month",
+    "nextMonth": "Next month",
+    "unscheduled": "Unscheduled jobs",
+    "moreJobs_one": "+{{count}} more",
+    "moreJobs_other": "+{{count}} more"
   }
 }
